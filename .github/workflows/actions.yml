@@ -13,7 +13,7 @@ jobs:
     runs-on: ubuntu-latest
     env :
       working-directory: ./
-      APPLICATION: ${{ secrets.APPLICATION }}
+      #APPLICATION: ${{ secrets.APPLICATION }}
 
     steps:
     - uses: actions/checkout@v2
@@ -39,6 +39,7 @@ jobs:
     - name:  make application.yml
       run: touch ./src/main/resources/application.yml
       shell: bash
+      
     - name: deliver application.yml
       run: echo "${{ secrets.APPLICATION }}" > ./src/main/resources/application.yml
       shell: bash 
@@ -50,11 +51,11 @@ jobs:
         
     - name: Grant execute permission for gradlew
       run: chmod +x gradlew
-      working-directory: ${{ env.working-directory }}
+      working-directory: ${{ secrets.working-directory }}
       
     - name: Build with Gradle
       run: ./gradlew build
-      working-directory: ${{ env.working-directory }}
+      working-directory: ${{ secrets.working-directory }}
       
     - name: Cleanup Gradle Cache
       if: ${{ always() }}
