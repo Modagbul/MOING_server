@@ -63,6 +63,7 @@ jobs:
         host: ${{ secrets.EC2_SERVER_HOST }}
         username: ec2-user
         key: ${{ secrets.PRIVATE_KEY }}
+        envs: GITHUB_SHA
         script: |
             docker rmi $(docker images -q)
             docker pull ${{ secrets.DOCKER_HUB_REPO }}:${GITHUB_SHA::7}
