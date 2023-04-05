@@ -4,7 +4,7 @@ on:
     branches: [ master ]        # 메인브랜치에 푸쉬가 되면
 
 jobs:
-  deploy:                     # deploy라는 작업을 할것이고
+  build:                    
     runs-on: ubuntu-latest    # 우분투 최신버전으로 진행 할게요
     env :
       working-directory: ./
