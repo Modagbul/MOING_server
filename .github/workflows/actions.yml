@@ -38,7 +38,7 @@ jobs:
           mkdir ./src/main/resources
           cd ./src/main/resources
           touch ./application.yml 
-          echo ${{secret.APPLICATION}} > ./application.yml
+          echo ${{env.APPLICATION}} > ./application.yml
 
     - uses: actions/upload-artifact@v2
       with:
