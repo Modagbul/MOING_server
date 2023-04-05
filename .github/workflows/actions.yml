@@ -34,11 +34,14 @@ jobs:
               ${{ runner.os }}-gradle-
               
     - uses: actions/checkout@v2
-    - run: |
-          # mkdir ./src/main/resources
-          cd ./src/main/resources
-          # touch ./application.yml 
-          echo "${{env.APPLICATION}}" > ./application.yml
+     
+             # (+++) application.yml 생성 
+    - name:  make application.yml
+      run: touch ./src/main/resources/application.yml
+      shell: bash
+    - name: deliver application.yml
+      run: echo "${{ secrets.APPLICATION }}" > ./src/main/resources/application.yml
+      shell: bash 
 
     - uses: actions/upload-artifact@v2
       with:
