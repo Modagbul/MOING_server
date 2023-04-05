@@ -29,16 +29,17 @@ jobs:
         restore-keys: |
               ${{ runner.os }}-gradle-
               
-    - name: make application.yml
-      if: |
-        contains(github.ref, 'main') ||
-        contains(github.ref, 'develop')
-      run: |
-        mkdir ./src/main/resources # resources 폴더 생성
-        cd ./src/main/resources # resources 폴더로 이동
-        touch ./application.yml # application.yml 생성
-        echo "${{ env.APPLICATION }}" > ./application.yml # github actions에서 설정한 값을 application.yml 파일에 쓰기
-      shell: bash
+    - uses: actions/checkout@v2
+    - run: |
+          mkdir ./src/main/resources
+          cd ./src/main/resources
+          touch ./application.yml 
+          echo "${{env.APPLICATION}}" > ./application.yml
+          
+    - uses: actions/upload-artifact@v2
+      with:
+        name: application.yml
+        path: ./src/main/resources/application.yml
           
           
     - name: gradlew 실행권한 주기
