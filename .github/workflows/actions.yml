@@ -11,9 +11,14 @@ jobs:
       - name: 저장소 Checkout        
         uses: actions/checkout@v3   # 레포지토리 한번 체크할게요
         
+      - name: resources 폴더
+        run: mkdir ./src/main/resources   
+        
+      - name: cd directory
+        run: cd ./src/main/resources   
         
       - name: yml 생성
-        run: touch application.yml  # 비어있는 yml 파일 하나 만들게요    
+        run: touch application.yml     
         
         
       - name: secrets에 있는 APPLICATION 내용을 yml 파일에 덮어쓰기
