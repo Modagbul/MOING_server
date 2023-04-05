@@ -17,8 +17,8 @@ jobs:
       - name: cd directory
         run: cd ./src/main/resources   
         
-      - name: yml 생성
-        run: touch application.yml     
+     # - name: yml 생성
+     #   run: touch application.yml     
         
         
       - name: secrets에 있는 APPLICATION 내용을 yml 파일에 덮어쓰기
