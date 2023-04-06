@@ -1,7 +1,7 @@
 ---
 name: fix
 about: fix
-title: "[fix/]"
+title: 'fix/ :'
 labels: ''
 assignees: ''
 
