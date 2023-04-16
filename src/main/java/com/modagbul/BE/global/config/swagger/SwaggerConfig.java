@@ -46,8 +46,7 @@ public class SwaggerConfig {
 
     public ApiInfo apiInfo() {
         return new ApiInfoBuilder()
-                .title("Rest API Documentation")
-                .description("MOING")
+                .title("MOING Rest API Documentation")
                 .license("modagbul.kusitms.27@gmail.com")
                 .version("1.0")
                 .build();
