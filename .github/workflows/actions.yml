@@ -70,4 +70,4 @@ jobs:
             docker tag ${{ secrets.DOCKER_HUB_REPO }}:${GITHUB_SHA::7} ${{ secrets.PROJECT_NAME }}
             docker stop ${{ secrets.PROJECT_NAME }}
             docker rm ${{ secrets.PROJECT_NAME }}
-            docker run -d --name ${{ secrets.PROJECT_NAME }} -p 80:8080 ${{ secrets.PROJECT_NAME }}
+            docker run -d --name ${{ secrets.PROJECT_NAME }} -p 8080:8080 ${{ secrets.PROJECT_NAME }}
