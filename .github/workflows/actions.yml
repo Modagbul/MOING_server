@@ -51,22 +51,11 @@ jobs:
     - name: 스프링부트 애플리케이션 빌드 
       run: ./gradlew clean build 
 
-
-#     - name: Docker build
-#       run: |
-#           docker login -u ${{ secrets.DOCKER_USERNAME }} -p ${{ secrets.DOCKER_PASSWORD }}
-#           docker build -t ${{ secrets.PROJECT_NAME }} .
-#          docker tag ${{ secrets.PROJECT_NAME }} ${{ secrets.DOCKER_HUB_REPO }}:${GITHUB_SHA::7}-blue
-#          docker tag ${{ secrets.PROJECT_NAME }} ${{ secrets.DOCKER_HUB_REPO }}:${GITHUB_SHA::7}-green
-
-#          docker push ${{ secrets.DOCKER_HUB_REPO }}:${GITHUB_SHA::7}-blue
-#          docker push ${{ secrets.DOCKER_HUB_REPO }}:${GITHUB_SHA::7}-green
-
-    - name: Login to DockerHub # 단계의 이름 
+    - name: Login to DockerHub 
       uses: docker/login-action@v1
       with:
           username: ${{ secrets.DOCKER_USERNAME }} # DockerHub 사용자 이름
-          password: ${{ secrets.DOCKER_PASSWORD }} # DockerHub 비밀번호
+          password: ${{ secrets.DOCKER_TOKEN }} # DockerHub 비밀번호
 
     - name: Build and Push Blue # 단계의 이름
       if: startsWith(github.ref, 'refs/tags/blue') # 조건: 브랜치/태그 이름이 'blue'로 시작하는 경우
