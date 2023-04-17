@@ -1,5 +1,5 @@
-docker-compose -p nginx -f docker-compose.nginx.yml down 
-docker-compose -p nginx -f docker-compose.nginx.yml up -d
+#docker-compose -p nginx -f docker-compose.nginx.yml down
+#docker-compose -p nginx -f docker-compose.nginx.yml up -d
 
 cd /home/myapp/docker
 
