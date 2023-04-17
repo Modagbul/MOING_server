@@ -52,14 +52,8 @@ jobs:
       run: ./gradlew clean build 
 
     - name: Login to DockerHub
-      env:
-        DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
-        DOCKER_PASSWORD: ${{ secrets.DOCKER_TOKEN }}
-      run: |
-        echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
-        mkdir -p ~/.docker
-        echo '{ "credsStore": "pass" }' > ~/.docker/config.json
-
+      run:
+        docker login -u ${{ secrets.DOCKER_USERNAME }} -p ${{ secrets.DOCKER_PASSWORD }}
 
     - name: Build and Push Blue 
       if: startsWith(github.ref, 'refs/tags/blue') # 조건: 브랜치/태그 이름이 'blue'로 시작하는 경우
