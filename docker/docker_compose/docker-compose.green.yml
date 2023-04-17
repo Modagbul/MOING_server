@@ -1,0 +1,12 @@
+version: '3.3'
+
+services:
+  api:
+    image: meetup:latest
+    container_name: meetup-green
+
+    environment:
+      - LANG=ko_KR.UTF-8
+      - UWSGI_PORT=80
+    ports:
+      - '8889:80'
