@@ -17,8 +17,8 @@ jobs:
           context: .
           push: true
           tags: |
-            myapp:${{ GITHUB_SHA::7 }}-blue
-            myapp:${{ GITHUB_SHA::7 }}-green
+            myapp:${ GITHUB_SHA::7 }-blue
+            myapp:${ GITHUB_SHA::7 }-green
             
       - name: Deploy Blue
         if: startsWith(github.ref, 'refs/tags/blue')
