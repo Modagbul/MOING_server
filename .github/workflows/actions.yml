@@ -52,15 +52,15 @@ jobs:
       run: ./gradlew clean build 
 
 
-    - name: Docker build
-      run: |
-          docker login -u ${{ secrets.DOCKER_USERNAME }} -p ${{ secrets.DOCKER_PASSWORD }}
-          docker build -t ${{ secrets.PROJECT_NAME }} .
-        #  docker tag ${{ secrets.PROJECT_NAME }} ${{ secrets.DOCKER_HUB_REPO }}:${GITHUB_SHA::7}-blue
-        #  docker tag ${{ secrets.PROJECT_NAME }} ${{ secrets.DOCKER_HUB_REPO }}:${GITHUB_SHA::7}-green
+#     - name: Docker build
+#       run: |
+#           docker login -u ${{ secrets.DOCKER_USERNAME }} -p ${{ secrets.DOCKER_PASSWORD }}
+#           docker build -t ${{ secrets.PROJECT_NAME }} .
+#          docker tag ${{ secrets.PROJECT_NAME }} ${{ secrets.DOCKER_HUB_REPO }}:${GITHUB_SHA::7}-blue
+#          docker tag ${{ secrets.PROJECT_NAME }} ${{ secrets.DOCKER_HUB_REPO }}:${GITHUB_SHA::7}-green
 
-        #  docker push ${{ secrets.DOCKER_HUB_REPO }}:${GITHUB_SHA::7}-blue
-        #  docker push ${{ secrets.DOCKER_HUB_REPO }}:${GITHUB_SHA::7}-green
+#          docker push ${{ secrets.DOCKER_HUB_REPO }}:${GITHUB_SHA::7}-blue
+#          docker push ${{ secrets.DOCKER_HUB_REPO }}:${GITHUB_SHA::7}-green
 
 
   deploy:
@@ -73,10 +73,12 @@ jobs:
         with:
           context: .
           push: true
+          username: ${{ secrets.DOCKER_USERNAME }}
+          password: ${{ secrets.DOCKER_PASSWORD }}
           tags: |
             ${{ secrets.PROJECT_NAME }} ${{ secrets.DOCKER_HUB_REPO }}:${GITHUB_SHA::7}-blue
             ${{ secrets.PROJECT_NAME }} ${{ secrets.DOCKER_HUB_REPO }}:${GITHUB_SHA::7}-green
-            
+    
       - name: Deploy Blue
         if: startsWith(github.ref, 'refs/tags/blue')
         uses: appleboy/ssh-action@master
@@ -84,7 +86,7 @@ jobs:
           host: ${{ secrets.EC2_SERVER_HOST }}
           username: ec2-user
           password: ${{ secrets.PASSWORD }}
-          port: ${{ secrets.PORT }}
+          port: 8091
           script: |
             cd ~/${{ secrets.PROJECT_NAME }} ${{ secrets.DOCKER_HUB_REPO }}
             docker-compose pull ${{ secrets.PROJECT_NAME }} ${{ secrets.DOCKER_HUB_REPO }}-blue
@@ -97,7 +99,7 @@ jobs:
           host: ${{ secrets.EC2_SERVER_HOST }}
           username: ${{ secrets.DOCKER_USERNAME }}
           password: ${{ secrets.DOCKER_PASSWORD }}
-          port: ${{ secrets.PORT }}
+          port: 8092
           script: |
             cd ~/${{ secrets.PROJECT_NAME }} ${{ secrets.DOCKER_HUB_REPO }}
             docker-compose pull ${{ secrets.PROJECT_NAME }} ${{ secrets.DOCKER_HUB_REPO }}-green
