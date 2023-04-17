@@ -1,9 +1,11 @@
 package com.modagbul.BE.global.config.security.exception;
 
-import org.springframework.http.HttpStatus;
+import static com.modagbul.BE.global.config.security.constants.SecurityConstants.SecurityExceptionList.NOT_AUTH_WITH_OAUTH2;
 
 public class UserNotAuthenticatedWithOAuth2Exception extends SecurityException {
     public UserNotAuthenticatedWithOAuth2Exception() {
-        super("S0002", HttpStatus.UNAUTHORIZED, "UNAUTHORIZED : 현재 사용자는 OAuth2를 사용하여 인증되지 않았습니다.");
+        super(NOT_AUTH_WITH_OAUTH2.getErrorCode(),
+                NOT_AUTH_WITH_OAUTH2.getHttpStatus(),
+                NOT_AUTH_WITH_OAUTH2.getMessage());
     }
 }

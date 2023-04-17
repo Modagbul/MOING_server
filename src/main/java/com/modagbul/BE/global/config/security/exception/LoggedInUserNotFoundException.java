@@ -1,9 +1,14 @@
 package com.modagbul.BE.global.config.security.exception;
 
+import com.modagbul.BE.global.config.security.constants.SecurityConstants;
 import org.springframework.http.HttpStatus;
+
+import static com.modagbul.BE.global.config.security.constants.SecurityConstants.SecurityExceptionList.LOGGED_IN_NOT_FOUND;
 
 public class LoggedInUserNotFoundException extends SecurityException {
     public LoggedInUserNotFoundException() {
-        super("S0003", HttpStatus.UNAUTHORIZED, "UNAUTHORIZED: 로그인한 사용자를 찾을 수 없습니다.");
+        super(LOGGED_IN_NOT_FOUND.getErrorCode(),
+                LOGGED_IN_NOT_FOUND.getHttpStatus(),
+                LOGGED_IN_NOT_FOUND.getMessage());
     }
 }

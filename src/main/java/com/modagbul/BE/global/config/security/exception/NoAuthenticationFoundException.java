@@ -1,9 +1,14 @@
 package com.modagbul.BE.global.config.security.exception;
 
+import com.modagbul.BE.global.config.security.constants.SecurityConstants;
 import org.springframework.http.HttpStatus;
+
+import static com.modagbul.BE.global.config.security.constants.SecurityConstants.SecurityExceptionList.NO_AUTHENTICATION_FOUND;
 
 public class NoAuthenticationFoundException extends SecurityException {
     public NoAuthenticationFoundException() {
-        super("S0001", HttpStatus.UNAUTHORIZED, "UNAUTHORIZED: 보안 컨텍스트에서 인증 정보를 찾을 수 없습니다.");
+        super(NO_AUTHENTICATION_FOUND.getErrorCode(),
+                NO_AUTHENTICATION_FOUND.getHttpStatus(),
+                NO_AUTHENTICATION_FOUND.getMessage() );
     }
 }
