@@ -62,49 +62,56 @@ jobs:
 #          docker push ${{ secrets.DOCKER_HUB_REPO }}:${GITHUB_SHA::7}-blue
 #          docker push ${{ secrets.DOCKER_HUB_REPO }}:${GITHUB_SHA::7}-green
 
+    - name: Login to DockerHub # 단계의 이름 
+      uses: docker/login-action@v1
+      with:
+          username: ${{ secrets.DOCKER_USERNAME }} # DockerHub 사용자 이름
+          password: ${{ secrets.DOCKER_PASSWORD }} # DockerHub 비밀번호
 
-  deploy:
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v2
-      - name: Build and Push Docker Images
-        uses: docker/build-push-action@v2
-        with:
-          context: .
-          push: true
-          secrets: |
-            username: ${{ secrets.DOCKER_USERNAME }}
-            password: ${{ secrets.DOCKER_PASSWORD }}
-          tags: |
-            ${{ secrets.PROJECT_NAME }} ${{ secrets.DOCKER_HUB_REPO }}:${GITHUB_SHA::7}-blue
-            ${{ secrets.PROJECT_NAME }} ${{ secrets.DOCKER_HUB_REPO }}:${GITHUB_SHA::7}-green
+    - name: Build and Push Blue # 단계의 이름
+      if: startsWith(github.ref, 'refs/tags/blue') # 조건: 브랜치/태그 이름이 'blue'로 시작하는 경우
+      env:
+          DOCKER_COMPOSE_VERSION: 1.29.2 # Docker Compose 버전
+          DOCKER_IMAGE_TAG: blue # Docker 이미지 태그
+      run: |
+          docker-compose build myapp-blue # myapp-blue 서비스를 위한 Docker 이미지 빌드
+          docker-compose push myapp-blue # Docker 이미지를 DockerHub에 푸시
+
+    - name: Build and Push Green # 단계의 이름
+      if: startsWith(github.ref, 'refs/tags/green') # 조건: 브랜치/태그 이름이 'green'으로 시작하는 경우
+      env:
+          DOCKER_COMPOSE_VERSION: 1.29.2 # Docker Compose 버전
+          DOCKER_IMAGE_TAG: green # Docker 이미지 태그
+      run: |
+          docker-compose build myapp-green # myapp-green 서비스를 위한 Docker 이미지 빌드
+          docker-compose push myapp-green # Docker 이미지를 DockerHub에 푸시
+
     
-      - name: Deploy Blue
-        if: startsWith(github.ref, 'refs/tags/blue')
-        uses: appleboy/ssh-action@master
-        with:
+    - name: Deploy Blue
+      if: startsWith(github.ref, 'refs/tags/blue')
+      uses: appleboy/ssh-action@master
+      with:
           host: ${{ secrets.EC2_SERVER_HOST }}
-          username: ec2-user
-          password: ${{ secrets.PASSWORD }}
+          username: ${{ secrets.DOCKER_USERNAME }}
+          password: ${{ secrets.DOCKER_PASSWORD }}
           port: 8091
           script: |
-            cd ~/${{ secrets.PROJECT_NAME }} ${{ secrets.DOCKER_HUB_REPO }}
-            docker-compose pull ${{ secrets.PROJECT_NAME }} ${{ secrets.DOCKER_HUB_REPO }}-blue
-            docker-compose up -d --remove-orphans ${{ secrets.PROJECT_NAME }} ${{ secrets.DOCKER_HUB_REPO }}-blue
+            cd ~/myapp
+            docker-compose pull myapp-blue
+            docker-compose up -d --remove-orphans myapp-blue
             sleep
-      - name: Deploy Green
-        if: startsWith(github.ref, 'refs/tags/green')
-        uses: appleboy/ssh-action@master
-        with:
+    - name: Deploy Green
+      if: startsWith(github.ref, 'refs/tags/green')
+      uses: appleboy/ssh-action@master
+      with:
           host: ${{ secrets.EC2_SERVER_HOST }}
           username: ${{ secrets.DOCKER_USERNAME }}
           password: ${{ secrets.DOCKER_PASSWORD }}
           port: 8092
           script: |
-            cd ~/${{ secrets.PROJECT_NAME }} ${{ secrets.DOCKER_HUB_REPO }}
-            docker-compose pull ${{ secrets.PROJECT_NAME }} ${{ secrets.DOCKER_HUB_REPO }}-green
-            docker-compose up -d --remove-orphans ${{ secrets.PROJECT_NAME }} ${{ secrets.DOCKER_HUB_REPO }}-green
+            cd ~/myapp
+            docker-compose pull myapp-green
+            docker-compose up -d --remove-orphans myapp-green
             sleep 30
             docker-compose down --remove-orphans
             docker-compose up -d --remove-orphans nginx
