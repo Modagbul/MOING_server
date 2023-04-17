@@ -61,6 +61,5 @@ jobs:
           host: ${{ secrets.EC2_SERVER_HOST }}
           username: ec2-user
           key: ${{ secrets.PRIVATE_KEY }}
-          port: 8888
           script_stop: true
           script: sh /home/meetup/docker-compose/entrypoint.sh
