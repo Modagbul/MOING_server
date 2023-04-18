@@ -63,8 +63,8 @@ jobs:
           key: ${{ secrets.PRIVATE_KEY }}
           push: true
           tags: |
-            blue
-            green
+            meetup-blue
+            meetup-green
     - name: Deploy to target server
       uses: appleboy/ssh-action@v0.1.3
       with:
@@ -73,7 +73,7 @@ jobs:
             key: ${{ secrets.PRIVATE_KEY }}
             script: |
               ls
-              docker-compose up -d --no-deps --build blue
+              docker-compose up -d --no-deps --build meetup-blue
               sleep 30
-              docker-compose up -d --no-deps --build green
+              docker-compose up -d --no-deps --build meetup-green
             working-directory: /home/ec2-user
