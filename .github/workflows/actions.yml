@@ -37,7 +37,7 @@ jobs:
           cd ./src/main/resources
           touch ./application.yml 
           echo "${{env.APPLICATION}}" > ./application.yml
-          echo "${{env.GOOGLE_APPLICATION_CREDENTIALS}}" > firebase-key.json
+          echo "${{env.GOOGLE_APPLICATION_CREDENTIALS}}" | base64 --decode > firebase_key.json
           
     - name: Upload application.yml and Firebase service account key file
       uses: actions/upload-artifact@v2
