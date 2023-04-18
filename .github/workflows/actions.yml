@@ -55,6 +55,14 @@ jobs:
 #       run:
 #         docker login -u ${{ secrets.DOCKER_USERNAME }} -p ${{ secrets.DOCKER_PASSWORD }}
 
+    - name: build image
+      uses: appleboy/ssh-action@v0.1.3
+      with:
+        host: ${{ secrets.EC2_SERVER_HOST }}
+        username: ec2-user
+        key: ${{ secrets.PRIVATE_KEY }}
+      run: docker-compose build
+
     - name: build image & run container
       uses: appleboy/ssh-action@v0.1.7
       with:
@@ -72,7 +80,7 @@ jobs:
             username: ec2-user
             key: ${{ secrets.PRIVATE_KEY }}
             script: |
-              ls
+              
               docker-compose up -d --no-deps --build meetup-blue
               sleep 30
               docker-compose up -d --no-deps --build meetup-green
