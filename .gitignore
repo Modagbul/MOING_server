@@ -39,3 +39,4 @@ out/
 ### yml ###
 application.yml
 .DS_Store
+firebase-key.json
