@@ -5,6 +5,7 @@ import com.google.firebase.FirebaseApp;
 import com.google.firebase.FirebaseOptions;
 import com.google.firebase.messaging.FirebaseMessaging;
 import com.modagbul.BE.fcm.exception.InitializeException;
+import com.modagbul.BE.fcm.exception.MessagingException;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -22,8 +23,7 @@ public class FcmConfig {
     private String projectId;
 
     @Bean
-    public FirebaseMessaging firebaseMessaging(){
-
+    public FirebaseApp firebaseApp() {
         try {
             FileInputStream serviceAccount = new FileInputStream(firebaseConfigPath);
 
@@ -32,10 +32,22 @@ public class FcmConfig {
                     .setProjectId(projectId)
                     .build();
 
-            FirebaseApp.initializeApp(options);
-            return FirebaseMessaging.getInstance();
+            return FirebaseApp.initializeApp(options);
         }catch (IOException e) {
             throw new InitializeException();
+        }
+    }
+
+    @Bean
+    public FirebaseMessaging firebaseMessaging() {
+        try {
+            return FirebaseMessaging.getInstance(firebaseApp());
+        }catch (IllegalStateException e) {
+            throw new MessagingException("FirebaseApp 초기화에 실패하였습니다." + e.getMessage());
+        } catch (NullPointerException e) {
+            throw new IllegalStateException("FirebaseApp을 불러오는데 실패하였습니다."+e.getMessage());
+        } catch (Exception e) {
+            throw new IllegalArgumentException("firebaseConfigPath를 읽어오는데 실패하였습니다."+e.getMessage());
         }
     }
 }
