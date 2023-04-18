@@ -17,7 +17,6 @@ configurations {
 
 repositories {
 	mavenCentral()
-	google()
 }
 
 dependencies {
@@ -41,6 +40,7 @@ dependencies {
 	runtimeOnly 'io.jsonwebtoken:jjwt-impl:0.11.2'
 
 	implementation 'com.google.firebase:firebase-admin:8.2.0'
+	implementation 'com.google.firebase:firebase-messaging:23.0.0'
 }
 
 tasks.named('test') {
