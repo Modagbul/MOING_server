@@ -72,9 +72,8 @@ jobs:
             username: ec2-user
             key: ${{ secrets.PRIVATE_KEY }}
             script: |
-              pwd
               ls
               docker-compose up -d --no-deps --build blue
               sleep 30
               docker-compose up -d --no-deps --build green
-#            working-directory: /home/ec2-user
+            working-directory: /home/ec2-user
