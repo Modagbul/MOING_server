@@ -63,8 +63,8 @@ jobs:
           key: ${{ secrets.PRIVATE_KEY }}
           push: true
           tags: |
-            meetup-blue:latest
-            meetup-green:latest
+            blue
+            green
     - name: Deploy to target server
       uses: appleboy/ssh-action@v0.1.3
       with:
