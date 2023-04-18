@@ -75,4 +75,4 @@ jobs:
               docker-compose up -d --no-deps --build blue
               sleep 30
               docker-compose up -d --no-deps --build green
-            working-directory: /home/ec2-user/meetup
+            working-directory: ./
