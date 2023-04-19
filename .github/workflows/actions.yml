@@ -69,6 +69,7 @@ jobs:
           docker login -u ${{ secrets.DOCKER_USERNAME }} -p ${{ secrets.DOCKER_PASSWORD }}
           docker build -t ${{ secrets.PROJECT_NAME }} \
             --build-arg FIREBASE_KEY_PATH=${FIREBASE_KEY_PATH} \
+            --build-arg JAR_FILE=./build/libs/*.jar \
             .
           docker tag ${{ secrets.PROJECT_NAME }} ${{ secrets.DOCKER_HUB_REPO }}:${GITHUB_SHA::7}
           docker push ${{ secrets.DOCKER_HUB_REPO }}:${GITHUB_SHA::7}
