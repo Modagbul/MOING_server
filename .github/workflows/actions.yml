@@ -32,6 +32,7 @@ jobs:
               ${{ runner.os }}-gradle-
   
     - uses: actions/checkout@v2
+    - run: mkdir -p ./src/main/resources
     - run: touch ./src/main/resources/application.yml
     - run: echo "${{env.APPLICATION}}" > ./src/main/resources/application.yml
     - uses: actions/upload-artifact@v2
@@ -41,7 +42,7 @@ jobs:
         
     - uses: actions/checkout@v2
     - run: touch ./src/main/resources/firebase-key.json
-    - run: echo "${{env.APPLICATION}}" > ./src/main/resources/firebase-key.json
+    - run: echo "${{env.GOOGLE_APPLICATION_CREDENTIALS}}" > ./src/main/resources/firebase-key.json
     - uses: actions/upload-artifact@v2
       with:
         name: firebase-key.json
