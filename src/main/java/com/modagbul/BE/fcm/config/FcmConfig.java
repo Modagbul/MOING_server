@@ -12,14 +12,15 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 
 @Configuration
 @Slf4j
 public class FcmConfig {
 
-    @Value("${firebase.config.path}")
-    private String firebaseConfigPath;
+//    @Value("${firebase.config.path}")
+    private String firebaseConfigPath="src/main/resources/firebase-key.json";
 
     @Value("${firebase.config.projectId}")
     private String projectId;
@@ -40,7 +41,9 @@ public class FcmConfig {
                     .build();
 
             return FirebaseApp.initializeApp(options);
-        }catch (IOException e) {
+        } catch (FileNotFoundException e) {
+            throw new IllegalStateException("파일을 찾을 수 없습니다."+e.getMessage());
+        } catch (IOException e) {
             throw new InitializeException();
         }
     }
@@ -50,7 +53,7 @@ public class FcmConfig {
         log.info("============");
         log.info(firebaseConfigPath);
         log.info("============");
-        
+
         try {
             return FirebaseMessaging.getInstance(firebaseApp());
         }catch (IllegalStateException e) {
