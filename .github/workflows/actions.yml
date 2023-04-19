@@ -30,26 +30,23 @@ jobs:
         key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle*', '**/gradle-wrapper.properties') }}
         restore-keys: |
               ${{ runner.os }}-gradle-
-              
-    - name: Create application.yml and Firebase service account key file
-      run: |
-          mkdir -p ./src/main/resources
-          echo "${{env.GOOGLE_APPLICATION_CREDENTIALS}}" | base64 --decode > ./src/main/resources/firebase-key.json
-          echo "${{env.APPLICATION}}" > ./src/main/resources/application.yml
-          
-          
-    - name: Upload Firebase service account key file
-      uses: actions/upload-artifact@v2
-      with:
-        name: firebase-key.json
-        path: ./src/main/resources/firebase-key.json
-
-    - name: Upload application.yml 
-      uses: actions/upload-artifact@v2
+  
+    - uses: actions/checkout@v2
+    - run: touch ./src/main/resources/application.yml
+    - run: echo "${{env.APPLICATION}}" > ./src/main/resources/application.yml
+    - uses: actions/upload-artifact@v2
       with:
         name: application.yml
         path: ./src/main/resources/application.yml
-
+        
+    - uses: actions/checkout@v2
+    - run: touch ./src/main/resources/firebase-key.json
+    - run: echo "${{env.APPLICATION}}" > ./src/main/resources/firebase-key.json
+    - uses: actions/upload-artifact@v2
+      with:
+        name: firebase-key.json
+        path: ./src/main/resources/firebase-key.json
+        
         
     - name: Grant execute permission for gradlew
       run: chmod +x gradlew
