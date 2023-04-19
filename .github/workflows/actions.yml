@@ -37,15 +37,21 @@ jobs:
           cd ./src/main/resources
           touch ./application.yml 
           echo "${{env.APPLICATION}}" > ./application.yml
+          touch ./firebase-key.json
           echo "${{env.GOOGLE_APPLICATION_CREDENTIALS}}" | base64 --decode > ./firebase-key.json
           
-    - name: Upload application.yml and Firebase service account key file
+    - name: Upload application.yml 
       uses: actions/upload-artifact@v2
       with:
-        name: configuration-files
-        path: |
-          ./src/main/resources/application.yml
-          ./src/main/resources/firebase-key.json
+        name: application.yml
+        path: ./src/main/resources/application.yml
+        
+    - name: Upload Firebase service account key file
+      uses: actions/upload-artifact@v2
+      with:
+        name: firebase-key.json
+        path: ./src/main/resources/firebase-key.json
+        
           
     - name: Grant execute permission to gradlew
       run: chmod +x gradlew
