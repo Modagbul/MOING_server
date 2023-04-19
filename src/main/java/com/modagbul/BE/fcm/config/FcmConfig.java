@@ -28,11 +28,6 @@ public class FcmConfig {
     @Bean
     public FirebaseApp firebaseApp() {
         try {
-
-            log.info("============");
-            log.info(firebaseConfigPath);
-            log.info("============");
-
             FileInputStream serviceAccount = new FileInputStream(firebaseConfigPath);
 
             FirebaseOptions options = FirebaseOptions.builder()
@@ -50,10 +45,6 @@ public class FcmConfig {
 
     @Bean
     public FirebaseMessaging firebaseMessaging() {
-        log.info("============");
-        log.info(firebaseConfigPath);
-        log.info("============");
-
         try {
             return FirebaseMessaging.getInstance(firebaseApp());
         }catch (IllegalStateException e) {
