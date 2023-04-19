@@ -39,8 +39,6 @@ jobs:
       with:
         name: application.yml
         path: ./src/main/resources/application.yml
-        
-    - uses: actions/checkout@v2
     - run: touch ./src/main/resources/firebase-key.json
     - run: echo "${{env.GOOGLE_APPLICATION_CREDENTIALS}}" > ./src/main/resources/firebase-key.json
     - uses: actions/upload-artifact@v2
