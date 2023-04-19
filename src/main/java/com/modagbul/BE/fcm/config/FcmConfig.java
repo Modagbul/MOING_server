@@ -16,8 +16,8 @@ import java.io.IOException;
 @Configuration
 public class FcmConfig {
 
-    @Value("${firebase.config.path}")
-    private String firebaseConfigPath;
+//    @Value("${firebase.config.path}")
+    private String firebaseConfigPath="./src/main/resources/firebase-key.json";
 
     @Value("${firebase.config.projectId}")
     private String projectId;
