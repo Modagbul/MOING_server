@@ -1,11 +1,12 @@
 package com.modagbul.BE.fcm.service;
 
-import com.modagbul.BE.fcm.dto.FcmDto.ToMultiRequest;
-import com.modagbul.BE.fcm.dto.FcmDto.ToSingleRequest;
+import com.modagbul.BE.fcm.dto.FcmDto.*;
 
 public interface FcmService {
-    String sendSingleDevice(ToSingleRequest toSingleRequest);
-    String sendMultipleDevices(ToMultiRequest toMultiRequest);
+    SingleFcmResponse sendSingleDevice(ToSingleRequest toSingleRequest);
+    MultiFcmResponse sendMultipleDevices(ToMultiRequest toMultiRequest);
+    SingleFcmResponse sendByTopic(TopicRequest topicRequest);
+    SingleFcmResponse sendByTopicCustom(TopicCustomRequest topicRequest);
 
 }
 
