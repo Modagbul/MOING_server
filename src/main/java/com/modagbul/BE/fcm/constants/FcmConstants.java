@@ -9,8 +9,9 @@ public class FcmConstants {
     @Getter
     @RequiredArgsConstructor
     public enum EFCMResponseMessage{
-        SUCCESS_TO_SINGLE("단일 기기 메시지 전송에 성공하였습니다"),
-        SUCCESS_TO_MULTI("여러 기기 메시지 전송에 성공하였습니다");
+        SUCCESS_TO_SINGLE("단일 기기에 메시지를 전송하였습니다."),
+        SUCCESS_TO_MULTI("여러 기기에 메시지를 전송하였습니다."),
+        SUCCESS_BY_TOPIC("주제를 이용해 메시지를 전송하였습니다");
         private final String message;
     }
     @Getter
