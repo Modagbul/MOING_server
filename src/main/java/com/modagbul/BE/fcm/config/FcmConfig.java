@@ -12,6 +12,7 @@ import org.springframework.context.annotation.Configuration;
 
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.io.InputStream;
 
 @Configuration
 public class FcmConfig {
@@ -25,7 +26,7 @@ public class FcmConfig {
     @Bean
     public FirebaseApp firebaseApp() {
         try {
-            FileInputStream serviceAccount = new FileInputStream(firebaseConfigPath);
+            InputStream serviceAccount = getClass().getResourceAsStream(firebaseConfigPath);
 
             FirebaseOptions options = FirebaseOptions.builder()
                     .setCredentials(GoogleCredentials.fromStream(serviceAccount))
