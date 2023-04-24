@@ -62,7 +62,7 @@ jobs:
       uses: docker/build-push-action@v3.1.1
       with:
         context: .
-        tags: new:latest
+        tags: modagbul/new:latest
         push: true
 
     - name: entry.sh push to ec2
