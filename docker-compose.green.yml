@@ -1,0 +1,19 @@
+version: '3'
+
+services:
+#  nginx:
+#    image: nginx:latest
+#    ports:
+#      - "80:80"
+#    volumes:
+#      - ./nginx.conf:/etc/nginx/nginx.conf
+#    depends_on:
+#      - blue
+#      - green
+
+  green:
+      build:
+        context: .
+        dockerfile: Dockerfile
+      ports:
+        - "8082:8080"
