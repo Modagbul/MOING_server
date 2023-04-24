@@ -64,8 +64,9 @@ jobs:
         host: ${{ secrets.EC2_SERVER_HOST }}
         username: ec2-user
         key: ${{ secrets.PRIVATE_KEY }}
-      run: chmod 777 entry.sh
-        ./entry.sh
+        script: | 
+            chmod 777 entry.sh
+            ./entry.sh
 
 #    - name: build image & run container
 #      uses: appleboy/ssh-action@v0.1.7
