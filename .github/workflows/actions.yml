@@ -66,10 +66,11 @@ jobs:
         key: ${{ secrets.PRIVATE_KEY }}
         script: | 
             pwd
+            ls -al
             
-            cd /home/ec2-user/meetup
-            chmod 777 entry.sh
-            ./entry.sh
+#            cd /home/ec2-user/meetup
+#            chmod 777 entry.sh
+#            ./entry.sh
 
 #    - name: build image & run container
 #      uses: appleboy/ssh-action@v0.1.7
