@@ -54,19 +54,25 @@ jobs:
 #    - name: entry.sh
 #      run: |
 
-#     - name: Login to DockerHub
-#       run:
-#         docker login -u ${{ secrets.DOCKER_USERNAME }} -p ${{ secrets.DOCKER_PASSWORD }}
+    - name: Login to DockerHub
+      run:
+         docker login -u ${{ secrets.DOCKER_USERNAME }} -p ${{ secrets.DOCKER_PASSWORD }}
 
-    - name: build image
-      uses: appleboy/ssh-action@v0.1.7
+    - name: Build and push Docker images
+      uses: docker/build-push-action@v3.1.1
+      with:
+        context: .
+        tags: new:latest
+        push: true
+
+    - name: entry.sh push to ec2
+      uses: appleboy/ssh-action@master
       with:
         host: ${{ secrets.EC2_SERVER_HOST }}
         username: ec2-user
         key: ${{ secrets.PRIVATE_KEY }}
         script: | 
-            pwd
-            ls -al
+            sh /home/ec2-user/meetup/entry.sh
             
 #            cd /home/ec2-user/meetup
 #            chmod 777 entry.sh
