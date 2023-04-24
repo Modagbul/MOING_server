@@ -26,6 +26,7 @@ if [ -n "$EXIST_AFTER" ]; then
     # 이전 컨테이너 종료
 
   # nginx.config를 컨테이너에 맞게 변경해주고 reload 한다
+  chmod 777 /etc/nginx/nginx.conf
   cp ./nginx.${AFTER_COMPOSE_COLOR}.conf /etc/nginx/nginx.conf
   nginx -s reload
 
