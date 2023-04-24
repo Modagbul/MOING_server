@@ -2,6 +2,7 @@ DOCKER_APP_NAME=meetup
 # Blue 를 기준으로 현재 떠있는 컨테이너를 체크한다.
 
 
+
 EXIST_BLUE=$(docker-compose -p ${DOCKER_APP_NAME}-blue-1 -f docker-compose.blue.yml ps | grep Up)
  
 # 컨테이너 스위칭
@@ -25,8 +26,8 @@ if [ -n "$EXIST_AFTER" ]; then
     # 이전 컨테이너 종료
 
   # nginx.config를 컨테이너에 맞게 변경해주고 reload 한다
-  cp /etc/nginx/nginx.${AFTER_COMPOSE_COLOR}.conf /etc/nginx/nginx.conf
-  sudo nginx -s reload
+  cp /nginx.${AFTER_COMPOSE_COLOR}.conf /etc/nginx/nginx.conf
+  nginx -s reload
 
   # 이전 컨테이너 종료
   docker-compose -p ${DOCKER_APP_NAME}-${BEFORE_COMPOSE_COLOR}-1 -f docker-compose.${BEFORE_COMPOSE_COLOR}.yml down
