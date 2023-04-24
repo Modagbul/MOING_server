@@ -59,12 +59,14 @@ jobs:
 #         docker login -u ${{ secrets.DOCKER_USERNAME }} -p ${{ secrets.DOCKER_PASSWORD }}
 
     - name: build image
-      uses: appleboy/ssh-action@v0.1.3
+      uses: appleboy/ssh-action@v0.1.7
       with:
         host: ${{ secrets.EC2_SERVER_HOST }}
         username: ec2-user
         key: ${{ secrets.PRIVATE_KEY }}
         script: | 
+            ps
+            
             cd /home/ec2-user/meetup
             chmod 777 entry.sh
             ./entry.sh
