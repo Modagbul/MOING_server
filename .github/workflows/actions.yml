@@ -82,6 +82,7 @@ jobs:
           username: ec2-user
           key: ${{ secrets.PRIVATE_KEY }}
           script: |
+              ls -al
               chmod 777 entry.sh
               ./home/ec2-user/entry.sh
 #            cd /home/ec2-user/meetup
