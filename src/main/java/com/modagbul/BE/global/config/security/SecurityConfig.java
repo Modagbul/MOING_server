@@ -53,7 +53,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/swagger-ui/**").permitAll()
                 .antMatchers("/webjars/**").permitAll()
                 .antMatchers("/v3/api-docs").permitAll()
-                .antMatchers("/api/v1/user/**").permitAll()
+                .antMatchers("/api/v1/users/**").permitAll()
 //                .anyRequest().authenticated()
                 .anyRequest().permitAll() //우선 다 열어놓을게요
                 .and()
