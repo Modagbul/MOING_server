@@ -84,7 +84,7 @@ jobs:
           script: |
               ls -al
               chmod 777 entry.sh
-              ./home/ec2-user/entry.sh
+              sh /home/ec2-user/entry.sh
 #            cd /home/ec2-user/meetup
 #            chmod 777 entry.sh
 #            ./entry.sh
