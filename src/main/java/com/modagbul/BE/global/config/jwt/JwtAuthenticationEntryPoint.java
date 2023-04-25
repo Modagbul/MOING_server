@@ -10,6 +10,7 @@ import org.springframework.stereotype.Component;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.time.LocalDateTime;
 
 /**
  * 인증되지 않은 사용자가 보호된 리소스에 액세스 할 때 호출
@@ -20,7 +21,8 @@ public class JwtAuthenticationEntryPoint implements AuthenticationEntryPoint {
     @Override
     public void commence(HttpServletRequest request, HttpServletResponse response, AuthenticationException authException) throws IOException {
         String exception = (String)request.getAttribute("exception");
-        if(exception == null) setResponse(response, JWTExceptionList.UNKNOWN_ERROR);
+        if(exception.equals(JWTExceptionList.ADDITIONAL_REQUIRED_TOKEN.getErrorCode())) setResponse(response, JWTExceptionList.ADDITIONAL_REQUIRED_TOKEN);
+        else if(exception == null) setResponse(response, JWTExceptionList.UNKNOWN_ERROR);
             //잘못된 타입의 토큰인 경우
         else if(exception.equals(JWTExceptionList.ILLEGAL_TOKEN.getErrorCode())) setResponse(response, JWTExceptionList.ILLEGAL_TOKEN);
             //토큰 만료된 경우
@@ -38,6 +40,7 @@ public class JwtAuthenticationEntryPoint implements AuthenticationEntryPoint {
         response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
 
         JSONObject responseJson = new JSONObject();
+        responseJson.put("timestamp", LocalDateTime.now().withNano(0).toString());
         responseJson.put("message", exceptionCode.getMessage());
         responseJson.put("errorCode", exceptionCode.getErrorCode());
 

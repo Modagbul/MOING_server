@@ -18,4 +18,5 @@ public abstract class ApplicationException extends RuntimeException {
     public HttpStatus getHttpStatus() {
         return httpStatus;
     }
+
 }

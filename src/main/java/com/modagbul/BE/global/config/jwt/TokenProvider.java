@@ -1,9 +1,13 @@
 package com.modagbul.BE.global.config.jwt;
 
+import com.modagbul.BE.domain.user.entity.User;
+import com.modagbul.BE.domain.user.exception.NotHaveEmailException;
+import com.modagbul.BE.domain.user.repository.UserRepository;
 import com.modagbul.BE.global.config.jwt.exception.ExpiredException;
 import com.modagbul.BE.global.config.jwt.exception.IllegalException;
 import com.modagbul.BE.global.config.jwt.exception.MalformedException;
 import com.modagbul.BE.global.config.jwt.exception.UnsupportedException;
+import com.modagbul.BE.global.config.security.service.CustomUserDetails;
 import com.modagbul.BE.global.dto.TokenInfoResponse;
 import io.jsonwebtoken.*;
 import io.jsonwebtoken.io.Decoders;
@@ -12,6 +16,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -32,6 +37,9 @@ import java.util.stream.Collectors;
 public class TokenProvider implements InitializingBean {
 
     private static final String AUTHORITIES_KEY = "auth";
+    private static final String ADDITIONAL_INFO="isAdditionalInfoProvided";
+
+    private final UserRepository userRepository;
 
     @Value("${jwt.secret}")
     private String secret;
@@ -57,7 +65,7 @@ public class TokenProvider implements InitializingBean {
      * @param authentication
      * @return TokenInfoResponse
      */
-    public TokenInfoResponse createToken(Authentication authentication) {
+    public TokenInfoResponse createToken(Authentication authentication, boolean isAdditionalInfoProvided) {
         String authorities = authentication.getAuthorities().stream()
                 .map(GrantedAuthority::getAuthority)
                 .collect(Collectors.joining(","));
@@ -69,6 +77,7 @@ public class TokenProvider implements InitializingBean {
         String accessToken = Jwts.builder()
                 .setSubject(authentication.getName())
                 .claim(AUTHORITIES_KEY, authorities)
+                .claim(ADDITIONAL_INFO, isAdditionalInfoProvided) // 추가 정보 입력 여부를 클레임에 추가
                 .signWith(key, SignatureAlgorithm.HS512)
                 .setExpiration(accessTokenValidity)
                 .compact();
@@ -80,6 +89,11 @@ public class TokenProvider implements InitializingBean {
 
         return TokenInfoResponse.from("Bearer", accessToken, refreshToken, refreshTokenValidityTime);
 
+    }
+
+    public boolean getAdditionalInfoProvided(String token){
+        Claims claims = Jwts.parser().setSigningKey(secret).parseClaimsJws(token).getBody();
+        return claims.get(ADDITIONAL_INFO, Boolean.class);
     }
 
     /**
@@ -95,9 +109,8 @@ public class TokenProvider implements InitializingBean {
                         .map(SimpleGrantedAuthority::new)
                         .collect(Collectors.toList());
 
-        OAuth2User oAuth2User = new DefaultOAuth2User(authorities, claims, "id");
-
-        return new OAuth2AuthenticationToken(oAuth2User, authorities, "kakao");
+        User user = this.userRepository.findByEmail(claims.getSubject()).orElseThrow(NotHaveEmailException::new);
+        return new UsernamePasswordAuthenticationToken(new CustomUserDetails(user), token, authorities);
     }
 
     /**

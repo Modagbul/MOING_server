@@ -23,8 +23,9 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler(ApplicationException.class)
     public ResponseEntity<ErrorResponse> handleApplicationException(ApplicationException ex) {
+        String errorCode="test";
         log.warn(LOG_FORMAT, ex.getClass().getSimpleName(), ex.getErrorCode(), ex.getMessage());
-        return ResponseEntity.status(ex.getHttpStatus()).body(new ErrorResponse(ex.getErrorCode(), ex.getMessage()));
+        return ResponseEntity.status(ex.getHttpStatus()).body(new ErrorResponse(errorCode, ex.getMessage()));
     }
 
     @ExceptionHandler(MethodArgumentNotValidException.class)

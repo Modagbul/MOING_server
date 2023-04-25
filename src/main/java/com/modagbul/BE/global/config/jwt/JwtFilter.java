@@ -1,14 +1,15 @@
 package com.modagbul.BE.global.config.jwt;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.modagbul.BE.global.config.jwt.constants.JwtConstants;
-import com.modagbul.BE.global.config.jwt.constants.JwtConstants.JWTExceptionList;
 import com.modagbul.BE.global.config.jwt.exception.*;
+import com.modagbul.BE.global.dto.ErrorResponse;
 import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.MalformedJwtException;
 import io.jsonwebtoken.UnsupportedJwtException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.util.StringUtils;
@@ -19,8 +20,6 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-
-import static com.modagbul.BE.global.config.jwt.constants.JwtConstants.JWTExceptionList.UNKNOWN_ERROR;
 
 @Slf4j
 @RequiredArgsConstructor
@@ -33,20 +32,28 @@ public class JwtFilter extends OncePerRequestFilter {
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException, JwtException {
         String jwt = resolveToken(request);
         String requestURI = request.getRequestURI();
-        try{
+        try {
             if (StringUtils.hasText(jwt) && tokenProvider.validateToken(jwt)) {
-                Authentication authentication = tokenProvider.getAuthentication(jwt);
-                SecurityContextHolder.getContext().setAuthentication(authentication);
-                log.debug("Security Context에 '{}' 인증 정보를 저장했습니다, uri: {}", authentication.getName(), requestURI);
-            }}
-        catch (SecurityException | MalformedJwtException e) {
-            throw new MalformedException();
+                boolean isAdditionalInfoProvided = tokenProvider.getAdditionalInfoProvided(jwt);
+                if (isAdditionalInfoProvided) {
+                    Authentication authentication = tokenProvider.getAuthentication(jwt);
+                    SecurityContextHolder.getContext().setAuthentication(authentication);
+                    log.debug("Security Context에 '{}' 인증 정보를 저장했습니다, uri: {}", authentication.getName(), requestURI);
+                } else {
+                    throw new AdditionalInfoException();
+                }
+            }
+        }
+        catch(AdditionalInfoException e){
+            request.setAttribute("exception", JwtConstants.JWTExceptionList.ADDITIONAL_REQUIRED_TOKEN.getErrorCode());
+        } catch (SecurityException | MalformedJwtException e) {
+            request.setAttribute("exception", JwtConstants.JWTExceptionList.MAL_FORMED_TOKEN.getErrorCode());
         } catch (ExpiredJwtException e) {
-            throw new ExpiredException();
+            request.setAttribute("exception", JwtConstants.JWTExceptionList.EXPIRED_TOKEN.getErrorCode());
         } catch (UnsupportedJwtException e) {
-            throw new UnsupportedException();
+            request.setAttribute("exception", JwtConstants.JWTExceptionList.UNSUPPORTED_TOKEN.getErrorCode());
         } catch (IllegalArgumentException e) {
-            throw new IllegalException();
+            request.setAttribute("exception", JwtConstants.JWTExceptionList.ILLEGAL_TOKEN.getErrorCode());
         } catch (Exception e) {
             log.error("================================================");
             log.error("JwtFilter - doFilterInternal() 오류발생");
@@ -56,9 +63,8 @@ public class JwtFilter extends OncePerRequestFilter {
             e.printStackTrace();
             log.error("}");
             log.error("================================================");
-            throw new UnknownException();
+            request.setAttribute("exception", JwtConstants.JWTExceptionList.UNKNOWN_ERROR.getErrorCode());
         }
-
         filterChain.doFilter(request, response);
     }
 
