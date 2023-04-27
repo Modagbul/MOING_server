@@ -53,7 +53,7 @@ public class FcmConfig {
         } catch (NullPointerException e) {
             throw new IllegalStateException("FirebaseApp을 불러오는데 실패하였습니다."+e.getMessage());
         } catch (Exception e) {
-            throw new IllegalArgumentException("firebaseConfigPath를 읽어오는데 실패하였습니다."+e.getMessage());
+             throw new IllegalArgumentException("firebaseConfigPath를 읽어오는데 실패하였습니다. 파일 경로: "+firebaseConfigPath+"====="+e.getMessage());
         }
     }
 }
