@@ -19,7 +19,7 @@ import java.io.IOException;
 @Slf4j
 public class FcmConfig {
 
-    @Value("${firebase.config.path}")
+    @Value("/home/ec2-user/src/main/resources/firebase-key.json")
     private String firebaseConfigPath;
 
     @Value("${firebase.config.projectId}")
