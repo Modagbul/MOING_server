@@ -87,7 +87,7 @@ jobs:
         username: ec2-user
         key: ${{ secrets.PRIVATE_KEY }}
         source: "./src/main/resources/firebase-key.json"
-        target: "source"
+        target: "key"
         rm: true
 
     - name: entry.sh
