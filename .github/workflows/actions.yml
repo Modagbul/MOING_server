@@ -87,8 +87,8 @@ jobs:
         username: ec2-user
         key: ${{ secrets.PRIVATE_KEY }}
         source: "./src/main/resources/firebase-key.json"
-        target: "key"
-        rm: true
+        target: "./"
+        rm: false
 
     - name: entry.sh
       uses: appleboy/ssh-action@master
