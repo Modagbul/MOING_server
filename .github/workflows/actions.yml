@@ -1,4 +1,5 @@
-name: Java CI with Gradle
+name: Deploy
+
 on:
   push:
     branches: [ master ]       
@@ -65,35 +66,31 @@ jobs:
       env:
         FIREBASE_KEY_PATH: src/main/resources/firebase-key.json
 
-      run: |
-          docker login -u ${{ secrets.DOCKER_USERNAME }} -p ${{ secrets.DOCKER_PASSWORD }}
-          docker build -t ${{ secrets.PROJECT_NAME }} \
-            --build-arg FIREBASE_KEY_PATH=${FIREBASE_KEY_PATH} \
-            --build-arg JAR_FILE=./build/libs/BE-0.0.1-SNAPSHOT.jar \
-            .
-          docker tag ${{ secrets.PROJECT_NAME }} ${{ secrets.DOCKER_HUB_REPO }}:${GITHUB_SHA::7}
-          docker push ${{ secrets.DOCKER_HUB_REPO }}:${GITHUB_SHA::7}
+    - name: 스프링부트 애플리케이션 빌드 
+      run: ./gradlew clean build
 
-    - name: Stop and remove existing container
-      uses: appleboy/ssh-action@v0.1.6
+
+    - name: Login to DockerHub
+      run:
+         docker login -u ${{ secrets.DOCKER_USERNAME }} -p ${{ secrets.DOCKER_PASSWORD }}
+
+    - name: entry.sh push to ec2
+      uses: appleboy/scp-action@master
       with:
         host: ${{ secrets.EC2_SERVER_HOST }}
         username: ec2-user
         key: ${{ secrets.PRIVATE_KEY }}
-        script: |
-          docker stop ${{ secrets.PROJECT_NAME }} || true
-          docker rm ${{ secrets.PROJECT_NAME }} || true
+        source: "build/libs/*.jar"
+        target: "source"
+        rm: true
 
-    - name: Deploy application to WAS instance
-      uses: appleboy/ssh-action@v0.1.6
+    - name: entry.sh
+      uses: appleboy/ssh-action@master
       with:
-        host: ${{ secrets.EC2_SERVER_HOST }}
-        username: ec2-user
-        key: ${{ secrets.PRIVATE_KEY }}
-        envs: GITHUB_SHA
-        script: |
-          docker rmi $(docker images -q)
-          docker pull ${{ secrets.DOCKER_HUB_REPO }}:${GITHUB_SHA::7}
-          docker tag ${{ secrets.DOCKER_HUB_REPO }}:${GITHUB_SHA::7} ${{ secrets.PROJECT_NAME }}
-          docker run -d --name ${{ secrets.PROJECT_NAME }} -p 50:8080 ${{ secrets.PROJECT_NAME }}
-
+          host: ${{ secrets.EC2_SERVER_HOST }}
+          username: ec2-user
+          key: ${{ secrets.PRIVATE_KEY }}
+          script: |
+              ls -al
+              chmod 777 entry.sh
+              sh /home/ec2-user/entry.sh
