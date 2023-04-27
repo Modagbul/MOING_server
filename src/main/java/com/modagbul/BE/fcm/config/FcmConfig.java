@@ -37,6 +37,7 @@ public class FcmConfig {
 
             return FirebaseApp.initializeApp(options);
         } catch (FileNotFoundException e) {
+            log.info("========firebaseConfigPath======"+firebaseConfigPath);
             throw new IllegalStateException("파일을 찾을 수 없습니다."+e.getMessage());
         } catch (IOException e) {
             throw new InitializeException();
