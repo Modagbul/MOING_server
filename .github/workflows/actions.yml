@@ -62,9 +62,6 @@ jobs:
           rm -f ~/.gradle/caches/modules-2/modules-2.lock
           rm -f ~/.gradle/caches/modules-2/gc.properties
 
-    - name: Docker build and push
-      env:
-        FIREBASE_KEY_PATH: src/main/resources/firebase-key.json
 
     - name: 스프링부트 애플리케이션 빌드 
       run: ./gradlew clean build
@@ -80,7 +77,9 @@ jobs:
         host: ${{ secrets.EC2_SERVER_HOST }}
         username: ec2-user
         key: ${{ secrets.PRIVATE_KEY }}
-        source: "build/libs/*.jar"
+        source: |
+            "build/libs/*.jar"
+           "src/main/resources/firebase-key.json"
         target: "source"
         rm: true
 
