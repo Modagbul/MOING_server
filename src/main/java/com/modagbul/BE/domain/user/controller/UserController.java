@@ -1,6 +1,6 @@
 package com.modagbul.BE.domain.user.controller;
 
-import com.modagbul.BE.domain.user.dto.UserDto;
+import com.modagbul.BE.domain.user.dto.UserDto.AdditionInfoRequest;
 import com.modagbul.BE.domain.user.dto.UserDto.CheckNicknameResponse;
 import com.modagbul.BE.domain.user.dto.UserDto.LoginRequest;
 import com.modagbul.BE.domain.user.dto.UserDto.LoginResponse;
@@ -26,25 +26,25 @@ public class UserController {
     private UserService userService;
 
     @ApiOperation(value = "카카오 로그인", notes = "카카오 로그인을 합니다.")
-    @PostMapping("/signin")
-    public ResponseEntity<ResponseDto<LoginResponse>> signin(@Valid @RequestBody LoginRequest loginRequest){
+    @PostMapping("/login")
+    public ResponseEntity<ResponseDto<LoginResponse>> login(@Valid @RequestBody LoginRequest loginRequest){
         return ResponseEntity.ok(ResponseDto.create(HttpStatus.OK.value(),LOGIN_SUCCES.getMessage(),this.userService.login(loginRequest)));
     }
 
     @ApiOperation(value="닉네임 중복 검사", notes="닉네임 중복 검사를 합니다.")
-    @GetMapping("/check/{nickName}")
+    @GetMapping("/nickname/{nickName}")
     public ResponseEntity<ResponseDto<CheckNicknameResponse>> checkNickname(@PathVariable String nickName){
         return ResponseEntity.ok(ResponseDto.create(HttpStatus.OK.value(), CHECK_NICKNAME.getMessage(), this.userService.checkNickname(nickName)));
     }
 
     @ApiOperation(value="추가 정보 입력", notes="추가 정보를 입력합니다.")
-    @PostMapping("/signup")
-    public ResponseEntity<ResponseDto<LoginResponse>> kakaoSingup(@Valid @RequestBody UserDto.AdditionInfoRequest additionInfoRequest){
+    @PostMapping("/additional-info")
+    public ResponseEntity<ResponseDto<LoginResponse>> additionalInfo(@Valid @RequestBody AdditionInfoRequest additionInfoRequest){
         return ResponseEntity.ok(ResponseDto.create(HttpStatus.OK.value(), SIGN_UP_SUCCESS.getMessage(),this.userService.signup(additionInfoRequest)));
     }
 
     @ApiOperation(value = "회원 탈퇴", notes = "회원 탈퇴를 합니다.")
-    @PostMapping("/delete")
+    @DeleteMapping
     public ResponseEntity<ResponseDto> delete(@Valid @RequestBody LoginRequest loginRequest){
         this.userService.deleteAccount(loginRequest);
         return ResponseEntity.ok(ResponseDto.create(HttpStatus.OK.value(), DELETE_SUCCESS.getMessage()));
