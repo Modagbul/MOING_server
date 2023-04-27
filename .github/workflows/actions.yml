@@ -63,13 +63,13 @@ jobs:
           rm -f ~/.gradle/caches/modules-2/gc.properties
 
 
-    - name: 스프링부트 애플리케이션 빌드 
-      run: ./gradlew clean build
+#    - name: 스프링부트 애플리케이션 빌드
+#      run: ./gradlew clean build
 
 
-    - name: Login to DockerHub
-      run:
-         docker login -u ${{ secrets.DOCKER_USERNAME }} -p ${{ secrets.DOCKER_PASSWORD }}
+#    - name: Login to DockerHub
+#      run:
+#         docker login -u ${{ secrets.DOCKER_USERNAME }} -p ${{ secrets.DOCKER_PASSWORD }}
 
     - name: entry.sh push to ec2
       uses: appleboy/scp-action@master
@@ -78,7 +78,7 @@ jobs:
         username: ec2-user
         key: ${{ secrets.PRIVATE_KEY }}
         source: |
-            "build/libs/*.jar"
+            "./build/libs/*.jar"
 #           "src/main/resources/firebase-key.json"
         target: "source"
         rm: true
