@@ -50,11 +50,11 @@ jobs:
         
     - name: Grant execute permission for gradlew
       run: chmod +x gradlew
-      working-directory: ${{ env.working-directory }}
+#      working-directory: ${{ env.working-directory }}
       
     - name: Build with Gradle
       run: ./gradlew build
-      working-directory: ${{ env.working-directory }}
+#      working-directory: ${{ env.working-directory }}
       
     - name: Cleanup Gradle Cache
       if: ${{ always() }}
@@ -78,7 +78,7 @@ jobs:
         username: ec2-user
         key: ${{ secrets.PRIVATE_KEY }}
         source: |
-            "./build/libs/*.jar"
+            "build/libs/*.jar"
 #           "src/main/resources/firebase-key.json"
         target: "source"
         rm: true
