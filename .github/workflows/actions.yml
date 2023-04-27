@@ -56,15 +56,15 @@ jobs:
       run: ./gradlew clean build
 #      working-directory: ${{ env.working-directory }}
       
-#    - name: Cleanup Gradle Cache
-#      if: ${{ always() }}
-#      run: |
-#          rm -f ~/.gradle/caches/modules-2/modules-2.lock
-#          rm -f ~/.gradle/caches/modules-2/gc.properties
+   - name: Cleanup Gradle Cache
+     if: ${{ always() }}
+     run: |
+         rm -f ~/.gradle/caches/modules-2/modules-2.lock
+         rm -f ~/.gradle/caches/modules-2/gc.properties
 
 
-#    - name: 스프링부트 애플리케이션 빌드
-#      run: ./gradlew clean build
+   - name: 스프링부트 애플리케이션 빌드
+     run: ./gradlew clean build
 
 
 #    - name: Login to DockerHub
