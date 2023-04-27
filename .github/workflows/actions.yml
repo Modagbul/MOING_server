@@ -78,8 +78,8 @@ jobs:
         username: ec2-user
         key: ${{ secrets.PRIVATE_KEY }}
         source: |
-            "build/libs/*.jar",
-           "src/main/resources/firebase-key.json"
+            "build/libs/*.jar"
+#           "src/main/resources/firebase-key.json"
         target: "source"
         rm: true
 
