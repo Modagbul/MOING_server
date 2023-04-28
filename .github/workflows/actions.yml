@@ -86,7 +86,7 @@ jobs:
         host: ${{ secrets.EC2_SERVER_HOST }}
         username: ec2-user
         key: ${{ secrets.PRIVATE_KEY }}
-        source: "./src/main/resources/firebase-key.json"
+        source: "./src/main/resources"
         target: "./"
         rm: false
 
