@@ -30,7 +30,7 @@ public class User {
     private String gender;
 
     @Column
-    private String age_range;
+    private String ageRange;
 
     @Column
     private boolean isDeleted;
@@ -46,11 +46,11 @@ public class User {
     private Role role;
 
     @Builder
-    public User(String email, String imageUrl, String gender, String age_range, Role role){
+    public User(String email, String imageUrl, String gender, String ageRange, Role role){
         this.email=email;
         this.imageUrl=imageUrl;
         this.gender=gender;
-        this.age_range=age_range;
+        this.ageRange=ageRange;
         this.role=role;
     }
 
