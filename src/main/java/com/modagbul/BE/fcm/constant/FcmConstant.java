@@ -1,10 +1,10 @@
-package com.modagbul.BE.fcm.constants;
+package com.modagbul.BE.fcm.constant;
 
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 
-public class FcmConstants {
+public class FcmConstant {
 
     @Getter
     @RequiredArgsConstructor

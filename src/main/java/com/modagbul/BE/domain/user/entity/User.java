@@ -1,5 +1,6 @@
 package com.modagbul.BE.domain.user.entity;
 
+import com.modagbul.BE.domain.teammember.entity.TeamMember;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -8,6 +9,8 @@ import lombok.NoArgsConstructor;
 import com.modagbul.BE.domain.user.constant.UserConstant.Role;
 
 import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Builder
@@ -20,30 +23,27 @@ public class User {
     @Column(name = "user_id")
     private Long userId;
 
-    @Column
     private String email;
 
-    @Column
+    @Lob
     private String imageUrl;
 
-    @Column
     private String gender;
 
-    @Column
     private String ageRange;
 
-    @Column
     private boolean isDeleted;
 
     // 추가정보
-    @Column
     private String nickName;
 
-    @Column
     private String address;
 
     @Enumerated(EnumType.STRING)
     private Role role;
+
+    @OneToMany(mappedBy = "team")
+    private List<TeamMember> teamUsers = new ArrayList<>();
 
     @Builder
     public User(String email, String imageUrl, String gender, String ageRange, Role role){
@@ -60,6 +60,7 @@ public class User {
     }
 
     public void setDeleted(){
+        this.email="withdrawal";
         this.isDeleted=true;
     }
 }

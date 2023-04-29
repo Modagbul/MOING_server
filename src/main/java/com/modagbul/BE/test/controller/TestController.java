@@ -2,13 +2,12 @@ package com.modagbul.BE.test.controller;
 
 import com.modagbul.BE.test.entity.TestMember;
 import com.modagbul.BE.test.repository.TestRepository;
+import com.modagbul.BE.test.service.TestService;
 import lombok.*;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
-import javax.persistence.Entity;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -35,6 +34,18 @@ public class TestController {
     }
 
 
+    /**
+     * 카카오 callback
+     * [GET] /oauth/kakao/callback
+     */
+
+    private final TestService testService;
+    @ResponseBody
+    @GetMapping("oauth/kakao")
+    public void kakaoCallback(@RequestParam String code) {
+        System.out.println(code);
+        System.out.println(testService.getKakaoAccessToken(code));
+    }
 
 
 }

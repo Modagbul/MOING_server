@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import javax.validation.Valid;
 
-import static com.modagbul.BE.fcm.constants.FcmConstants.EFCMResponseMessage.*;
+import static com.modagbul.BE.fcm.constant.FcmConstant.EFCMResponseMessage.*;
 
 @RestController
 @RequiredArgsConstructor

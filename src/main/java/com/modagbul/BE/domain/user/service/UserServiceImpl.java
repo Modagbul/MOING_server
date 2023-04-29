@@ -59,13 +59,15 @@ public class UserServiceImpl implements UserService {
         String gender = getGender(userInfo);
         String age_range = getAgeRange(userInfo);
         User user = saveUser(email, pictureUrl, gender, age_range);
-        boolean isSignedUp = user.getNickName() != null;
+        boolean isSignedUp =  user.getNickName() != null;
+
         //2. 스프링 시큐리티 처리
         List<GrantedAuthority> authorities = new ArrayList<>();
         authorities.add(new SimpleGrantedAuthority(String.valueOf(ROLE_USER)));
         OAuth2User userDetails = createOAuth2UserByJson(authorities, userInfo, email);
         OAuth2AuthenticationToken auth = new OAuth2AuthenticationToken(userDetails, authorities, "email");
         auth.setDetails(userDetails);
+
         //3. JWT 토큰 생성
         TokenInfoResponse tokenInfoResponse = tokenProvider.createToken(auth, isSignedUp);
         String message = isSignedUp ? LOGIN_SUCCESS.getMessage() : SIGN_UP_ING.getMessage();
@@ -140,18 +142,22 @@ public class UserServiceImpl implements UserService {
     private JsonObject connectKakao(String reqURL, String token) {
         try {
             URL url = new URL(reqURL);
+            System.out.println(reqURL);
             HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+
             conn.setRequestMethod("POST");
-            conn.setRequestProperty("Authorization", "Bearer " + token);
-            if (conn.getResponseCode() != HttpURLConnection.HTTP_OK) {
-                throw new ConnException();
-            }
+            conn.setDoOutput(true);
+            conn.setRequestProperty("Authorization", "Bearer " + token); //전송할 header 작성, access_token전송
+
+
             BufferedReader in = new BufferedReader(new InputStreamReader(conn.getInputStream()));
             String inputLine;
+
             StringBuffer response = new StringBuffer();
             while ((inputLine = in.readLine()) != null) {
                 response.append(inputLine);
             }
+
             in.close();
             JsonObject json = JsonParser.parseString(response.toString()).getAsJsonObject();
             return json;

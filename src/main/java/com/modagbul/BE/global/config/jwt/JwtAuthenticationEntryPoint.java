@@ -21,16 +21,23 @@ public class JwtAuthenticationEntryPoint implements AuthenticationEntryPoint {
     @Override
     public void commence(HttpServletRequest request, HttpServletResponse response, AuthenticationException authException) throws IOException {
         String exception = (String)request.getAttribute("exception");
-        if(exception.equals(JWTExceptionList.ADDITIONAL_REQUIRED_TOKEN.getErrorCode())) setResponse(response, JWTExceptionList.ADDITIONAL_REQUIRED_TOKEN);
+        if(exception.equals(JWTExceptionList.ADDITIONAL_REQUIRED_TOKEN.getErrorCode()))
+            setResponse(response, JWTExceptionList.ADDITIONAL_REQUIRED_TOKEN);
+
         else if(exception == null) setResponse(response, JWTExceptionList.UNKNOWN_ERROR);
             //잘못된 타입의 토큰인 경우
-        else if(exception.equals(JWTExceptionList.ILLEGAL_TOKEN.getErrorCode())) setResponse(response, JWTExceptionList.ILLEGAL_TOKEN);
+        else if(exception.equals(JWTExceptionList.MAL_FORMED_TOKEN.getErrorCode()))
+            setResponse(response, JWTExceptionList.MAL_FORMED_TOKEN);
+
+        else if(exception.equals(JWTExceptionList.ILLEGAL_TOKEN.getErrorCode()))
+            setResponse(response, JWTExceptionList.ILLEGAL_TOKEN);
             //토큰 만료된 경우
-        else if(exception.equals(JWTExceptionList.EXPIRED_TOKEN.getErrorCode())) {
+        else if(exception.equals(JWTExceptionList.EXPIRED_TOKEN.getErrorCode()))
             setResponse(response, JWTExceptionList.EXPIRED_TOKEN);
-        }
         //지원되지 않는 토큰인 경우
-        else if(exception.equals(JWTExceptionList.UNSUPPORTED_TOKEN.getErrorCode())) setResponse(response, JWTExceptionList.UNSUPPORTED_TOKEN);
+        else if(exception.equals(JWTExceptionList.UNSUPPORTED_TOKEN.getErrorCode()))
+            setResponse(response, JWTExceptionList.UNSUPPORTED_TOKEN);
+
         else setResponse(response, JWTExceptionList.ACCESS_DENIED);
 
     }
