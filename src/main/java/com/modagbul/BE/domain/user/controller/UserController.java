@@ -38,7 +38,7 @@ public class UserController {
     }
 
     @ApiOperation(value="추가 정보 입력", notes="추가 정보를 입력합니다.")
-    @PostMapping("/additional-info")
+    @PostMapping("/additionalInfo")
     public ResponseEntity<ResponseDto<LoginResponse>> additionalInfo(@Valid @RequestBody AdditionInfoRequest additionInfoRequest){
         return ResponseEntity.ok(ResponseDto.create(HttpStatus.OK.value(), SIGN_UP_SUCCESS.getMessage(),this.userService.signup(additionInfoRequest)));
     }

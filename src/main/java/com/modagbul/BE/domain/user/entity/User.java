@@ -42,9 +42,6 @@ public class User {
     @Enumerated(EnumType.STRING)
     private Role role;
 
-    @OneToMany(mappedBy = "team")
-    private List<TeamMember> teamUsers = new ArrayList<>();
-
     @Builder
     public User(String email, String imageUrl, String gender, String ageRange, Role role){
         this.email=email;

@@ -52,7 +52,7 @@ public class Team{
     private LocalDate endDate;
 
     @OneToMany(mappedBy = "team")
-    private List<TeamMember> teamUsers = new ArrayList<>();
+    private List<TeamMember> teamMembers = new ArrayList<>();
 
     public void createTeam(Category category, String name, Integer personnel, LocalDate startDate, Integer period, String info, String promise, String profileImg, Long leaderId){
         this.category=category;
@@ -74,4 +74,5 @@ public class Team{
     public void setInvitationCode(String invitationCode){
         this.invitationCode=invitationCode;
     }
+
 }
