@@ -75,4 +75,9 @@ public class Team{
         this.invitationCode=invitationCode;
     }
 
+    public void updateTeam(String name, LocalDate endDate, String profileImg){
+        this.name=name;
+        this.endDate=endDate;
+        this.profileImg=profileImg;
+    }
 }

@@ -1,9 +1,6 @@
 package com.modagbul.BE.domain.team.controller;
 
-import com.modagbul.BE.domain.team.dto.TeamDto.CreateTeamRequest;
-import com.modagbul.BE.domain.team.dto.TeamDto.CreateTeamResponse;
-import com.modagbul.BE.domain.team.dto.TeamDto.JoinTeamRequest;
-import com.modagbul.BE.domain.team.dto.TeamDto.JoinTeamResponse;
+import com.modagbul.BE.domain.team.dto.TeamDto.*;
 import com.modagbul.BE.domain.team.service.TeamService;
 import com.modagbul.BE.global.dto.ResponseDto;
 import io.swagger.annotations.Api;
@@ -11,15 +8,11 @@ import io.swagger.annotations.ApiOperation;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 
-import static com.modagbul.BE.domain.team.constant.TeamConstant.ETeamResponseMessage.CREATE_TEAM_SUCCESS;
-import static com.modagbul.BE.domain.team.constant.TeamConstant.ETeamResponseMessage.JOIN_TEAM_SUCCESS;
+import static com.modagbul.BE.domain.team.constant.TeamConstant.ETeamResponseMessage.*;
 
 @RestController
 @AllArgsConstructor
@@ -39,4 +32,18 @@ public class TeamController {
     public ResponseEntity<ResponseDto<JoinTeamResponse>> joinTeam(@Valid @RequestBody JoinTeamRequest joinTeamRequest)  {
         return ResponseEntity.ok(ResponseDto.create(HttpStatus.OK.value(), JOIN_TEAM_SUCCESS.getMessage(), this.teamService.authenticateCode(joinTeamRequest)));
     }
+
+    @ApiOperation(value="소모임 정보 조회", notes="소모임 수정을 위한 정보를 조회합니다")
+    @GetMapping("{teamId}")
+    public ResponseEntity<ResponseDto<GetTeamInfo>> getTeamInfo(@PathVariable Long teamId){
+        return ResponseEntity.ok(ResponseDto.create(HttpStatus.OK.value(), GET_TEAM_INFO_SUCCESS.getMessage(),this.teamService.getTeamInfo(teamId)));
+    }
+
+    @ApiOperation(value="소모임 정보 수정", notes="소모임 정보를 수정합니다")
+    @PostMapping("/update")
+    public ResponseEntity<ResponseDto> updateTeam(@Valid @RequestBody UpdateTeamRequest updateTeamRequest){
+        this.teamService.updateTeam(updateTeamRequest);
+        return ResponseEntity.ok(ResponseDto.create(HttpStatus.OK.value(), UPDATE_TEAM_SUCCESS.getMessage()));
+    }
+
 }
