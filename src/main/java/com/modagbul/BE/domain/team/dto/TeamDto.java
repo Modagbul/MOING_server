@@ -64,6 +64,8 @@ public abstract class TeamDto {
     @NoArgsConstructor
     @ApiModel(description = "소모임 생성을 위한 응답 객체")
     public static class CreateTeamResponse {
+
+        private Long teamId;
         private String invitationCode;
 
     }
@@ -75,15 +77,6 @@ public abstract class TeamDto {
     @ApiModel(description = "소모임 참여코드 인증을 위한 요청 객체")
     public static class JoinTeamRequest {
         private String invitationCode;
-
-    }
-    @Getter
-    @Builder
-    @AllArgsConstructor
-    @NoArgsConstructor
-    @ApiModel(description = "소모임 참여코드 인증을 위한 응답 객체")
-    public static class JoinTeamResponse {
-        private String result;
 
     }
 

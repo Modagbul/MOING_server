@@ -15,10 +15,11 @@ import javax.persistence.*;
 @AllArgsConstructor
 @Getter
 public class TeamMember {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "team_user_id")
-    private Long teamUserId;
+    @Column(name = "team_member_id")
+    private Long teamMemberId;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "team_id")
@@ -31,14 +32,11 @@ public class TeamMember {
 
     public void setTeam(Team team){
         this.team=team;
-        team.getTeamUsers().add(this);
+        team.getTeamMembers().add(this);
     }
 
     public void setUser(User user){
         this.user=user;
-        user.getTeamUsers().add(this);
     }
-
-
 
 }

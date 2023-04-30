@@ -23,6 +23,7 @@ import org.springframework.security.oauth2.core.user.DefaultOAuth2User;
 import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.stereotype.Service;
 
+import javax.transaction.Transactional;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -40,6 +41,7 @@ import static com.modagbul.BE.domain.user.constant.UserConstant.Role.ROLE_USER;
 @Service
 @Slf4j
 @RequiredArgsConstructor
+@Transactional
 public class UserServiceImpl implements UserService {
     private final TokenProvider tokenProvider;
     private final UserRepository userRepository;
