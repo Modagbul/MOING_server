@@ -2,6 +2,7 @@ package com.modagbul.BE.domain.team.dto;
 
 import com.modagbul.BE.domain.team.constant.TeamConstant;
 import com.modagbul.BE.domain.team.dto.TeamDto.CreateTeamRequest;
+import com.modagbul.BE.domain.team.dto.TeamDto.GetTeamInfo;
 import com.modagbul.BE.domain.team.entity.Team;
 import com.modagbul.BE.global.config.security.util.SecurityUtils;
 import org.springframework.stereotype.Component;
@@ -23,5 +24,8 @@ public class TeamMapper {
         return team;
     }
 
+    public GetTeamInfo toGetTeamInfo(Team team){
+        return new GetTeamInfo(team.getName(),team.getEndDate().toString(),team.getProfileImg());
+    }
 
 }

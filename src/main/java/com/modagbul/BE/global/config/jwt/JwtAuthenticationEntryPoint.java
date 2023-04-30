@@ -21,17 +21,21 @@ public class JwtAuthenticationEntryPoint implements AuthenticationEntryPoint {
     @Override
     public void commence(HttpServletRequest request, HttpServletResponse response, AuthenticationException authException) throws IOException {
         String exception = (String)request.getAttribute("exception");
+        System.out.println(exception);
+
         if(exception.equals(JWTExceptionList.ADDITIONAL_REQUIRED_TOKEN.getErrorCode()))
             setResponse(response, JWTExceptionList.ADDITIONAL_REQUIRED_TOKEN);
+        //잘못된 타입의 토큰인 경우
+        else if(exception.equals(JWTExceptionList.UNKNOWN_ERROR.getErrorCode()))
+            setResponse(response, JWTExceptionList.UNKNOWN_ERROR);
 
-        else if(exception == null) setResponse(response, JWTExceptionList.UNKNOWN_ERROR);
-            //잘못된 타입의 토큰인 경우
         else if(exception.equals(JWTExceptionList.MAL_FORMED_TOKEN.getErrorCode()))
             setResponse(response, JWTExceptionList.MAL_FORMED_TOKEN);
 
         else if(exception.equals(JWTExceptionList.ILLEGAL_TOKEN.getErrorCode()))
             setResponse(response, JWTExceptionList.ILLEGAL_TOKEN);
-            //토큰 만료된 경우
+
+        //토큰 만료된 경우
         else if(exception.equals(JWTExceptionList.EXPIRED_TOKEN.getErrorCode()))
             setResponse(response, JWTExceptionList.EXPIRED_TOKEN);
         //지원되지 않는 토큰인 경우

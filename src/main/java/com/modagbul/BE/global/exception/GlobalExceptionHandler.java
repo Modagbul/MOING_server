@@ -5,6 +5,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.support.DefaultMessageSourceResolvable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.authentication.InternalAuthenticationServiceException;
 import org.springframework.web.HttpRequestMethodNotSupportedException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -13,7 +14,7 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 import java.util.regex.PatternSyntaxException;
 import java.util.stream.Collectors;
 
-import static java.util.Objects.requireNonNull;
+import static com.modagbul.BE.domain.user.constant.UserConstant.UserExceptionList.NOT_HAVE_EMAIL_ERROR;
 
 @RestControllerAdvice
 @Slf4j
@@ -55,14 +56,35 @@ public class GlobalExceptionHandler {
         ErrorResponse errorResponse = new ErrorResponse(errorCode, message);
         return ResponseEntity.status(HttpStatus.METHOD_NOT_ALLOWED.value()).body(errorResponse);
     }
+    @ExceptionHandler(ClassCastException.class)
+    public ResponseEntity<ErrorResponse> handleCastException(ClassCastException ex) {
+        String errorCode = "500";
+        String message = "ClassCastException 입니다. 혹시 모르니 AccessToken 값을 확인해주세요!";
+        log.warn(LOG_FORMAT, ex.getClass().getSimpleName(), errorCode, ex.getMessage());
+        ErrorResponse errorResponse = new ErrorResponse(errorCode, message);
+        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR.value()).body(errorResponse);
+    }
 
     @ExceptionHandler(Exception.class)
     public ResponseEntity<ErrorResponse> handleException(Exception ex) {
         String errorCode = "500";
         String message = "서버에서 요청을 처리하는 동안 오류가 발생했습니다.";
         log.warn(LOG_FORMAT, ex.getClass().getSimpleName(), errorCode, ex.getMessage());
-        ErrorResponse errorResponse = new ErrorResponse(errorCode, message);
+        ErrorResponse errorResponse = new ErrorResponse(errorCode, ex.getClass().getSimpleName()+":"+message);
         return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR.value()).body(errorResponse);
+    }
+
+    @ExceptionHandler(InternalAuthenticationServiceException.class)
+    public ResponseEntity<ErrorResponse> internalAuthenticationServiceException(InternalAuthenticationServiceException e) {
+        log.error(
+                LOG_FORMAT,
+                e.getClass().getSimpleName(),
+                NOT_HAVE_EMAIL_ERROR.getErrorCode(),
+                e.getMessage()
+        );
+        return ResponseEntity
+                .status(HttpStatus.NOT_FOUND)
+                .body(new ErrorResponse(NOT_HAVE_EMAIL_ERROR.getErrorCode(), e.getMessage()));
     }
 }
 

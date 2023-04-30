@@ -1,9 +1,7 @@
 package com.modagbul.BE.global.config.security;
 
-import com.modagbul.BE.global.config.jwt.JwtAccessDeniedHandler;
-import com.modagbul.BE.global.config.jwt.JwtAuthenticationEntryPoint;
-import com.modagbul.BE.global.config.jwt.JwtSecurityConfig;
-import com.modagbul.BE.global.config.jwt.TokenProvider;
+import com.modagbul.BE.global.config.jwt.*;
+import com.modagbul.BE.global.config.jwt.constants.JwtConstants;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;

@@ -3,10 +3,7 @@ package com.modagbul.BE.global.config.jwt;
 import com.modagbul.BE.domain.user.entity.User;
 import com.modagbul.BE.domain.user.exception.NotHaveEmailException;
 import com.modagbul.BE.domain.user.repository.UserRepository;
-import com.modagbul.BE.global.config.jwt.exception.ExpiredException;
-import com.modagbul.BE.global.config.jwt.exception.IllegalException;
-import com.modagbul.BE.global.config.jwt.exception.MalformedException;
-import com.modagbul.BE.global.config.jwt.exception.UnsupportedException;
+import com.modagbul.BE.global.config.jwt.exception.*;
 import com.modagbul.BE.global.config.security.service.CustomUserDetails;
 import com.modagbul.BE.global.dto.TokenInfoResponse;
 import io.jsonwebtoken.*;
@@ -134,6 +131,9 @@ public class TokenProvider implements InitializingBean {
         } catch (IllegalArgumentException e) {
             log.info("JWT 토큰이 잘못되었습니다.");
             throw new IllegalException();
+        } catch(Exception e){
+            log.info(e.getMessage());
+            throw new UnknownException();
         }
     }
 
@@ -158,6 +158,9 @@ public class TokenProvider implements InitializingBean {
         } catch (IllegalArgumentException e) {
             log.info("JWT 토큰이 잘못되었습니다.");
             throw new IllegalException();
+        } catch(Exception e){
+            log.info(e.getMessage());
+            throw new UnknownException();
         } finally {
             return false;
         }

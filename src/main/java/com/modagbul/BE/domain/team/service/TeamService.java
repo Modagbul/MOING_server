@@ -1,11 +1,10 @@
 package com.modagbul.BE.domain.team.service;
 
-import com.modagbul.BE.domain.team.dto.TeamDto.CreateTeamRequest;
-import com.modagbul.BE.domain.team.dto.TeamDto.CreateTeamResponse;
-import com.modagbul.BE.domain.team.dto.TeamDto.JoinTeamRequest;
-import com.modagbul.BE.domain.team.dto.TeamDto.JoinTeamResponse;
+import com.modagbul.BE.domain.team.dto.TeamDto.*;
 
 public interface TeamService {
     CreateTeamResponse createTeam(CreateTeamRequest createTeamRequest);
     JoinTeamResponse authenticateCode(JoinTeamRequest joinTeamRequest);
+    GetTeamInfo getTeamInfo(Long teamId);
+    void updateTeam(UpdateTeamRequest updateTeamRequest);
 }

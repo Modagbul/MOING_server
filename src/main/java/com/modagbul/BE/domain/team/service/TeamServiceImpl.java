@@ -3,11 +3,14 @@ package com.modagbul.BE.domain.team.service;
 import com.modagbul.BE.domain.team.dto.TeamDto;
 import com.modagbul.BE.domain.team.dto.TeamDto.CreateTeamRequest;
 import com.modagbul.BE.domain.team.dto.TeamDto.CreateTeamResponse;
+import com.modagbul.BE.domain.team.dto.TeamDto.GetTeamInfo;
 import com.modagbul.BE.domain.team.dto.TeamDto.JoinTeamResponse;
 import com.modagbul.BE.domain.team.dto.TeamMapper;
 import com.modagbul.BE.domain.team.entity.Team;
+import com.modagbul.BE.domain.team.exception.AccessException;
 import com.modagbul.BE.domain.team.exception.AlreadyJoinException;
 import com.modagbul.BE.domain.team.exception.AuthenticationException;
+import com.modagbul.BE.domain.team.exception.NotHavaTeamIdException;
 import com.modagbul.BE.domain.team.repository.TeamRepository;
 import com.modagbul.BE.domain.teammember.entity.TeamMember;
 import com.modagbul.BE.domain.teammember.repository.TeamMemberRepository;
@@ -18,6 +21,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
+import java.time.LocalDate;
 
 @Service
 @Slf4j
@@ -51,6 +55,20 @@ public class TeamServiceImpl implements TeamService {
         return new JoinTeamResponse(team.getTeamId());
     }
 
+    @Override
+    public GetTeamInfo getTeamInfo(Long teamId) {
+        Team team=teamRepository.findById(teamId).orElseThrow(NotHavaTeamIdException::new);
+        this.checkLeader(team);
+        return teamMapper.toGetTeamInfo(team);
+    }
+
+    @Override
+    public void updateTeam(TeamDto.UpdateTeamRequest updateTeamRequest) {
+        Team team=teamRepository.findById(updateTeamRequest.getTeamId()).orElseThrow(NotHavaTeamIdException::new);
+        this.checkLeader(team);
+        team.updateTeam(updateTeamRequest.getName(), LocalDate.parse(updateTeamRequest.getEndDate()), updateTeamRequest.getProfileImg());
+    }
+
     private void addTeamMember(Team team) {
 
         TeamMember teamMember=new TeamMember();
@@ -65,5 +83,10 @@ public class TeamServiceImpl implements TeamService {
         teamMember.setTeam(team);
         teamMember.setUser(user);
         teamMemberRepository.save(teamMember);
+    }
+
+    private void checkLeader(Team team){
+       if( team.getLeaderId() != SecurityUtils.getLoggedInUser().getUserId() )
+           throw new AccessException();
     }
 }
