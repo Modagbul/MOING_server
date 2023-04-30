@@ -3,6 +3,7 @@ package com.modagbul.BE.domain.team.service;
 import com.modagbul.BE.domain.team.dto.TeamDto;
 import com.modagbul.BE.domain.team.dto.TeamDto.CreateTeamRequest;
 import com.modagbul.BE.domain.team.dto.TeamDto.CreateTeamResponse;
+import com.modagbul.BE.domain.team.dto.TeamDto.JoinTeamResponse;
 import com.modagbul.BE.domain.team.dto.TeamMapper;
 import com.modagbul.BE.domain.team.entity.Team;
 import com.modagbul.BE.domain.team.exception.AlreadyJoinException;
@@ -17,7 +18,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
-import java.rmi.AlreadyBoundException;
 
 @Service
 @Slf4j
@@ -44,10 +44,11 @@ public class TeamServiceImpl implements TeamService {
     }
 
     @Override
-    public void authenticateCode(TeamDto.JoinTeamRequest joinTeamRequest){
+    public JoinTeamResponse authenticateCode(TeamDto.JoinTeamRequest joinTeamRequest){
         Team team=teamRepository.findByInvitationCode(joinTeamRequest.getInvitationCode())
                 .orElseThrow(AuthenticationException::new);
         this.addTeamMember(team);
+        return new JoinTeamResponse(team.getTeamId());
     }
 
     private void addTeamMember(Team team) {

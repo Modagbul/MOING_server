@@ -1,9 +1,9 @@
 package com.modagbul.BE.domain.team.controller;
 
-import com.modagbul.BE.domain.team.dto.TeamDto;
 import com.modagbul.BE.domain.team.dto.TeamDto.CreateTeamRequest;
 import com.modagbul.BE.domain.team.dto.TeamDto.CreateTeamResponse;
 import com.modagbul.BE.domain.team.dto.TeamDto.JoinTeamRequest;
+import com.modagbul.BE.domain.team.dto.TeamDto.JoinTeamResponse;
 import com.modagbul.BE.domain.team.service.TeamService;
 import com.modagbul.BE.global.dto.ResponseDto;
 import io.swagger.annotations.Api;
@@ -18,8 +18,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 import javax.validation.Valid;
 
-import java.rmi.AlreadyBoundException;
-
 import static com.modagbul.BE.domain.team.constant.TeamConstant.ETeamResponseMessage.CREATE_TEAM_SUCCESS;
 import static com.modagbul.BE.domain.team.constant.TeamConstant.ETeamResponseMessage.JOIN_TEAM_SUCCESS;
 
@@ -33,14 +31,12 @@ public class TeamController {
     @ApiOperation(value = "소모임 생성", notes = "소모임을 생성합니다.")
     @PostMapping
     public ResponseEntity<ResponseDto<CreateTeamResponse>> createTeam(@Valid @RequestBody CreateTeamRequest createTeamRequest){
-        CreateTeamResponse createTeamResponse=this.teamService.createTeam(createTeamRequest);
-        return ResponseEntity.ok(ResponseDto.create(HttpStatus.OK.value(), CREATE_TEAM_SUCCESS.getMessage(), createTeamResponse));
+        return ResponseEntity.ok(ResponseDto.create(HttpStatus.OK.value(), CREATE_TEAM_SUCCESS.getMessage(), this.teamService.createTeam(createTeamRequest)));
     }
 
     @ApiOperation(value = "소모임 참여 코드 인증", notes = "소모임 참여 코드를 인증합니다.")
     @PostMapping("/auth")
-    public ResponseEntity<ResponseDto> joinTeam(@Valid @RequestBody JoinTeamRequest joinTeamRequest)  {
-        this.teamService.authenticateCode(joinTeamRequest);
-        return ResponseEntity.ok(ResponseDto.create(HttpStatus.OK.value(), JOIN_TEAM_SUCCESS.getMessage()));
+    public ResponseEntity<ResponseDto<JoinTeamResponse>> joinTeam(@Valid @RequestBody JoinTeamRequest joinTeamRequest)  {
+        return ResponseEntity.ok(ResponseDto.create(HttpStatus.OK.value(), JOIN_TEAM_SUCCESS.getMessage(), this.teamService.authenticateCode(joinTeamRequest)));
     }
 }
