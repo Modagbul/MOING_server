@@ -2,6 +2,7 @@ package com.modagbul.BE.test.service;
 
 import com.google.gson.JsonParser;
 import com.google.gson.JsonElement;
+import com.modagbul.BE.domain.user.dto.UserDto;
 import org.springframework.stereotype.Service;
 
 import java.io.*;
@@ -31,7 +32,7 @@ public class TestService {
             StringBuilder sb = new StringBuilder();
             sb.append("grant_type=authorization_code");
             sb.append("&client_id=230b91254e703082c9dd75812c2e4e6f"); // TODO REST_API_KEY 입력
-            sb.append("&redirect_uri=http://13.209.196.123/oauth/kakao"); // TODO 인가코드 받은 redirect_uri 입력
+            sb.append("&redirect_uri=http://localhost:8080/oauth/kakao"); // TODO 인가코드 받은 redirect_uri 입력
             sb.append("&code=" + code);
             bw.write(sb.toString());
             bw.flush();
@@ -62,6 +63,7 @@ public class TestService {
 
             br.close();
             bw.close();
+
         } catch (IOException e) {
             e.printStackTrace();
         }

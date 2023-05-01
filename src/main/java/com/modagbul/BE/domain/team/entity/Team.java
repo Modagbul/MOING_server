@@ -1,5 +1,6 @@
 package com.modagbul.BE.domain.team.entity;
 
+import com.modagbul.BE.domain.notice.entity.Notice;
 import com.modagbul.BE.domain.team.constant.TeamConstant.Category;
 import com.modagbul.BE.domain.teammember.entity.TeamMember;
 import lombok.AllArgsConstructor;
@@ -53,6 +54,9 @@ public class Team{
 
     @OneToMany(mappedBy = "team")
     private List<TeamMember> teamMembers = new ArrayList<>();
+
+    @OneToMany(mappedBy = "team")
+    private List<Notice> notices = new ArrayList<>();
 
     public void createTeam(Category category, String name, Integer personnel, LocalDate startDate, Integer period, String info, String promise, String profileImg, Long leaderId){
         this.category=category;
