@@ -3,7 +3,7 @@ package com.modagbul.BE.domain.usermission.entity;
 import com.modagbul.BE.domain.mission.entity.Mission;
 import com.modagbul.BE.domain.team.entity.Team;
 import com.modagbul.BE.domain.user.entity.User;
-import com.modagbul.BE.domain.usermission.constant.UserMissionConstant;
+import com.modagbul.BE.domain.usermission.constant.Status;
 import com.modagbul.BE.global.annotation.Enum;
 import com.modagbul.BE.global.entity.BaseTimeEntity;
 import lombok.AllArgsConstructor;
@@ -13,7 +13,6 @@ import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 
-import static com.modagbul.BE.domain.usermission.constant.UserMissionConstant.*;
 
 @Entity
 @NoArgsConstructor
