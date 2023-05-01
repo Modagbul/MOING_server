@@ -40,6 +40,12 @@ public class UserMission extends BaseTimeEntity {
 
     private String achieve;
 
+    public UserMission(User user, Team team, Mission mission) {
+        this.user = user;
+        this.team = team;
+        this.mission = mission;
+    }
+
     public void setComplete(String achieve){
         this.achieve = achieve;
         this.status = Status.COMPLETE;
