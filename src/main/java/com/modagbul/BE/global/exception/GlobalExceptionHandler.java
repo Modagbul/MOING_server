@@ -56,14 +56,6 @@ public class GlobalExceptionHandler {
         ErrorResponse errorResponse = new ErrorResponse(errorCode, message);
         return ResponseEntity.status(HttpStatus.METHOD_NOT_ALLOWED.value()).body(errorResponse);
     }
-    @ExceptionHandler(ClassCastException.class)
-    public ResponseEntity<ErrorResponse> handleCastException(ClassCastException ex) {
-        String errorCode = "500";
-        String message = "ClassCastException 입니다. 혹시 모르니 AccessToken 값을 확인해주세요!";
-        log.warn(LOG_FORMAT, ex.getClass().getSimpleName(), errorCode, ex.getMessage());
-        ErrorResponse errorResponse = new ErrorResponse(errorCode, message);
-        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR.value()).body(errorResponse);
-    }
 
     @ExceptionHandler(Exception.class)
     public ResponseEntity<ErrorResponse> handleException(Exception ex) {

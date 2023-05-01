@@ -21,6 +21,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     private final TokenProvider tokenProvider;
     private final JwtAuthenticationEntryPoint jwtAuthenticationEntryPoint;
     private final JwtAccessDeniedHandler jwtAccessDeniedHandler;
+//    private final ExceptionHandlerFilter exceptionHandlerFilter;
 
     @Bean
     public PasswordEncoder passwordEncoder() {
@@ -52,9 +53,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/webjars/**").permitAll()
                 .antMatchers("/v3/api-docs").permitAll()
                 .antMatchers("/api/v1/users/**").permitAll()
-                .antMatchers("/ap1/v1/team/**").authenticated()
-//                .anyRequest().authenticated()
-                .anyRequest().permitAll() //우선 다 열어놓을게요
+//                .antMatchers("/ap1/v1/team/**").authenticated()
+                .anyRequest().authenticated()
+//                .anyRequest().permitAll() //우선 다 열어놓을게요
                 .and()
                 .apply(new JwtSecurityConfig(tokenProvider));
     }
