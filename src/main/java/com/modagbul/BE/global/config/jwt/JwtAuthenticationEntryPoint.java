@@ -1,8 +1,8 @@
 package com.modagbul.BE.global.config.jwt;
 
-import com.modagbul.BE.global.config.jwt.constants.JwtConstants;
 import com.modagbul.BE.global.config.jwt.constants.JwtConstants.JWTExceptionList;
 import com.nimbusds.jose.shaded.json.JSONObject;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.web.AuthenticationEntryPoint;
 import org.springframework.stereotype.Component;
@@ -16,12 +16,12 @@ import java.time.LocalDateTime;
  * 인증되지 않은 사용자가 보호된 리소스에 액세스 할 때 호출
  */
 @Component
+@Slf4j
 public class JwtAuthenticationEntryPoint implements AuthenticationEntryPoint {
 
     @Override
     public void commence(HttpServletRequest request, HttpServletResponse response, AuthenticationException authException) throws IOException {
-        String exception = (String)request.getAttribute("exception");
-        System.out.println(exception);
+        String exception = String.valueOf(request.getAttribute("exception"));
 
         if(exception.equals(JWTExceptionList.ADDITIONAL_REQUIRED_TOKEN.getErrorCode()))
             setResponse(response, JWTExceptionList.ADDITIONAL_REQUIRED_TOKEN);

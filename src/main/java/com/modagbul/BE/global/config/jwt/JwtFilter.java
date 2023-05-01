@@ -46,18 +46,15 @@ public class JwtFilter extends OncePerRequestFilter {
         }
         catch(AdditionalInfoException e){
             request.setAttribute("exception", JwtConstants.JWTExceptionList.ADDITIONAL_REQUIRED_TOKEN.getErrorCode());
-        } catch (SecurityException | MalformedJwtException e) {
+        } catch (SecurityException | MalformedException e) {
             request.setAttribute("exception", JwtConstants.JWTExceptionList.MAL_FORMED_TOKEN.getErrorCode());
-        } catch (ExpiredJwtException e) {
+        } catch (ExpiredException e) {
             request.setAttribute("exception", JwtConstants.JWTExceptionList.EXPIRED_TOKEN.getErrorCode());
-        } catch (UnsupportedJwtException e) {
+        } catch (UnsupportedException e) {
             request.setAttribute("exception", JwtConstants.JWTExceptionList.UNSUPPORTED_TOKEN.getErrorCode());
-        } catch (IllegalArgumentException e) {
+        } catch (IllegalException e) {
             request.setAttribute("exception", JwtConstants.JWTExceptionList.ILLEGAL_TOKEN.getErrorCode());
-        }catch (ClassCastException e){
-            request.setAttribute("exception", JwtConstants.JWTExceptionList.MAL_FORMED_TOKEN.getErrorCode());
-        }
-        catch (Exception e) {
+        } catch (Exception e) {
             log.error("================================================");
             log.error("JwtFilter - doFilterInternal() 오류발생");
             log.error("token : {}", jwt);
@@ -68,7 +65,6 @@ public class JwtFilter extends OncePerRequestFilter {
             log.error("================================================");
             request.setAttribute("exception", JwtConstants.JWTExceptionList.UNKNOWN_ERROR.getErrorCode());
         }
-
         filterChain.doFilter(request, response);
     }
 
