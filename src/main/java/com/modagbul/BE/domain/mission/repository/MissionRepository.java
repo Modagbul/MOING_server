@@ -9,8 +9,10 @@ import java.util.Optional;
 
 public interface MissionRepository extends JpaRepository<Mission, Long> {
 
-    @Query("select m.team.leaderId from Mission m where m.missionId = :missionId")
-    Optional<Long> findLeaderIdByMissionId(@Param("missionId") Long missionId);
+    @Query("select m.team.leaderId from Mission m where m.missionId = :missionId and m.team.teamId = :teamId")
+    Optional<Long> findLeaderIdByTeamIdAndMissionId( @Param("teamId") Long teamId, @Param("missionId") Long missionId);
 
+    @Query("select m from Mission m where m.missionId = :missionId and m.team.teamId = :teamId")
+    Optional<Mission> findByTeamIdAndMissionId( @Param("teamId") Long teamId, @Param("missionId") Long missionId);
 
 }
