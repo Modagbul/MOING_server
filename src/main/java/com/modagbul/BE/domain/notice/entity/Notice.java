@@ -1,8 +1,9 @@
-package com.modagbul.BE.domain.teammember.entity;
+package com.modagbul.BE.domain.notice.entity;
 
 import com.modagbul.BE.domain.noticeread.entity.NoticeRead;
 import com.modagbul.BE.domain.team.entity.Team;
-import com.modagbul.BE.domain.user.entity.User;
+import com.modagbul.BE.domain.teammember.entity.TeamMember;
+import com.modagbul.BE.global.entity.BaseTimeEntity;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -17,31 +18,31 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 @Getter
-public class TeamMember {
-
+public class Notice extends BaseTimeEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "team_member_id")
-    private Long teamMemberId;
+    @Column(name = "notice_id")
+    private Long noticeId;
+
+    private String title;
+
+    private String name;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "team_id")
     private Team team;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "user_id")
-    private User user;
-
-    @OneToMany(mappedBy = "teamMember")
+    @OneToMany(mappedBy = "notice")
     private List<NoticeRead> noticeReads = new ArrayList<>();
 
     public void setTeam(Team team){
         this.team=team;
-        team.getTeamMembers().add(this);
+        team.getNotices().add(this);
     }
 
-    public void setUser(User user){
-        this.user=user;
+    public void createNotice(String title, String name){
+        this.title=title;
+        this.name=name;
     }
 
 }
