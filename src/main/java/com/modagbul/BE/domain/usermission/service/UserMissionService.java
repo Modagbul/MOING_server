@@ -31,7 +31,7 @@ public class UserMissionService {
 
     public Status submitUserMission(Long teamId, Long missionId, String submitUrl) {
 
-        Long userId = 1L;
+        Long userId = 4L;
 
         User user = userRepository.findById(userId).orElseThrow(() -> new IllegalStateException("해당 유저를 찾을 수 없습니다."));
         Team team = teamRepository.findById(teamId).orElseThrow(() -> new IllegalStateException("해당 팀을 찾을 수 없습니다."));
@@ -41,6 +41,7 @@ public class UserMissionService {
         userMission.createUserMission(user,team,mission);
 
         userMission.setComplete(submitUrl);
+        userMissionRepository.save(userMission);
 
         return userMission.getStatus();
 

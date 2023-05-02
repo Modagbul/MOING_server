@@ -94,13 +94,20 @@ public class MissionService {
     public List<MissionListDto> getMissionList(Long teamId){
 
         Long userId = 4L;
-        return missionRepository.findMissionListById(teamId).orElseThrow(NotFoundUserMissionsException::new);
+        List<MissionListDto> missionListDtos = missionRepository.findMissionListById(teamId).orElseThrow(NotFoundUserMissionsException::new);
+        for (MissionListDto missionListDto : missionListDtos) {
+            missionListDto.setStatus(userMissionRepository.findUserMissionStatusById(userId,teamId, missionListDto.getMissionId()).orElse(Status.INCOMPLETE));
+        }
+        return missionListDtos;
+
     }
 
     // 개인별 미션 상세 페이지 조회
     public MissionDetailDto getMissionDetail(Long teamId, Long missionId) {
         Long userId = 4L;
-        return missionRepository.findMissionDetailById(teamId,missionId).orElseThrow(NotFoundMissionException::new);
+        MissionDetailDto missionDetailDto = missionRepository.findMissionDetailById(teamId, missionId).orElseThrow(NotFoundMissionException::new);
+        missionDetailDto.setStatus(userMissionRepository.findUserMissionStatusById(userId, teamId, missionId).orElse(Status.INCOMPLETE));
+        return missionDetailDto;
     }
 
 

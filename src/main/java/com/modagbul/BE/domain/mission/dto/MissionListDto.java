@@ -19,4 +19,8 @@ public class MissionListDto {
         this.title = title;
         this.dueTo = dueTo;
     }
+
+    public void setStatus(Status status) {
+        this.status = status;
+    }
 }

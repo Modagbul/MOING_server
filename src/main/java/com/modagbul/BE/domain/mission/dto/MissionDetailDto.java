@@ -21,4 +21,8 @@ public class MissionDetailDto {
         this.content = content;
         this.rule = rule;
     }
+
+    public void setStatus(Status status) {
+        this.status = status;
+    }
 }
