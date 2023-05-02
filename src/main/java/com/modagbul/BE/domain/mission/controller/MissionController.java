@@ -29,10 +29,8 @@ import static com.modagbul.BE.domain.mission.constant.MissionConstant.MissionRes
 @RequestMapping("/api/v1/{teamId}/missions")
 public class MissionController {
 
-    @Autowired
-    private MissionService missionService;
-    @Autowired
-    private UserMissionService userMissionService;
+    private final MissionService missionService;
+    private final UserMissionService userMissionService;
 
     @ApiOperation(value = "미션 생성", notes = "미션을 생성합니다.")
     @PostMapping("/new")
@@ -53,7 +51,6 @@ public class MissionController {
     }
 
     @ApiOperation(value = "개인별 미션 상세 페이지 조회", notes = "개인별 미션 상세 페이지를 조회합니다.")
-
     @GetMapping("/{missionId}")
     public ResponseEntity<ResponseDto<MissionDetailDto>> getMission (@PathVariable Long teamId, @PathVariable Long missionId){
         return ResponseEntity.ok(ResponseDto.create(HttpStatus.OK.value(),GET_MISSION_DETAIL_SUCCESS.getMessage(),missionService.getMissionDetail(teamId,missionId)));

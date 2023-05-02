@@ -13,4 +13,10 @@ public class MissionListDto {
     private String title;
     private String dueTo;
     private Status status;
+
+    public MissionListDto(Long missionId, String title, String dueTo) {
+        this.missionId = missionId;
+        this.title = title;
+        this.dueTo = dueTo;
+    }
 }

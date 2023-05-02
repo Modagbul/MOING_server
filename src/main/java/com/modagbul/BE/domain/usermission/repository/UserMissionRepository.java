@@ -6,10 +6,12 @@ import com.modagbul.BE.domain.usermission.entity.UserMission;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
+import org.springframework.stereotype.Repository;
 
 import java.util.List;
 import java.util.Optional;
 
+@Repository
 public interface UserMissionRepository extends JpaRepository<UserMission, Long> {
 
     @Query(value = "select new com.modagbul.BE.domain.usermission.dto.UserMissionListDto(um.mission.missionId,um.mission.title,um.mission.dueTo,um.status)" +

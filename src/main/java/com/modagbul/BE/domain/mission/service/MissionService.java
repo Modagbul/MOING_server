@@ -14,6 +14,7 @@ import com.modagbul.BE.domain.usermission.dto.UserMissionDetailDto;
 import com.modagbul.BE.domain.usermission.exception.NotFoundUserMissionsException;
 import com.modagbul.BE.domain.usermission.repository.UserMissionRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 
@@ -27,10 +28,8 @@ import static com.modagbul.BE.domain.mission.dto.MissionDto.*;
 @RequiredArgsConstructor
 public class MissionService {
 
-//    @Autowired
     private final MissionRepository missionRepository;
     private final UserMissionRepository userMissionRepository;
-//    @Autowired
     private final TeamRepository teamRepository;
 
     // 소모임장의 미션 생성
@@ -94,14 +93,14 @@ public class MissionService {
     // 개인별 미션 리스트 조회
     public List<MissionListDto> getMissionList(Long teamId){
 
-        Long userId = 1L;
-        return missionRepository.findMissionListById(teamId,userId).orElseThrow(NotFoundUserMissionsException::new);
+        Long userId = 4L;
+        return missionRepository.findMissionListById(teamId).orElseThrow(NotFoundUserMissionsException::new);
     }
 
     // 개인별 미션 상세 페이지 조회
     public MissionDetailDto getMissionDetail(Long teamId, Long missionId) {
-        Long userId = 1L;
-        return missionRepository.findMissionDetailById(teamId,userId,missionId).orElseThrow(NotFoundMissionException::new);
+        Long userId = 4L;
+        return missionRepository.findMissionDetailById(teamId,missionId).orElseThrow(NotFoundMissionException::new);
     }
 
 
