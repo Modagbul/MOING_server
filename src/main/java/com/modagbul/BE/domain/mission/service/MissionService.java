@@ -5,25 +5,22 @@ import com.modagbul.BE.domain.mission.Exception.NotFoundMissionException;
 import com.modagbul.BE.domain.mission.dto.MissionDetailDto;
 import com.modagbul.BE.domain.mission.dto.MissionDto;
 import com.modagbul.BE.domain.mission.dto.MissionListDto;
-import com.modagbul.BE.domain.mission.dto.MissionMapper;
 import com.modagbul.BE.domain.mission.entity.Mission;
 import com.modagbul.BE.domain.mission.repository.MissionRepository;
 import com.modagbul.BE.domain.team.entity.Team;
 import com.modagbul.BE.domain.team.repository.TeamRepository;
 import com.modagbul.BE.domain.usermission.constant.Status;
 import com.modagbul.BE.domain.usermission.dto.UserMissionDetailDto;
-import com.modagbul.BE.domain.usermission.dto.UserMissionListDto;
 import com.modagbul.BE.domain.usermission.exception.NotFoundUserMissionsException;
 import com.modagbul.BE.domain.usermission.repository.UserMissionRepository;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
+
 
 import java.util.List;
 
 import static com.modagbul.BE.domain.mission.constant.MissionConstant.MissionResponseMessage.INVALID_MISSION_ID;
+
 import static com.modagbul.BE.domain.mission.dto.MissionDto.*;
 
 @Service
@@ -32,23 +29,30 @@ public class MissionService {
 
 //    @Autowired
     private final MissionRepository missionRepository;
+    private final UserMissionRepository userMissionRepository;
 //    @Autowired
     private final TeamRepository teamRepository;
-    private final MissionMapper missionMapper;
-    private final UserMissionRepository userMissionRepository;
 
     // 소모임장의 미션 생성
     public MissionRes createMission(Long teamId, MissionReq missionReq) {
 
         //  로그인한 사용자의 id
-        Long loginId = 1L;
+        Long loginId = 4L;
 
         // 로그인한 사용자가 소모임장인지 확인 -> 팀 leaderid 확인
-        Team team = teamRepository.findById(teamId).orElseThrow(() -> new IllegalStateException("해당 팀을 찾을 수 없습니다."));
+        Team findteam = teamRepository.findById(teamId).orElseThrow(() -> new IllegalStateException("해당 팀을 찾을 수 없습니다."));
 
-        if ( team.getLeaderId().equals(loginId)){
+        if ( findteam.getLeaderId().equals(loginId)){
             // 소모임장이라면 미션 생성
-            Mission newMission = missionMapper.toEntity(missionReq);
+            Mission newMission = new Mission();
+            newMission.createMission(
+                    findteam,
+                    missionReq.getTitle(),
+                    missionReq.getDueTo(),
+                    missionReq.getContent(),
+                    missionReq.getRule()
+
+            );
             Mission savedMission = missionRepository.save(newMission);
 
             return new MissionRes(savedMission.getTitle(), savedMission.getDueTo(), savedMission.getContent(), savedMission.getRule(), Status.INCOMPLETE);
@@ -68,12 +72,12 @@ public class MissionService {
         // 소모임장인지 확인
         Long userId = 1L;
 
-        Long findId = missionRepository.findLeaderIdByTeamIdAndMissionId(teamId,missionId).orElseThrow(() -> new NotFoundMissionException());
+        Long findId = missionRepository.findLeaderIdByTeamIdAndMissionId(teamId,missionId).orElseThrow(NotFoundMissionException::new);
 
-        if (userId == findId) {
+        if (userId.equals(findId)) {
 
             // 잘못된 missionId,teamId 예외 처리
-            Mission updateMission = missionRepository.findByTeamIdAndMissionId(teamId, missionId).orElseThrow(() -> new NotFoundMissionException());
+            Mission updateMission = missionRepository.findByTeamIdAndMissionId(teamId, missionId).orElseThrow(NotFoundMissionException::new);
             UserMissionDetailDto userMissionDetailDto = userMissionRepository.findUserMissionDetailById(teamId, userId, missionId).orElseThrow(NotFoundMissionException::new);
 
             updateMission.updateMission(missionReq.getTitle(), missionReq.getDueTo(), missionReq.getContent(), missionReq.getRule());
