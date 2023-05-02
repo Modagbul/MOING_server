@@ -3,8 +3,8 @@ package com.modagbul.BE.domain.mission.service;
 import com.modagbul.BE.domain.mission.Exception.MissionAuthDeniedException;
 import com.modagbul.BE.domain.mission.Exception.NotFoundMissionException;
 import com.modagbul.BE.domain.mission.dto.MissionDetailDto;
-import com.modagbul.BE.domain.mission.dto.MissionDto;
 import com.modagbul.BE.domain.mission.dto.MissionListDto;
+
 import com.modagbul.BE.domain.mission.entity.Mission;
 import com.modagbul.BE.domain.mission.repository.MissionRepository;
 import com.modagbul.BE.domain.team.entity.Team;
@@ -15,13 +15,9 @@ import com.modagbul.BE.domain.usermission.exception.NotFoundUserMissionsExceptio
 import com.modagbul.BE.domain.usermission.repository.UserMissionRepository;
 import com.modagbul.BE.global.config.security.util.SecurityUtils;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-
 import java.util.List;
-
-import static com.modagbul.BE.domain.mission.constant.MissionConstant.MissionResponseMessage.INVALID_MISSION_ID;
 
 import static com.modagbul.BE.domain.mission.dto.MissionDto.*;
 
@@ -38,6 +34,7 @@ public class MissionService {
 
         //  로그인한 사용자의 id
         Long loginId = SecurityUtils.getLoggedInUser().getUserId();
+
 
         // 로그인한 사용자가 소모임장인지 확인 -> 팀 leaderid 확인
         Team findteam = teamRepository.findById(teamId).orElseThrow(() -> new IllegalStateException("해당 팀을 찾을 수 없습니다."));
