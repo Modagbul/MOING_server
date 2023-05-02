@@ -2,17 +2,26 @@ package com.modagbul.BE.domain.mission.service;
 
 import com.modagbul.BE.domain.mission.Exception.MissionAuthDeniedException;
 import com.modagbul.BE.domain.mission.Exception.NotFoundMissionException;
+import com.modagbul.BE.domain.mission.dto.MissionDetailDto;
 import com.modagbul.BE.domain.mission.dto.MissionDto;
+import com.modagbul.BE.domain.mission.dto.MissionListDto;
 import com.modagbul.BE.domain.mission.dto.MissionMapper;
 import com.modagbul.BE.domain.mission.entity.Mission;
 import com.modagbul.BE.domain.mission.repository.MissionRepository;
 import com.modagbul.BE.domain.team.entity.Team;
 import com.modagbul.BE.domain.team.repository.TeamRepository;
+import com.modagbul.BE.domain.usermission.constant.Status;
+import com.modagbul.BE.domain.usermission.dto.UserMissionDetailDto;
+import com.modagbul.BE.domain.usermission.dto.UserMissionListDto;
+import com.modagbul.BE.domain.usermission.exception.NotFoundUserMissionsException;
+import com.modagbul.BE.domain.usermission.repository.UserMissionRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 import static com.modagbul.BE.domain.mission.constant.MissionConstant.MissionResponseMessage.INVALID_MISSION_ID;
 import static com.modagbul.BE.domain.mission.dto.MissionDto.*;
@@ -26,7 +35,9 @@ public class MissionService {
 //    @Autowired
     private final TeamRepository teamRepository;
     private final MissionMapper missionMapper;
+    private final UserMissionRepository userMissionRepository;
 
+    // 소모임장의 미션 생성
     public MissionRes createMission(Long teamId, MissionReq missionReq) {
 
         //  로그인한 사용자의 id
@@ -40,7 +51,7 @@ public class MissionService {
             Mission newMission = missionMapper.toEntity(missionReq);
             Mission savedMission = missionRepository.save(newMission);
 
-            return new MissionRes(savedMission.getTitle(), savedMission.getDueTo(), savedMission.getContent(), savedMission.getRule());
+            return new MissionRes(savedMission.getTitle(), savedMission.getDueTo(), savedMission.getContent(), savedMission.getRule(), Status.INCOMPLETE);
 
         }
         else{
@@ -50,27 +61,43 @@ public class MissionService {
 
 
     }
+
+    // 소모임장의 미션 수정
     public MissionRes updateMission(Long teamId, Long missionId, MissionReq missionReq) {
 
         // 소모임장인지 확인
-        Long loginId = 1L;
+        Long userId = 1L;
 
         Long findId = missionRepository.findLeaderIdByTeamIdAndMissionId(teamId,missionId).orElseThrow(() -> new NotFoundMissionException());
 
-        if (loginId == findId) {
+        if (userId == findId) {
 
             // 잘못된 missionId,teamId 예외 처리
-            Mission updateMission = missionRepository.findByTeamIdAndMissionId(teamId,missionId).orElseThrow(() -> new NotFoundMissionException());
+            Mission updateMission = missionRepository.findByTeamIdAndMissionId(teamId, missionId).orElseThrow(() -> new NotFoundMissionException());
+            UserMissionDetailDto userMissionDetailDto = userMissionRepository.findUserMissionDetailById(teamId, userId, missionId).orElseThrow(NotFoundMissionException::new);
 
             updateMission.updateMission(missionReq.getTitle(), missionReq.getDueTo(), missionReq.getContent(), missionReq.getRule());
             missionRepository.save(updateMission);
 
-            return new MissionRes(updateMission.getTitle(), updateMission.getDueTo(), updateMission.getContent(), updateMission.getRule());
+            return new MissionRes(updateMission.getTitle(), updateMission.getDueTo(), updateMission.getContent(), updateMission.getRule(),userMissionDetailDto.getStatus());
         }
         else{
             // 소모임장이 아니라면 예외 처리
             throw new MissionAuthDeniedException();
         }
+    }
+
+    // 개인별 미션 리스트 조회
+    public List<MissionListDto> getMissionList(Long teamId){
+
+        Long userId = 1L;
+        return missionRepository.findMissionListById(teamId,userId).orElseThrow(NotFoundUserMissionsException::new);
+    }
+
+    // 개인별 미션 상세 페이지 조회
+    public MissionDetailDto getMissionDetail(Long teamId, Long missionId) {
+        Long userId = 1L;
+        return missionRepository.findMissionDetailById(teamId,userId,missionId).orElseThrow(NotFoundMissionException::new);
     }
 
 

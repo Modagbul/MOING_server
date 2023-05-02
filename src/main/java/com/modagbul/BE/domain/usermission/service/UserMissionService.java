@@ -7,6 +7,7 @@ import com.modagbul.BE.domain.team.entity.Team;
 import com.modagbul.BE.domain.team.repository.TeamRepository;
 import com.modagbul.BE.domain.user.entity.User;
 import com.modagbul.BE.domain.user.repository.UserRepository;
+import com.modagbul.BE.domain.usermission.constant.Status;
 import com.modagbul.BE.domain.usermission.dto.UserMissionDetailDto;
 import com.modagbul.BE.domain.usermission.dto.UserMissionListDto;
 import com.modagbul.BE.domain.usermission.entity.UserMission;
@@ -27,21 +28,8 @@ public class UserMissionService {
     private final MissionRepository missionRepository;
     private final UserRepository userRepository;
 
-    public List<UserMissionListDto> getUserMissionList(Long teamId){
 
-        Long userId = 1L;
-        return userMissionRepository.findUserMissionListById(teamId,userId).orElseThrow(NotFoundUserMissionsException::new);
-    }
-
-    public UserMissionDetailDto getUserMissionDetail(Long teamId, Long missionId) {
-        Long userId = 1L;
-        return userMissionRepository.findUserMissionDetailById(teamId,userId,missionId).orElseThrow(NotFoundMissionException::new);
-    }
-
-
-
-
-    public void submitUserMission(Long teamId, Long missionId, String submitUrl) {
+    public Status submitUserMission(Long teamId, Long missionId, String submitUrl) {
 
         Long userId = 1L;
 
@@ -53,6 +41,8 @@ public class UserMissionService {
         userMission.createUserMission(user,team,mission);
 
         userMission.setComplete(submitUrl);
+
+        return userMission.getStatus();
 
     }
 
