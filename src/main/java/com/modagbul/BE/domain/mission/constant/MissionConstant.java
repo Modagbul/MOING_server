@@ -13,7 +13,12 @@ public class MissionConstant {
         CREATE_MISSION_FAIL("미션 생성 실패"),
         UPDATE_MISSION_SUCCESS("미션 수정 성공"),
         UPDATE_MISSION_FAIL("미션 수정 실패"),
-        INVALID_MISSION_ID("잘못된 미션 ID 입니다.");
+        INVALID_MISSION_ID("잘못된 미션 ID 입니다."),
+
+        GET_MISSION_LIST_SUCCESS("개인별 미션 리스트 조회 성공"),
+        GET_MISSION_DETAIL_SUCCESS("개인별 미션 상세 조회 성공"),
+        SUBMIT_MISSION_SUCCESS("개인별 미션 제출 성공");
+
 
         private final String message;
     }
