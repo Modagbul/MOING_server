@@ -28,6 +28,21 @@ public abstract class UserDto {
     }
 
     @Getter
+    @AllArgsConstructor
+    @Builder
+    @NoArgsConstructor
+    public static class TestLoginRequest {
+
+        private String nickName;
+        private String address;
+        private String email;
+        private String gender;
+        private String ageRange;
+        private String imageUrl;
+
+    }
+
+    @Getter
     @Builder
     @AllArgsConstructor
     @NoArgsConstructor

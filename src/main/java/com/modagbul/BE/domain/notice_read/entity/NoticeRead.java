@@ -2,6 +2,7 @@ package com.modagbul.BE.domain.notice_read.entity;
 
 import com.modagbul.BE.domain.notice.entity.Notice;
 import com.modagbul.BE.domain.team_member.entity.TeamMember;
+import com.modagbul.BE.domain.user.entity.User;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -26,8 +27,8 @@ public class NoticeRead {
     private Notice notice;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "team_member_id")
-    private TeamMember teamMember;
+    @JoinColumn(name = "user_id")
+    private User user;
 
     private boolean isRead;
 
@@ -36,8 +37,12 @@ public class NoticeRead {
         notice.getNoticeReads().add(this);
     }
 
-    public void setTeamMember(TeamMember teamMember){
-        this.teamMember=teamMember;
-        teamMember.getNoticeReads().add(this);
+    public void setUser(User user){
+        this.user=user;
+        user.getNoticeReads().add(this);
+    }
+
+    public void readNotice(){
+        this.isRead=true;
     }
 }

@@ -109,9 +109,7 @@ public abstract class TeamDto {
     @NoArgsConstructor
     @ApiModel(description = "소모임 정보 수정을 위한 요청 객체")
     public static class UpdateTeamRequest {
-        @NotNull(message = "소모임 아이디를 입력해 주세요.")
-        @ApiModelProperty(notes = "소모임 아이디를 입력해 주세요.")
-        private Long teamId;
+
         @NotBlank(message = "소모임 이름을 입력해 주세요.")
         @ApiModelProperty(notes = "소모임 이름을 입력해 주세요.")
         private String name;

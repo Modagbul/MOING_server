@@ -7,4 +7,5 @@ import java.util.Optional;
 
 public interface NoticeRepositoryCustom {
     Optional<Notice> findNotDeletedByNoticeId(Long noticeId);
+
 }

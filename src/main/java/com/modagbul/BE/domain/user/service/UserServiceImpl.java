@@ -37,6 +37,7 @@ import java.util.Map;
 import static com.modagbul.BE.domain.user.constant.UserConstant.Process.LOGIN_SUCCESS;
 import static com.modagbul.BE.domain.user.constant.UserConstant.Process.SIGN_UP_ING;
 import static com.modagbul.BE.domain.user.constant.UserConstant.Role.ROLE_USER;
+import static com.modagbul.BE.domain.user.constant.UserConstant.UserServiceMessage.*;
 
 @Service
 @Slf4j
@@ -45,36 +46,23 @@ import static com.modagbul.BE.domain.user.constant.UserConstant.Role.ROLE_USER;
 public class UserServiceImpl implements UserService {
     private final TokenProvider tokenProvider;
     private final UserRepository userRepository;
-    private final String LOGIN_URL = "https://kapi.kakao.com/v2/user/me";
-    private final String DELETE_URL = "https://kapi.kakao.com/v1/user/unlink";
-    private final String KAKAO_ACOUNT = "kakao_account";
-    private final String VALID_NICKNAME="가능한 닉네임입니다";
-    private final String EXISTED_NCIKNAME="이미 존재하는 닉네임입니다";
 
     @Override
     public LoginResponse login(UserDto.LoginRequest loginRequest) {
         //1. 프론트에게 받은 액세스 토큰 이용해서 사용자 정보 가져오기
         String token = loginRequest.getToken();
-        JsonObject userInfo = connectKakao(LOGIN_URL, token);
-        String email = getEmail(userInfo);
-        String pictureUrl = getPictureUrl(userInfo);
-        String gender = getGender(userInfo);
-        String age_range = getAgeRange(userInfo);
-        User user = saveUser(email, pictureUrl, gender, age_range);
-        boolean isSignedUp =  user.getNickName() != null;
+        JsonObject userInfo = connectKakao(LOGIN_URL.getValue(), token);
+        User user = saveUser(getEmail(userInfo), getPictureUrl(userInfo), getGender(userInfo), getAgeRange(userInfo));
+        boolean isSignedUp = user.getNickName() != null;
 
         //2. 스프링 시큐리티 처리
-        List<GrantedAuthority> authorities = new ArrayList<>();
-        authorities.add(new SimpleGrantedAuthority(String.valueOf(ROLE_USER)));
-        OAuth2User userDetails = createOAuth2UserByJson(authorities, userInfo, email);
-        OAuth2AuthenticationToken auth = new OAuth2AuthenticationToken(userDetails, authorities, "email");
-        auth.setDetails(userDetails);
+        List<GrantedAuthority> authorities = initAuthorities();
+        OAuth2User userDetails = createOAuth2UserByJson(authorities, userInfo, getEmail(userInfo));
+        OAuth2AuthenticationToken auth = configureAuthentication(userDetails, authorities);
 
         //3. JWT 토큰 생성
         TokenInfoResponse tokenInfoResponse = tokenProvider.createToken(auth, isSignedUp);
-        String message = isSignedUp ? LOGIN_SUCCESS.getMessage() : SIGN_UP_ING.getMessage();
-        SecurityContextHolder.getContext().setAuthentication(auth);
-        return LoginResponse.from(tokenInfoResponse, message);
+        return LoginResponse.from(tokenInfoResponse, isSignedUp ? LOGIN_SUCCESS.getMessage() : SIGN_UP_ING.getMessage());
     }
 
     @Override
@@ -82,18 +70,17 @@ public class UserServiceImpl implements UserService {
         //추가 정보 입력 시
         //1. 프론트엔드에게 받은 (자체) 액세스 토큰 이용해서 사용자 이메일 가져오기
         Authentication authentication = tokenProvider.getAuthentication(additionInfoRequest.getAccessToken());
-        System.out.println(authentication.getName());
         User user = validateEmail(authentication.getName());
+
         //2. 추가 정보 저장
         user.setUser(additionInfoRequest.getNickName(), additionInfoRequest.getAddress());
         userRepository.save(user);
+
         //3. 스프링 시큐리티 처리
-        List<GrantedAuthority> authorities = new ArrayList<>();
-        authorities.add(new SimpleGrantedAuthority(String.valueOf(ROLE_USER)));
-        OAuth2User userDetails = createOAuth2UserByUser(authorities, user, additionInfoRequest);
-        OAuth2AuthenticationToken auth = new OAuth2AuthenticationToken(userDetails, authorities, "email");
-        auth.setDetails(userDetails);
-        SecurityContextHolder.getContext().setAuthentication(auth);
+        List<GrantedAuthority> authorities = initAuthorities();
+        OAuth2User userDetails = createOAuth2UserByUser(authorities, user);
+        OAuth2AuthenticationToken auth = configureAuthentication(userDetails, authorities);
+
         //4. JWT 토큰 생성
         TokenInfoResponse tokenInfoResponse = tokenProvider.createToken(auth, true);
         return LoginResponse.from(tokenInfoResponse, LOGIN_SUCCESS.getMessage());
@@ -102,7 +89,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public void deleteAccount(UserDto.LoginRequest loginRequest) {
         String token = loginRequest.getToken();
-        JsonObject response = connectKakao(DELETE_URL, token);
+        JsonObject response = connectKakao(DELETE_URL.getValue(), token);
         User user = validateEmail(SecurityUtils.getLoggedInUser().getEmail());
         user.setDeleted();
         userRepository.save(user);
@@ -110,20 +97,41 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public CheckNicknameResponse checkNickname(String nickName) {
-        if(this.userRepository.findNotDeletedByNickName(nickName.trim()).isPresent()){
-            return new CheckNicknameResponse(EXISTED_NCIKNAME);
-        }else{
-            return new CheckNicknameResponse(VALID_NICKNAME);
+        if (this.userRepository.findNotDeletedByNickName(nickName.trim()).isPresent()) {
+            return new CheckNicknameResponse(EXISTED_NCIKNAME.getValue());
+        } else {
+            return new CheckNicknameResponse(VALID_NICKNAME.getValue());
         }
     }
 
     @Override
     public User validateEmail(String email) {
-        return this.userRepository.findNotDeletedByEmail(email).orElseThrow(()->new NotFoundEmailException());
+        return this.userRepository.findNotDeletedByEmail(email).orElseThrow(() -> new NotFoundEmailException());
     }
 
+    @Override
+    public LoginResponse testLogin(UserDto.TestLoginRequest testLoginRequest) {
+        User user = new User(testLoginRequest.getEmail(), testLoginRequest.getImageUrl(), testLoginRequest.getGender(), testLoginRequest.getAgeRange(), ROLE_USER);
+        user.setUser(testLoginRequest.getNickName(), testLoginRequest.getAddress());
+        userRepository.save(user);
 
-    private OAuth2User createOAuth2UserByUser(List<GrantedAuthority> authorities, User user, UserDto.AdditionInfoRequest additionInfoRequest) {
+        List<GrantedAuthority> authorities = new ArrayList<>();
+        authorities.add(new SimpleGrantedAuthority(String.valueOf(ROLE_USER)));
+        OAuth2User userDetails = createOAuth2UserByUser(authorities, user);
+        OAuth2AuthenticationToken auth = configureAuthentication(userDetails, authorities);
+
+        TokenInfoResponse tokenInfoResponse = tokenProvider.createToken(auth, true);
+        return LoginResponse.from(tokenInfoResponse, LOGIN_SUCCESS.getMessage());
+    }
+
+    /**
+     * User -> OAuth2User
+     * @param authorities
+     * @param user
+     * @return OAuth2User
+     */
+
+    private OAuth2User createOAuth2UserByUser(List<GrantedAuthority> authorities, User user) {
         Map userMap = new HashMap<String, String>();
         userMap.put("email", user.getEmail());
         userMap.put("pictureUrl", user.getImageUrl());
@@ -132,6 +140,14 @@ public class UserServiceImpl implements UserService {
         OAuth2User userDetails = new DefaultOAuth2User(authorities, userMap, "email");
         return userDetails;
     }
+
+    /**
+     * userInfo, email -> OAuth2User
+     * @param authorities
+     * @param userInfo
+     * @param email
+     * @return OAuth2User
+     */
 
     private OAuth2User createOAuth2UserByJson(List<GrantedAuthority> authorities, JsonObject userInfo, String email) {
         Map userMap = new HashMap<String, String>();
@@ -143,6 +159,20 @@ public class UserServiceImpl implements UserService {
         OAuth2User userDetails = new DefaultOAuth2User(authorities, userMap, "email");
         return userDetails;
     }
+
+    private List<GrantedAuthority> initAuthorities() {
+        List<GrantedAuthority> authorities = new ArrayList<>();
+        authorities.add(new SimpleGrantedAuthority(String.valueOf(ROLE_USER)));
+        return authorities;
+    }
+
+    private OAuth2AuthenticationToken configureAuthentication(OAuth2User userDetails, List<GrantedAuthority> authorities) {
+        OAuth2AuthenticationToken auth = new OAuth2AuthenticationToken(userDetails, authorities, "email");
+        auth.setDetails(userDetails);
+        SecurityContextHolder.getContext().setAuthentication(auth);
+        return auth;
+    }
+
     private JsonObject connectKakao(String reqURL, String token) {
         try {
             URL url = new URL(reqURL);
@@ -171,8 +201,8 @@ public class UserServiceImpl implements UserService {
     }
 
     private String getEmail(JsonObject userInfo) {
-        if (userInfo.getAsJsonObject(KAKAO_ACOUNT).get("has_email").getAsBoolean()) {
-            return userInfo.getAsJsonObject(KAKAO_ACOUNT).get("email").getAsString();
+        if (userInfo.getAsJsonObject(KAKAO_ACOUNT.getValue()).get("has_email").getAsBoolean()) {
+            return userInfo.getAsJsonObject(KAKAO_ACOUNT.getValue()).get("email").getAsString();
         }
         throw new NotFoundEmailException();
     }
@@ -182,9 +212,9 @@ public class UserServiceImpl implements UserService {
     }
 
     private String getGender(JsonObject userInfo) {
-        if (userInfo.getAsJsonObject(KAKAO_ACOUNT).get("has_gender").getAsBoolean() &&
-                !userInfo.getAsJsonObject(KAKAO_ACOUNT).get("gender_needs_agreement").getAsBoolean()) {
-            return userInfo.getAsJsonObject(KAKAO_ACOUNT).get("gender").getAsString();
+        if (userInfo.getAsJsonObject(KAKAO_ACOUNT.getValue()).get("has_gender").getAsBoolean() &&
+                !userInfo.getAsJsonObject(KAKAO_ACOUNT.getValue()).get("gender_needs_agreement").getAsBoolean()) {
+            return userInfo.getAsJsonObject(KAKAO_ACOUNT.getValue()).get("gender").getAsString();
         }
         return "동의안함";
     }

@@ -6,5 +6,5 @@ public interface TeamService {
     CreateTeamResponse createTeam(CreateTeamRequest createTeamRequest);
     JoinTeamResponse authenticateCode(JoinTeamRequest joinTeamRequest);
     GetTeamInfo getTeamInfo(Long teamId);
-    void updateTeam(UpdateTeamRequest updateTeamRequest);
+    void updateTeam(Long teamId, UpdateTeamRequest updateTeamRequest);
 }

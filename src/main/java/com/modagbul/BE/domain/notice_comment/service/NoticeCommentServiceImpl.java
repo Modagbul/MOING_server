@@ -1,13 +1,13 @@
 package com.modagbul.BE.domain.notice_comment.service;
 
-import com.modagbul.BE.domain.notice_comment.dto.NoticeCommentDto;
+import com.modagbul.BE.domain.notice.service.NoticeService;
 import com.modagbul.BE.domain.notice_comment.dto.NoticeCommentDto.CreateNoticeCommentRequest;
 import com.modagbul.BE.domain.notice_comment.dto.NoticeCommentDto.CreateNoticeCommentResponse;
 import com.modagbul.BE.domain.notice_comment.dto.NoticeCommentDto.GetNoticeCommentResponse;
 import com.modagbul.BE.domain.notice_comment.dto.NoticeCommentMapper;
-import com.modagbul.BE.domain.notice_comment.exception.NotFoundNoticeCommentIdException;
 import com.modagbul.BE.domain.notice_comment.entity.NoticeComment;
-import com.modagbul.BE.domain.notice_comment.repsitory.NoticeCommentRepsitory;
+import com.modagbul.BE.domain.notice_comment.exception.NotFoundNoticeCommentIdException;
+import com.modagbul.BE.domain.notice_comment.repsitory.NoticeCommentRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -24,29 +24,30 @@ import java.util.Map;
 @Transactional
 public class NoticeCommentServiceImpl implements NoticeCommentService{
 
-    private final NoticeCommentRepsitory noticeCommentRepsitory;
+    private final NoticeCommentRepository noticeCommentRepository;
     private final NoticeCommentMapper noticeCommentMapper;
+
     @Override
-    public CreateNoticeCommentResponse createNoticeComment(CreateNoticeCommentRequest createNoticeCommentRequest) {
-        NoticeComment noticeComment=noticeCommentMapper.toEntity(createNoticeCommentRequest);
-        noticeCommentRepsitory.save(noticeComment);
+    public CreateNoticeCommentResponse createNoticeComment(Long noticeId, CreateNoticeCommentRequest createNoticeCommentRequest) {
+        NoticeComment noticeComment=noticeCommentMapper.toEntity(noticeId, createNoticeCommentRequest);
+        noticeCommentRepository.save(noticeComment);
         return new CreateNoticeCommentResponse(noticeComment.getNoticeCommentId());
     }
 
     @Override
-    public void deleteNoticeComment(NoticeCommentDto.DeleteNoticeCommentRequest deleteNoticeCommentRequest) {
-        NoticeComment noticeComment=validateNoticeComment(deleteNoticeCommentRequest.getNoticeCommentId());
+    public void deleteNoticeComment(Long noticeCommentId) {
+        NoticeComment noticeComment=validateNoticeComment(noticeCommentId);
         noticeComment.deleteNoticeComment();
     }
 
     @Override
     public NoticeComment validateNoticeComment(Long noticeCommentId) {
-        return this.noticeCommentRepsitory.findNotDeletedByCommentId(noticeCommentId).orElseThrow(()->new NotFoundNoticeCommentIdException());
+        return this.noticeCommentRepository.findNotDeletedByCommentId(noticeCommentId).orElseThrow(()->new NotFoundNoticeCommentIdException());
     }
 
     @Override
     public List<GetNoticeCommentResponse> getAllNoticeCommentByNoticeId(Long noticeId) {
-        List<NoticeComment> noticeComments=noticeCommentRepsitory.findAllCommentsByNoticeId(noticeId);
+        List<NoticeComment> noticeComments=noticeCommentRepository.findAllCommentsByNoticeId(noticeId);
         List<GetNoticeCommentResponse> result=new ArrayList<>();
         Map<Long, GetNoticeCommentResponse> map=new HashMap<>();
         noticeComments.stream().forEach(c->{

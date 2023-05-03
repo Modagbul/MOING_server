@@ -67,8 +67,8 @@ public class TeamServiceImpl implements TeamService {
     }
 
     @Override
-    public void updateTeam(TeamDto.UpdateTeamRequest updateTeamRequest) {
-        Team team=teamRepository.findById(updateTeamRequest.getTeamId()).orElseThrow(NotFoundTeamIdException::new);
+    public void updateTeam(Long teamId, TeamDto.UpdateTeamRequest updateTeamRequest) {
+        Team team=teamRepository.findById(teamId).orElseThrow(NotFoundTeamIdException::new);
         this.checkLeader(team);
         team.updateTeam(updateTeamRequest.getName(), LocalDate.parse(updateTeamRequest.getEndDate()), updateTeamRequest.getProfileImg());
     }

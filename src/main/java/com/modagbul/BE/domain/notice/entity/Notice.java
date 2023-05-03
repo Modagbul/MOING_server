@@ -3,6 +3,7 @@ package com.modagbul.BE.domain.notice.entity;
 import com.modagbul.BE.domain.notice_comment.entity.NoticeComment;
 import com.modagbul.BE.domain.notice_read.entity.NoticeRead;
 import com.modagbul.BE.domain.team.entity.Team;
+import com.modagbul.BE.domain.user.entity.User;
 import com.modagbul.BE.global.entity.BaseTimeEntity;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -35,6 +36,10 @@ public class Notice extends BaseTimeEntity {
     @JoinColumn(name = "team_id")
     private Team team;
 
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "usr_id")
+    private User user;
+
     @OneToMany(mappedBy = "notice")
     private List<NoticeRead> noticeReads = new ArrayList<>();
 
@@ -44,6 +49,11 @@ public class Notice extends BaseTimeEntity {
     public void setTeam(Team team){
         this.team=team;
         team.getNotices().add(this);
+    }
+
+    public void setUser(User user){
+        this.user=user;
+        user.getNotices().add(this);
     }
 
     public void createNotice(String title, String content){
