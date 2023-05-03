@@ -4,6 +4,7 @@ import com.modagbul.BE.domain.mission.Exception.NotFoundMissionException;
 import com.modagbul.BE.domain.mission.entity.Mission;
 import com.modagbul.BE.domain.mission.repository.MissionRepository;
 import com.modagbul.BE.domain.team.entity.Team;
+import com.modagbul.BE.domain.team.exception.NotFoundTeamIdException;
 import com.modagbul.BE.domain.team.repository.TeamRepository;
 import com.modagbul.BE.domain.user.entity.User;
 import com.modagbul.BE.domain.user.repository.UserRepository;
@@ -13,6 +14,7 @@ import com.modagbul.BE.domain.usermission.dto.UserMissionListDto;
 import com.modagbul.BE.domain.usermission.entity.UserMission;
 import com.modagbul.BE.domain.usermission.exception.NotFoundUserMissionsException;
 import com.modagbul.BE.domain.usermission.repository.UserMissionRepository;
+import com.modagbul.BE.global.config.security.util.SecurityUtils;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -31,10 +33,10 @@ public class UserMissionService {
 
     public Status submitUserMission(Long teamId, Long missionId, String submitUrl) {
 
-        Long userId = 4L;
+        Long userId = SecurityUtils.getLoggedInUser().getUserId();
 
         User user = userRepository.findById(userId).orElseThrow(() -> new IllegalStateException("해당 유저를 찾을 수 없습니다."));
-        Team team = teamRepository.findById(teamId).orElseThrow(() -> new IllegalStateException("해당 팀을 찾을 수 없습니다."));
+        Team team = teamRepository.findById(teamId).orElseThrow(NotFoundTeamIdException::new);
         Mission mission = missionRepository.findById(missionId).orElseThrow(NotFoundMissionException::new);
 
         UserMission userMission = new UserMission();
@@ -49,7 +51,7 @@ public class UserMissionService {
 
     public Status skipUserMission(Long teamId, Long missionId, String skipReason) {
 
-        Long userId = 4L;
+        Long userId = SecurityUtils.getLoggedInUser().getUserId();
 
         User user = userRepository.findById(userId).orElseThrow(() -> new IllegalStateException("해당 유저를 찾을 수 없습니다."));
         Team team = teamRepository.findById(teamId).orElseThrow(() -> new IllegalStateException("해당 팀을 찾을 수 없습니다."));
@@ -64,7 +66,6 @@ public class UserMissionService {
         return userMission.getStatus();
 
     }
-
 
 
 
