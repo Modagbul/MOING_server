@@ -1,5 +1,7 @@
 package com.modagbul.BE.domain.notice_comment.service;
 
+import com.modagbul.BE.domain.notice.entity.Notice;
+import com.modagbul.BE.domain.notice.service.NoticeService;
 import com.modagbul.BE.domain.notice_comment.dto.NoticeCommentDto;
 import com.modagbul.BE.domain.notice_comment.dto.NoticeCommentDto.CreateNoticeCommentRequest;
 import com.modagbul.BE.domain.notice_comment.dto.NoticeCommentDto.CreateNoticeCommentResponse;
@@ -26,16 +28,19 @@ public class NoticeCommentServiceImpl implements NoticeCommentService{
 
     private final NoticeCommentRepsitory noticeCommentRepsitory;
     private final NoticeCommentMapper noticeCommentMapper;
+
+    private final NoticeService noticeService;
+
     @Override
-    public CreateNoticeCommentResponse createNoticeComment(CreateNoticeCommentRequest createNoticeCommentRequest) {
-        NoticeComment noticeComment=noticeCommentMapper.toEntity(createNoticeCommentRequest);
+    public CreateNoticeCommentResponse createNoticeComment(Long noticeId, CreateNoticeCommentRequest createNoticeCommentRequest) {
+        NoticeComment noticeComment=noticeCommentMapper.toEntity(noticeId, createNoticeCommentRequest);
         noticeCommentRepsitory.save(noticeComment);
         return new CreateNoticeCommentResponse(noticeComment.getNoticeCommentId());
     }
 
     @Override
-    public void deleteNoticeComment(NoticeCommentDto.DeleteNoticeCommentRequest deleteNoticeCommentRequest) {
-        NoticeComment noticeComment=validateNoticeComment(deleteNoticeCommentRequest.getNoticeCommentId());
+    public void deleteNoticeComment(Long noticeCommentId) {
+        NoticeComment noticeComment=validateNoticeComment(noticeCommentId);
         noticeComment.deleteNoticeComment();
     }
 

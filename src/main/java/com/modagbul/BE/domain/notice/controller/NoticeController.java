@@ -32,9 +32,9 @@ public class NoticeController {
     }
 
     @ApiOperation(value = "공지 삭제", notes = "공지를 삭제합니다.")
-    @DeleteMapping
-    public ResponseEntity<ResponseDto> deleteNotice(@Valid @RequestBody NoticeDto.DeleteNoticeRequest deleteNoticeRequest){
-        this.noticeService.deleteNotice(deleteNoticeRequest);
+    @DeleteMapping("/{noticeId}")
+    public ResponseEntity<ResponseDto> deleteNotice(@PathVariable Long noticeId){
+        this.noticeService.deleteNotice(noticeId);
         return ResponseEntity.ok(ResponseDto.create(HttpStatus.OK.value(), DELETE_NOTICE_SUCCESS.getMessage()));
     }
 

@@ -19,10 +19,6 @@ public abstract class NoticeCommentDto {
     @ApiModel(description = "공지 댓글 생성을 위한 요청 객체")
     @NoArgsConstructor
     public static class CreateNoticeCommentRequest {
-        @NotNull(message = "공지사항 id를 입력해 주세요.")
-        @ApiModelProperty(notes = "공지사항 id를 입력해 주세요.")
-        private Long noticeId;
-
         @NotBlank(message = "댓글 내용을 입력해 주세요.")
         @ApiModelProperty(notes = "댓글 내용을 입력해 주세요.")
         private String content;
@@ -37,16 +33,6 @@ public abstract class NoticeCommentDto {
         private Long noticeCommentId;
     }
 
-    @Getter
-    @AllArgsConstructor
-    @Builder
-    @ApiModel(description = "공지 댓글 삭제를 위한 요창 객체")
-    @NoArgsConstructor
-    public static class DeleteNoticeCommentRequest {
-        @NotNull(message = "공지사항 댓글 id를 입력해 주세요.")
-        @ApiModelProperty(notes = "공지사항 댓글 id를 입력해 주세요.")
-        private Long noticeCommentId;
-    }
 
     @Getter
     @AllArgsConstructor

@@ -28,21 +28,21 @@ public class TeamController {
     }
 
     @ApiOperation(value = "소모임 참여 코드 인증", notes = "소모임 참여 코드를 인증합니다.")
-    @PostMapping("/auth")
+    @PostMapping("/join")
     public ResponseEntity<ResponseDto<JoinTeamResponse>> joinTeam(@Valid @RequestBody JoinTeamRequest joinTeamRequest)  {
         return ResponseEntity.ok(ResponseDto.create(HttpStatus.OK.value(), JOIN_TEAM_SUCCESS.getMessage(), this.teamService.authenticateCode(joinTeamRequest)));
     }
 
     @ApiOperation(value="소모임 정보 조회", notes="소모임 수정을 위한 정보를 조회합니다")
-    @GetMapping("{teamId}")
+    @GetMapping("/{teamId}")
     public ResponseEntity<ResponseDto<GetTeamInfo>> getTeamInfo(@PathVariable Long teamId){
         return ResponseEntity.ok(ResponseDto.create(HttpStatus.OK.value(), GET_TEAM_INFO_SUCCESS.getMessage(),this.teamService.getTeamInfo(teamId)));
     }
 
     @ApiOperation(value="소모임 정보 수정", notes="소모임 정보를 수정합니다")
-    @PostMapping("/update")
-    public ResponseEntity<ResponseDto> updateTeam(@Valid @RequestBody UpdateTeamRequest updateTeamRequest){
-        this.teamService.updateTeam(updateTeamRequest);
+    @PutMapping("/{teamId}")
+    public ResponseEntity<ResponseDto> updateTeam(@Valid @RequestBody UpdateTeamRequest updateTeamRequest, @PathVariable Long teamId){
+        this.teamService.updateTeam(teamId, updateTeamRequest);
         return ResponseEntity.ok(ResponseDto.create(HttpStatus.OK.value(), UPDATE_TEAM_SUCCESS.getMessage()));
     }
 

@@ -38,15 +38,4 @@ public abstract class NoticeDto {
     public static class CreateNoticeResponse {
         private Long noticeId;
     }
-
-    @Getter
-    @AllArgsConstructor
-    @Builder
-    @ApiModel(description = "공지 삭제를 위한 응답 객체")
-    @NoArgsConstructor
-    public static class DeleteNoticeRequest {
-        @NotNull(message = "공지사항 id를 입력해 주세요.")
-        @ApiModelProperty(notes = "공지사항 id를 입력해 주세요.")
-        private Long noticeId;
-    }
 }

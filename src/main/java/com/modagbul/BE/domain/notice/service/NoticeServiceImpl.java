@@ -1,9 +1,7 @@
 package com.modagbul.BE.domain.notice.service;
 
-import com.modagbul.BE.domain.notice.dto.NoticeDto;
 import com.modagbul.BE.domain.notice.dto.NoticeDto.CreateNoticeRequest;
 import com.modagbul.BE.domain.notice.dto.NoticeDto.CreateNoticeResponse;
-import com.modagbul.BE.domain.notice.dto.NoticeDto.DeleteNoticeRequest;
 import com.modagbul.BE.domain.notice.dto.NoticeMapper;
 import com.modagbul.BE.domain.notice.entity.Notice;
 import com.modagbul.BE.domain.notice.exception.NotFoundNoticeIdException;
@@ -51,8 +49,8 @@ public class NoticeServiceImpl implements NoticeService{
     }
 
     @Override
-    public void deleteNotice(DeleteNoticeRequest deleteNoticeRequest) {
-        Notice notice=validateNotice(deleteNoticeRequest.getNoticeId());
+    public void deleteNotice(Long noticeId) {
+        Notice notice=validateNotice(noticeId);
         notice.deleteNotice();
     }
 
