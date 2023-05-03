@@ -1,13 +1,15 @@
 package com.modagbul.BE.domain.notice_comment.service;
 
-import com.modagbul.BE.domain.notice.service.NoticeService;
 import com.modagbul.BE.domain.notice_comment.dto.NoticeCommentDto.CreateNoticeCommentRequest;
 import com.modagbul.BE.domain.notice_comment.dto.NoticeCommentDto.CreateNoticeCommentResponse;
 import com.modagbul.BE.domain.notice_comment.dto.NoticeCommentDto.GetNoticeCommentResponse;
 import com.modagbul.BE.domain.notice_comment.dto.NoticeCommentMapper;
 import com.modagbul.BE.domain.notice_comment.entity.NoticeComment;
 import com.modagbul.BE.domain.notice_comment.exception.NotFoundNoticeCommentIdException;
+import com.modagbul.BE.domain.notice_comment.exception.NotNoticeCommentWriterException;
 import com.modagbul.BE.domain.notice_comment.repsitory.NoticeCommentRepository;
+import com.modagbul.BE.domain.user.entity.User;
+import com.modagbul.BE.global.config.security.util.SecurityUtils;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -37,6 +39,7 @@ public class NoticeCommentServiceImpl implements NoticeCommentService{
     @Override
     public void deleteNoticeComment(Long noticeCommentId) {
         NoticeComment noticeComment=validateNoticeComment(noticeCommentId);
+        validateUser(SecurityUtils.getLoggedInUser(),noticeComment);
         noticeComment.deleteNoticeComment();
     }
 
@@ -56,6 +59,16 @@ public class NoticeCommentServiceImpl implements NoticeCommentService{
             result.add(getNoticeCommentResponse);
         });
         return result;
+    }
+
+    /**
+     * 댓글을 작성한 유저인지 확인한느 메서드
+     * @param user
+     * @param noticeComment
+     */
+    private void validateUser(User user, NoticeComment noticeComment){
+        if(noticeComment.getUser()!=user)
+            throw new NotNoticeCommentWriterException();
     }
 
 

@@ -7,11 +7,14 @@ import com.modagbul.BE.domain.notice.dto.NoticeMapper;
 import com.modagbul.BE.domain.notice.entity.Notice;
 import com.modagbul.BE.domain.notice.exception.NotFoundNoticeIdException;
 import com.modagbul.BE.domain.notice.exception.NotFoundNoticeUserException;
+import com.modagbul.BE.domain.notice.exception.NotNoticeWriterException;
 import com.modagbul.BE.domain.notice.repository.NoticeRepository;
+import com.modagbul.BE.domain.notice_comment.exception.NotNoticeCommentWriterException;
 import com.modagbul.BE.domain.notice_read.entity.NoticeRead;
 import com.modagbul.BE.domain.notice_read.repository.NoticeReadRepository;
 import com.modagbul.BE.domain.team_member.entity.TeamMember;
 import com.modagbul.BE.domain.team_member.repository.TeamMemberRepository;
+import com.modagbul.BE.domain.user.entity.User;
 import com.modagbul.BE.domain.user.exception.NotFoundEmailException;
 import com.modagbul.BE.domain.user.repository.UserRepository;
 import com.modagbul.BE.global.config.security.util.SecurityUtils;
@@ -47,6 +50,7 @@ public class NoticeServiceImpl implements NoticeService{
     @Override
     public void deleteNotice(Long noticeId) {
         Notice notice=validateNotice(noticeId);
+        validateUser(SecurityUtils.getLoggedInUser(),notice);
         notice.deleteNotice();
     }
 
@@ -88,5 +92,10 @@ public class NoticeServiceImpl implements NoticeService{
                         notice)
                 .orElseThrow(()-> new NotFoundNoticeUserException());
         noticeRead.readNotice();
+    }
+
+    private void validateUser(User user, Notice notice){
+        if(notice.getUser()!=user)
+            throw new NotNoticeWriterException();
     }
 }
