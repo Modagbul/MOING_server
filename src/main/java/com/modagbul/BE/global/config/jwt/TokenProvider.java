@@ -1,7 +1,7 @@
 package com.modagbul.BE.global.config.jwt;
 
 import com.modagbul.BE.domain.user.entity.User;
-import com.modagbul.BE.domain.user.exception.NotHaveEmailException;
+import com.modagbul.BE.domain.user.exception.NotFoundEmailException;
 import com.modagbul.BE.domain.user.repository.UserRepository;
 import com.modagbul.BE.global.config.jwt.exception.*;
 import com.modagbul.BE.global.config.security.service.CustomUserDetails;
@@ -103,7 +103,7 @@ public class TokenProvider implements InitializingBean {
                         .map(SimpleGrantedAuthority::new)
                         .collect(Collectors.toList());
 
-        User user = this.userRepository.findByEmail(claims.getSubject()).orElseThrow(NotHaveEmailException::new);
+        User user = this.userRepository.findNotDeletedByEmail(claims.getSubject()).orElseThrow(NotFoundEmailException::new);
         return new UsernamePasswordAuthenticationToken(new CustomUserDetails(user), token, authorities);
     }
 

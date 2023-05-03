@@ -5,5 +5,6 @@ import com.modagbul.BE.domain.user.entity.User;
 import java.util.Optional;
 
 public interface UserRepositoryCustom {
-    Optional<User> findByEmail(String email);
+    Optional<User> findNotDeletedByEmail(String email);
+    Optional<User> findNotDeletedByNickName(String nickName);
 }

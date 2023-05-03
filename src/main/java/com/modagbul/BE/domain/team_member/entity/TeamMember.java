@@ -1,6 +1,6 @@
-package com.modagbul.BE.domain.teammember.entity;
+package com.modagbul.BE.domain.team_member.entity;
 
-import com.modagbul.BE.domain.noticeread.entity.NoticeRead;
+import com.modagbul.BE.domain.notice_read.entity.NoticeRead;
 import com.modagbul.BE.domain.team.entity.Team;
 import com.modagbul.BE.domain.user.entity.User;
 import lombok.AllArgsConstructor;
@@ -42,6 +42,7 @@ public class TeamMember {
 
     public void setUser(User user){
         this.user=user;
+        user.getTeamMembers().add(this);
     }
 
 }

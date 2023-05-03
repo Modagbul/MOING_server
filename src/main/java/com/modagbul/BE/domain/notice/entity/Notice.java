@@ -1,8 +1,8 @@
 package com.modagbul.BE.domain.notice.entity;
 
-import com.modagbul.BE.domain.noticeread.entity.NoticeRead;
+import com.modagbul.BE.domain.notice_comment.entity.NoticeComment;
+import com.modagbul.BE.domain.notice_read.entity.NoticeRead;
 import com.modagbul.BE.domain.team.entity.Team;
-import com.modagbul.BE.domain.teammember.entity.TeamMember;
 import com.modagbul.BE.global.entity.BaseTimeEntity;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -26,7 +26,10 @@ public class Notice extends BaseTimeEntity {
 
     private String title;
 
-    private String name;
+    @Lob
+    private String content;
+
+    private boolean isDeleted;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "team_id")
@@ -35,14 +38,21 @@ public class Notice extends BaseTimeEntity {
     @OneToMany(mappedBy = "notice")
     private List<NoticeRead> noticeReads = new ArrayList<>();
 
+    @OneToMany(mappedBy = "notice")
+    private List<NoticeComment> noticeComments=new ArrayList<>();
+
     public void setTeam(Team team){
         this.team=team;
         team.getNotices().add(this);
     }
 
-    public void createNotice(String title, String name){
+    public void createNotice(String title, String content){
         this.title=title;
-        this.name=name;
+        this.content=content;
+    }
+
+    public void deleteNotice(){
+        this.isDeleted=true;
     }
 
 }
