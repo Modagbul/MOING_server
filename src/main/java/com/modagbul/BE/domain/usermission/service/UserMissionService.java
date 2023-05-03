@@ -47,6 +47,26 @@ public class UserMissionService {
 
     }
 
+    public Status skipUserMission(Long teamId, Long missionId, String skipReason) {
+
+        Long userId = 4L;
+
+        User user = userRepository.findById(userId).orElseThrow(() -> new IllegalStateException("해당 유저를 찾을 수 없습니다."));
+        Team team = teamRepository.findById(teamId).orElseThrow(() -> new IllegalStateException("해당 팀을 찾을 수 없습니다."));
+        Mission mission = missionRepository.findById(missionId).orElseThrow(NotFoundMissionException::new);
+
+        UserMission userMission = new UserMission();
+        userMission.createUserMission(user,team,mission);
+
+        userMission.setPending(skipReason);
+        userMissionRepository.save(userMission);
+
+        return userMission.getStatus();
+
+    }
+
+
+
 
 
 }

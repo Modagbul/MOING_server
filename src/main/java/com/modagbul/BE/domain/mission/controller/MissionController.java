@@ -56,10 +56,15 @@ public class MissionController {
         return ResponseEntity.ok(ResponseDto.create(HttpStatus.OK.value(),GET_MISSION_DETAIL_SUCCESS.getMessage(),missionService.getMissionDetail(teamId,missionId)));
     }
     @ApiOperation(value = "개인별 미션 제출", notes = "개인별 미션을 제출합니다.")
-
     @PostMapping("/{missionId}/submit")
     public ResponseEntity<ResponseDto<Status>> submitMission(@PathVariable Long teamId, @PathVariable Long missionId, @RequestBody String submitUrl){
         return ResponseEntity.ok(ResponseDto.create(HttpStatus.OK.value(),SUBMIT_MISSION_SUCCESS.getMessage(),userMissionService.submitUserMission(teamId,missionId,submitUrl)));
+    }
+
+    @ApiOperation(value = "개인별 미션 건너뛰기", notes = "개인별 미션을 건너뛰기합니다.")
+    @PostMapping("/{missionId}/skip")
+    public ResponseEntity<ResponseDto<Status>> skipMission(@PathVariable Long teamId, @PathVariable Long missionId, @RequestBody String skipReason){
+        return ResponseEntity.ok(ResponseDto.create(HttpStatus.OK.value(),SUBMIT_MISSION_SUCCESS.getMessage(),userMissionService.skipUserMission(teamId,missionId,skipReason)));
     }
 
 
