@@ -8,7 +8,9 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotNull;
+import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 public abstract class NoticeDto {
 
@@ -22,14 +24,11 @@ public abstract class NoticeDto {
         @ApiModelProperty(notes = "공지 제목을 입력해 주세요.")
         private String title;
 
-        @NotNull(message = "소모임 id를 입력해 주세요.")
-        @ApiModelProperty(notes = "소모임 id를 입력해 주세요.")
-        private Long teamId;
-
         @NotBlank(message = "공지 내용을 입력해 주세요.")
         @ApiModelProperty(notes = "공지 내용을 입력해 주세요.")
         private String content;
     }
+
     @Getter
     @AllArgsConstructor
     @Builder
@@ -38,4 +37,22 @@ public abstract class NoticeDto {
     public static class CreateNoticeResponse {
         private Long noticeId;
     }
+
+    @Getter
+    @AllArgsConstructor
+    @Builder
+    @ApiModel(description = "공지 조회를 위한 응답 객체")
+    @NoArgsConstructor
+    public static class GetNoticeDetailsResponse {
+
+        private String title;
+        private String content;
+        private LocalDateTime createdDate;
+        private Long userId;
+        private String nickName;
+        private String userImageUrl;
+        private List<String> notReadUsersNickName = new ArrayList<>();
+
+    }
+
 }

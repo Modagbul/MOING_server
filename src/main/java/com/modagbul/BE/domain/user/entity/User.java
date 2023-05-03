@@ -1,6 +1,8 @@
 package com.modagbul.BE.domain.user.entity;
 
+import com.modagbul.BE.domain.notice.entity.Notice;
 import com.modagbul.BE.domain.notice_comment.entity.NoticeComment;
+import com.modagbul.BE.domain.notice_read.entity.NoticeRead;
 import com.modagbul.BE.domain.team_member.entity.TeamMember;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -48,6 +50,12 @@ public class User {
 
     @OneToMany(mappedBy = "user")
     private List<TeamMember> teamMembers=new ArrayList<>();
+
+    @OneToMany(mappedBy = "user")
+    private List<NoticeRead> noticeReads=new ArrayList<>();
+
+    @OneToMany(mappedBy = "user")
+    private List<Notice> notices=new ArrayList<>();
 
     @Builder
     public User(String email, String imageUrl, String gender, String ageRange, Role role){

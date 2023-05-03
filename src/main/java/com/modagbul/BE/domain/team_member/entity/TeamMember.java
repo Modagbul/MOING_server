@@ -32,8 +32,6 @@ public class TeamMember {
     @JoinColumn(name = "user_id")
     private User user;
 
-    @OneToMany(mappedBy = "teamMember")
-    private List<NoticeRead> noticeReads = new ArrayList<>();
 
     public void setTeam(Team team){
         this.team=team;
