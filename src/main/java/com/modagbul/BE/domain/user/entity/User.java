@@ -1,6 +1,7 @@
 package com.modagbul.BE.domain.user.entity;
 
-import com.modagbul.BE.domain.teammember.entity.TeamMember;
+import com.modagbul.BE.domain.notice_comment.entity.NoticeComment;
+import com.modagbul.BE.domain.team_member.entity.TeamMember;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -42,6 +43,12 @@ public class User {
     @Enumerated(EnumType.STRING)
     private Role role;
 
+    @OneToMany(mappedBy = "user")
+    private List<NoticeComment> noticeComments=new ArrayList<>();
+
+    @OneToMany(mappedBy = "user")
+    private List<TeamMember> teamMembers=new ArrayList<>();
+
     @Builder
     public User(String email, String imageUrl, String gender, String ageRange, Role role){
         this.email=email;
@@ -57,7 +64,6 @@ public class User {
     }
 
     public void setDeleted(){
-        this.email="withdrawal";
         this.isDeleted=true;
     }
 }

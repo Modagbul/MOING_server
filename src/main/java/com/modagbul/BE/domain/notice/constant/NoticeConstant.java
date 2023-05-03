@@ -2,13 +2,24 @@ package com.modagbul.BE.domain.notice.constant;
 
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 
 public class NoticeConstant {
     @Getter
     @RequiredArgsConstructor
     public enum ENoticeResponseMessage {
-        CREATE_NOTICE_SUCCESS("공지를 생성하였습니다");
+        CREATE_NOTICE_SUCCESS("공지를 생성하였습니다"),
+        DELETE_NOTICE_SUCCESS("공지를 삭제하였습니다");
 
+        private final String message;
+    }
+
+    @Getter
+    @RequiredArgsConstructor
+    public enum NoticeExceptionList{
+        NOT_HAVE_NOTICEID_ERROR("N0001", HttpStatus.NOT_FOUND, "해당 NoticeId인 공지가 존재하지 않습니다");
+        private final String errorCode;
+        private final HttpStatus httpStatus;
         private final String message;
     }
 }

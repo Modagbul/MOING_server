@@ -1,7 +1,7 @@
-package com.modagbul.BE.domain.noticeread.entity;
+package com.modagbul.BE.domain.notice_read.entity;
 
 import com.modagbul.BE.domain.notice.entity.Notice;
-import com.modagbul.BE.domain.teammember.entity.TeamMember;
+import com.modagbul.BE.domain.team_member.entity.TeamMember;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;

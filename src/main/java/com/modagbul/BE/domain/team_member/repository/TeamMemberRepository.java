@@ -1,7 +1,7 @@
-package com.modagbul.BE.domain.teammember.repository;
+package com.modagbul.BE.domain.team_member.repository;
 
 import com.modagbul.BE.domain.team.entity.Team;
-import com.modagbul.BE.domain.teammember.entity.TeamMember;
+import com.modagbul.BE.domain.team_member.entity.TeamMember;
 import com.modagbul.BE.domain.user.entity.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 

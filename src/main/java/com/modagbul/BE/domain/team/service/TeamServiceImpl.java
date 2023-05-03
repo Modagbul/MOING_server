@@ -10,11 +10,13 @@ import com.modagbul.BE.domain.team.entity.Team;
 import com.modagbul.BE.domain.team.exception.AccessException;
 import com.modagbul.BE.domain.team.exception.AlreadyJoinException;
 import com.modagbul.BE.domain.team.exception.AuthenticationException;
-import com.modagbul.BE.domain.team.exception.NotHavaTeamIdException;
+import com.modagbul.BE.domain.team.exception.NotFoundTeamIdException;
 import com.modagbul.BE.domain.team.repository.TeamRepository;
-import com.modagbul.BE.domain.teammember.entity.TeamMember;
-import com.modagbul.BE.domain.teammember.repository.TeamMemberRepository;
+import com.modagbul.BE.domain.team_member.entity.TeamMember;
+import com.modagbul.BE.domain.team_member.repository.TeamMemberRepository;
 import com.modagbul.BE.domain.user.entity.User;
+import com.modagbul.BE.domain.user.exception.NotFoundEmailException;
+import com.modagbul.BE.domain.user.repository.UserRepository;
 import com.modagbul.BE.global.config.security.util.SecurityUtils;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -35,6 +37,8 @@ public class TeamServiceImpl implements TeamService {
     private final TeamRepository teamRepository;
 
     private final TeamMemberRepository teamMemberRepository;
+
+    private final UserRepository userRepository;
     @Override
     public CreateTeamResponse createTeam(CreateTeamRequest createTeamRequest) {
         Team team= teamMapper.toEntity(createTeamRequest);
@@ -57,14 +61,14 @@ public class TeamServiceImpl implements TeamService {
 
     @Override
     public GetTeamInfo getTeamInfo(Long teamId) {
-        Team team=teamRepository.findById(teamId).orElseThrow(NotHavaTeamIdException::new);
+        Team team=teamRepository.findById(teamId).orElseThrow(NotFoundTeamIdException::new);
         this.checkLeader(team);
         return teamMapper.toGetTeamInfo(team);
     }
 
     @Override
     public void updateTeam(TeamDto.UpdateTeamRequest updateTeamRequest) {
-        Team team=teamRepository.findById(updateTeamRequest.getTeamId()).orElseThrow(NotHavaTeamIdException::new);
+        Team team=teamRepository.findById(updateTeamRequest.getTeamId()).orElseThrow(NotFoundTeamIdException::new);
         this.checkLeader(team);
         team.updateTeam(updateTeamRequest.getName(), LocalDate.parse(updateTeamRequest.getEndDate()), updateTeamRequest.getProfileImg());
     }
@@ -72,7 +76,7 @@ public class TeamServiceImpl implements TeamService {
     private void addTeamMember(Team team) {
 
         TeamMember teamMember=new TeamMember();
-        User user=SecurityUtils.getLoggedInUser();
+        User user=userRepository.findById(SecurityUtils.getLoggedInUser().getUserId()).orElseThrow(NotFoundEmailException::new);
 
         //1. 중복 검사
         if(teamMemberRepository.findByTeamAndUser(team, user).isPresent()){

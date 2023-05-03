@@ -1,7 +1,5 @@
 package com.modagbul.BE.domain.notice.dto;
 
-import com.modagbul.BE.domain.team.constant.TeamConstant;
-import com.modagbul.BE.global.annotation.Enum;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.AllArgsConstructor;
@@ -41,4 +39,14 @@ public abstract class NoticeDto {
         private Long noticeId;
     }
 
+    @Getter
+    @AllArgsConstructor
+    @Builder
+    @ApiModel(description = "공지 삭제를 위한 응답 객체")
+    @NoArgsConstructor
+    public static class DeleteNoticeRequest {
+        @NotNull(message = "공지사항 id를 입력해 주세요.")
+        @ApiModelProperty(notes = "공지사항 id를 입력해 주세요.")
+        private Long noticeId;
+    }
 }

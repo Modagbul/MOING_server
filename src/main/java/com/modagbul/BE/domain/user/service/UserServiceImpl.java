@@ -7,7 +7,7 @@ import com.modagbul.BE.domain.user.dto.UserDto.CheckNicknameResponse;
 import com.modagbul.BE.domain.user.dto.UserDto.LoginResponse;
 import com.modagbul.BE.domain.user.entity.User;
 import com.modagbul.BE.domain.user.exception.ConnException;
-import com.modagbul.BE.domain.user.exception.NotHaveEmailException;
+import com.modagbul.BE.domain.user.exception.NotFoundEmailException;
 import com.modagbul.BE.domain.user.repository.UserRepository;
 import com.modagbul.BE.global.config.jwt.TokenProvider;
 import com.modagbul.BE.global.config.security.util.SecurityUtils;
@@ -82,7 +82,8 @@ public class UserServiceImpl implements UserService {
         //추가 정보 입력 시
         //1. 프론트엔드에게 받은 (자체) 액세스 토큰 이용해서 사용자 이메일 가져오기
         Authentication authentication = tokenProvider.getAuthentication(additionInfoRequest.getAccessToken());
-        User user = userRepository.findByEmail(authentication.getName()).get();
+        System.out.println(authentication.getName());
+        User user = validateEmail(authentication.getName());
         //2. 추가 정보 저장
         user.setUser(additionInfoRequest.getNickName(), additionInfoRequest.getAddress());
         userRepository.save(user);
@@ -102,14 +103,14 @@ public class UserServiceImpl implements UserService {
     public void deleteAccount(UserDto.LoginRequest loginRequest) {
         String token = loginRequest.getToken();
         JsonObject response = connectKakao(DELETE_URL, token);
-        User user = SecurityUtils.getLoggedInUser();
+        User user = validateEmail(SecurityUtils.getLoggedInUser().getEmail());
         user.setDeleted();
         userRepository.save(user);
     }
 
     @Override
     public CheckNicknameResponse checkNickname(String nickName) {
-        if(this.userRepository.findByNickName(nickName.trim()).isPresent()){
+        if(this.userRepository.findNotDeletedByNickName(nickName.trim()).isPresent()){
             return new CheckNicknameResponse(EXISTED_NCIKNAME);
         }else{
             return new CheckNicknameResponse(VALID_NICKNAME);
@@ -118,8 +119,9 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public User validateEmail(String email) {
-        return this.userRepository.findByEmail(email).orElseThrow(NotHaveEmailException::new);
+        return this.userRepository.findNotDeletedByEmail(email).orElseThrow(()->new NotFoundEmailException());
     }
+
 
     private OAuth2User createOAuth2UserByUser(List<GrantedAuthority> authorities, User user, UserDto.AdditionInfoRequest additionInfoRequest) {
         Map userMap = new HashMap<String, String>();
@@ -172,7 +174,7 @@ public class UserServiceImpl implements UserService {
         if (userInfo.getAsJsonObject(KAKAO_ACOUNT).get("has_email").getAsBoolean()) {
             return userInfo.getAsJsonObject(KAKAO_ACOUNT).get("email").getAsString();
         }
-        throw new NotHaveEmailException();
+        throw new NotFoundEmailException();
     }
 
     private String getPictureUrl(JsonObject userInfo) {
@@ -198,10 +200,10 @@ public class UserServiceImpl implements UserService {
 
     private User saveUser(String email, String pictureUrl, String gender, String ageRange) {
         User user = new User(email, pictureUrl, gender, ageRange, ROLE_USER);
-        if (!userRepository.findByEmail(email).isPresent()) {
+        if (!userRepository.findNotDeletedByEmail(email).isPresent()) {
             return userRepository.save(user);
         }
-        return userRepository.findByEmail(email).get();
+        return userRepository.findNotDeletedByEmail(email).get();
     }
 
 }
