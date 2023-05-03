@@ -13,6 +13,7 @@ import com.modagbul.BE.domain.usermission.constant.Status;
 import com.modagbul.BE.domain.usermission.dto.UserMissionDetailDto;
 import com.modagbul.BE.domain.usermission.exception.NotFoundUserMissionsException;
 import com.modagbul.BE.domain.usermission.repository.UserMissionRepository;
+import com.modagbul.BE.global.config.security.util.SecurityUtils;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -36,7 +37,7 @@ public class MissionService {
     public MissionRes createMission(Long teamId, MissionReq missionReq) {
 
         //  로그인한 사용자의 id
-        Long loginId = 4L;
+        Long loginId = SecurityUtils.getLoggedInUser().getUserId();
 
         // 로그인한 사용자가 소모임장인지 확인 -> 팀 leaderid 확인
         Team findteam = teamRepository.findById(teamId).orElseThrow(() -> new IllegalStateException("해당 팀을 찾을 수 없습니다."));
@@ -69,7 +70,7 @@ public class MissionService {
     public MissionRes updateMission(Long teamId, Long missionId, MissionReq missionReq) {
 
         // 소모임장인지 확인
-        Long userId = 1L;
+        Long userId = SecurityUtils.getLoggedInUser().getUserId();
 
         Long findId = missionRepository.findLeaderIdByTeamIdAndMissionId(teamId,missionId).orElseThrow(NotFoundMissionException::new);
 
@@ -93,7 +94,7 @@ public class MissionService {
     // 개인별 미션 리스트 조회
     public List<MissionListDto> getMissionList(Long teamId){
 
-        Long userId = 4L;
+        Long userId = SecurityUtils.getLoggedInUser().getUserId();
         List<MissionListDto> missionListDtos = missionRepository.findMissionListById(teamId).orElseThrow(NotFoundUserMissionsException::new);
         for (MissionListDto missionListDto : missionListDtos) {
             missionListDto.setStatus(userMissionRepository.findUserMissionStatusById(userId,teamId, missionListDto.getMissionId()).orElse(Status.INCOMPLETE));
@@ -104,7 +105,7 @@ public class MissionService {
 
     // 개인별 미션 상세 페이지 조회
     public MissionDetailDto getMissionDetail(Long teamId, Long missionId) {
-        Long userId = 4L;
+        Long userId = SecurityUtils.getLoggedInUser().getUserId();
         MissionDetailDto missionDetailDto = missionRepository.findMissionDetailById(teamId, missionId).orElseThrow(NotFoundMissionException::new);
         missionDetailDto.setStatus(userMissionRepository.findUserMissionStatusById(userId, teamId, missionId).orElse(Status.INCOMPLETE));
         return missionDetailDto;
