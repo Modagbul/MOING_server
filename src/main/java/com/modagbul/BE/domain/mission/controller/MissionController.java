@@ -64,7 +64,7 @@ public class MissionController {
     @ApiOperation(value = "개인별 미션 건너뛰기", notes = "개인별 미션을 건너뛰기합니다.")
     @PostMapping("/{missionId}/skip")
     public ResponseEntity<ResponseDto<Status>> skipMission(@PathVariable Long teamId, @PathVariable Long missionId, @RequestBody String skipReason){
-        return ResponseEntity.ok(ResponseDto.create(HttpStatus.OK.value(),SUBMIT_MISSION_SUCCESS.getMessage(),userMissionService.skipUserMission(teamId,missionId,skipReason)));
+        return ResponseEntity.ok(ResponseDto.create(HttpStatus.OK.value(),SKIP_MISSION_SUCCESS.getMessage(),userMissionService.skipUserMission(teamId,missionId,skipReason)));
     }
 
 

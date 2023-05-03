@@ -17,7 +17,8 @@ public class MissionConstant {
 
         GET_MISSION_LIST_SUCCESS("개인별 미션 리스트 조회 성공"),
         GET_MISSION_DETAIL_SUCCESS("개인별 미션 상세 조회 성공"),
-        SUBMIT_MISSION_SUCCESS("개인별 미션 제출 성공");
+        SUBMIT_MISSION_SUCCESS("개인별 미션 제출 성공"),
+        SKIP_MISSION_SUCCESS("개인별 미션 건너뛰기 성공");
 
 
         private final String message;
