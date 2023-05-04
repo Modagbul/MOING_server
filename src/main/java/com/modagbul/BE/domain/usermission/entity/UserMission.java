@@ -12,6 +12,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import java.util.Objects;
 
 
 @Entity
@@ -55,5 +56,16 @@ public class UserMission extends BaseTimeEntity {
         this.status = Status.PENDING;
     }
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof UserMission)) return false;
+        UserMission that = (UserMission) o;
+        return status == that.status;
+    }
 
+    @Override
+    public int hashCode() {
+        return Objects.hash(status);
+    }
 }

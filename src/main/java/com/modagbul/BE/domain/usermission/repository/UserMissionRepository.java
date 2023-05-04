@@ -15,10 +15,6 @@ import java.util.Optional;
 @Repository
 public interface UserMissionRepository extends JpaRepository<UserMission, Long> {
 
-    @Query(value = "select new com.modagbul.BE.domain.usermission.dto.UserMissionListDto(um.mission.missionId,um.mission.title,um.mission.dueTo,um.status)" +
-            "from UserMission um " +
-            "where um.team.teamId = :teamId and um.user.userId = :userId")
-    Optional<List<UserMissionListDto>> findUserMissionListById(@Param("teamId") Long teamId, @Param("userId") Long userId);
 
     @Query(value = " select new com.modagbul.BE.domain.usermission.dto.UserMissionDetailDto(um.mission.title,um.mission.dueTo,um.mission.content,um.mission.rule, um.status)" +
             "from UserMission um " +
@@ -27,5 +23,14 @@ public interface UserMissionRepository extends JpaRepository<UserMission, Long> 
 
 
     @Query("select um.status from UserMission um where um.user.userId = :userId and um.team.teamId = :teamId and um.mission.missionId = :missionId")
-    Optional<Status> findUserMissionStatusById(@Param("userId") Long userId,@Param("teamId") Long teamId,@Param("missionId") Long missionId);
+    Optional<Status> findUserMissionStatusById(@Param("userId") Long userId, @Param("teamId") Long teamId, @Param("missionId") Long missionId);
+
+
+    @Query(value = "select new com.modagbul.BE.domain.usermission.dto.UserMissionListDto(" +
+            "um.userMissionId,um.user.nickName,um.user.imageUrl,um.status,um.achieve,um.lastModifiedDate) " +
+            "from UserMission um " +
+            "where um.team.teamId = :teamId and um.mission.missionId = :missionId and um.status = :status")
+    Optional<List<UserMissionListDto>> findCompleteUserMissionListById(@Param("teamId") Long teamId, @Param("missionId") Long missionId, @Param("status") Status status);
+
+
 }

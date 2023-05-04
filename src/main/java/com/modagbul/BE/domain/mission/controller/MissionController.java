@@ -8,6 +8,7 @@ import com.modagbul.BE.domain.user.dto.UserDto;
 import com.modagbul.BE.domain.usermission.constant.Status;
 import com.modagbul.BE.domain.usermission.dto.UserMissionDetailDto;
 import com.modagbul.BE.domain.usermission.dto.UserMissionListDto;
+import com.modagbul.BE.domain.usermission.dto.UserMissionStatusDto;
 import com.modagbul.BE.domain.usermission.service.UserMissionService;
 import com.modagbul.BE.global.dto.ResponseDto;
 import io.swagger.annotations.Api;
@@ -66,6 +67,15 @@ public class MissionController {
     public ResponseEntity<ResponseDto<Status>> skipMission(@PathVariable Long teamId, @PathVariable Long missionId, @RequestBody String skipReason){
         return ResponseEntity.ok(ResponseDto.create(HttpStatus.OK.value(),SKIP_MISSION_SUCCESS.getMessage(),userMissionService.skipUserMission(teamId,missionId,skipReason)));
     }
+
+    @ApiOperation(value = "개인별 미션 인증 현황", notes = "개인별 미션 인증 현황을 조회합니다..")
+    @GetMapping("/{missionId}/status")
+    public ResponseEntity<ResponseDto<UserMissionStatusDto>> skipMission(@PathVariable Long teamId, @PathVariable Long missionId){
+        return ResponseEntity.ok(ResponseDto.create(HttpStatus.OK.value(),SKIP_MISSION_SUCCESS.getMessage(),userMissionService.getUserMissionList(teamId,missionId)));
+    }
+
+
+
 
 
 }
