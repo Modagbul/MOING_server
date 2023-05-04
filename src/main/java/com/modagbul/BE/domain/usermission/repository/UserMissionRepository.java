@@ -29,8 +29,8 @@ public interface UserMissionRepository extends JpaRepository<UserMission, Long> 
     @Query(value = "select new com.modagbul.BE.domain.usermission.dto.UserMissionListDto(" +
             "um.userMissionId,um.user.nickName,um.user.imageUrl,um.status,um.achieve,um.lastModifiedDate) " +
             "from UserMission um " +
-            "where um.team.teamId = :teamId and um.mission.missionId = :missionId and um.status = :status")
-    Optional<List<UserMissionListDto>> findCompleteUserMissionListById(@Param("teamId") Long teamId, @Param("missionId") Long missionId, @Param("status") Status status);
+            "where um.team.teamId = :teamId and um.mission.missionId = :missionId and um.status = :hi")
+    Optional<List<UserMissionListDto>> findCompleteUserMissionListById(@Param("teamId") Long teamId, @Param("missionId") Long missionId,Status hi);
 
 
 }
