@@ -12,7 +12,7 @@ import java.util.List;
 public class UserMissionStatusDto {
 
     private String title;
-    private String dueTo; // 남은 기간
+    private String remainDay; // 남은 기간
     private int completeUser;
     private int incompleteUser;
 
@@ -31,7 +31,7 @@ public class UserMissionStatusDto {
 
     }
 
-    public void setDueTo(String dueTo) {
-        this.dueTo = dueTo;
+    public void setRemainDay(String remainDay) {
+        this.remainDay = remainDay;
     }
 }

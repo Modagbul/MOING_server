@@ -19,6 +19,9 @@ import com.modagbul.BE.global.config.security.util.SecurityUtils;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 
 @Service
@@ -70,22 +73,42 @@ public class UserMissionService {
         Long userId = SecurityUtils.getLoggedInUser().getUserId();
         Mission mission = missionRepository.findById(missionId).orElseThrow(NotFoundMissionException::new);
 
-
         UserMissionStatusDto userMissionStatusDto = new UserMissionStatusDto(
                 mission.getTitle(),
                 userMissionRepository.findCompleteUserMissionListById(teamId, missionId, Status.COMPLETE).orElseThrow(NotFoundUserMissionsException::new),
                 userMissionRepository.findCompleteUserMissionListById(teamId, missionId, Status.INCOMPLETE).orElseThrow(NotFoundUserMissionsException::new)
 
         );
+        // pending list append
         userMissionStatusDto.getCompleteList().addAll(userMissionRepository.findCompleteUserMissionListById(teamId, missionId, Status.PENDING).orElseThrow(NotFoundUserMissionsException::new));
+        // complete/incomplete num
         int completeSize = userMissionStatusDto.getCompleteList().size();
         int incompleteSize = userMissionStatusDto.getIncompleteList().size();
-
         userMissionStatusDto.setUserNum(completeSize,incompleteSize);
+        userMissionStatusDto.setRemainDay(getRemainPeriod(mission.getDueTo()));
 
         return userMissionStatusDto;
 
+    }
+    // remain peroiod calculate
+    public String getRemainPeriod(String dueTo) {
+        try {
+            SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm");
+            Date dueToDate = format.parse(dueTo);
+            Date now = new Date();
 
+            long diffInMillis = dueToDate.getTime() - now.getTime();
+            long diffInSeconds = diffInMillis / 1000;
+            long diffInMinutes = diffInSeconds / 60;
+            long diffInHours = diffInMinutes / 60;
+            long diffInDays = diffInHours / 24;
+
+            return Long.toString(diffInDays);
+
+           } catch(ParseException e) {
+            e.printStackTrace();
+        }
+        return null;
     }
 
 
