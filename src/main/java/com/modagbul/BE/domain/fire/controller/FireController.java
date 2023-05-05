@@ -23,8 +23,8 @@ public class FireController {
     private final FireService fireService;
 
     @ApiOperation(value = "불 던지기", notes = "해당 미션에 불을 던집니다.")
-    @PostMapping("{missionId}/{userMissionId}/fire")
-    public ResponseEntity<ResponseDto<Long>> throwFire(@PathVariable Long missionId , @PathVariable Long teamId, @PathVariable Long userMissionId){
+    @PostMapping("{missionId}/fire/{userMissionId}")
+    public ResponseEntity<ResponseDto<Long>> throwFire(@PathVariable Long missionId , @PathVariable Long userMissionId){
         return ResponseEntity.ok(ResponseDto.create(HttpStatus.OK.value(),THROW_FIRE_SUCCESS.getMessage(),fireService.fire(userMissionId)));
     }
 

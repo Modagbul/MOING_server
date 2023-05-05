@@ -1,5 +1,6 @@
 package com.modagbul.BE.domain.usermission.service;
 
+import com.modagbul.BE.domain.fire.repository.FireRepository;
 import com.modagbul.BE.domain.mission.Exception.NotFoundMissionException;
 import com.modagbul.BE.domain.mission.entity.Mission;
 import com.modagbul.BE.domain.mission.repository.MissionRepository;
@@ -32,6 +33,7 @@ public class UserMissionService {
     private final TeamRepository teamRepository;
     private final MissionRepository missionRepository;
     private final UserRepository userRepository;
+    private final FireRepository fireRepository;
 
 
     public Status submitUserMission(Long teamId, Long missionId, String submitUrl) {
@@ -76,11 +78,13 @@ public class UserMissionService {
         UserMissionStatusDto userMissionStatusDto = new UserMissionStatusDto(
                 mission.getTitle(),
                 userMissionRepository.findCompleteUserMissionListById(teamId, missionId, Status.COMPLETE).orElseThrow(NotFoundUserMissionsException::new),
-                userMissionRepository.findCompleteUserMissionListById(teamId, missionId, Status.INCOMPLETE).orElseThrow(NotFoundUserMissionsException::new)
+                userMissionRepository.findInCompleteUserMissionListById(teamId, missionId, Status.INCOMPLETE).orElseThrow(NotFoundUserMissionsException::new)
 
         );
         // pending list append
         userMissionStatusDto.getCompleteList().addAll(userMissionRepository.findCompleteUserMissionListById(teamId, missionId, Status.PENDING).orElseThrow(NotFoundUserMissionsException::new));
+        userMissionStatusDto.setFireUserMissionList(fireRepository.findFireByUserId(userId,missionId).orElseThrow(NotFoundUserMissionsException::new));
+
         // complete/incomplete num
         int completeSize = userMissionStatusDto.getCompleteList().size();
         int incompleteSize = userMissionStatusDto.getIncompleteList().size();
