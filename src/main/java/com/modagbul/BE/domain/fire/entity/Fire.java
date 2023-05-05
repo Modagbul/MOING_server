@@ -3,6 +3,7 @@ package com.modagbul.BE.domain.fire.entity;
 import com.modagbul.BE.domain.mission.entity.Mission;
 import com.modagbul.BE.domain.team.entity.Team;
 import com.modagbul.BE.domain.user.entity.User;
+import com.modagbul.BE.domain.usermission.entity.UserMission;
 
 import javax.persistence.*;
 
@@ -12,20 +13,18 @@ public class Fire {
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long fireId;
 
-    @OneToOne
-    private Team team;
-    @OneToOne
-    private Mission mission;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "user_mission_id")
+    private UserMission targetUserMission;
 
-    @OneToOne
-    private User user;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "user_id")
+    private User throwUser;
 
-    @OneToOne
-    private User targetUser;
-
-
-
-
+    public void createFire(UserMission targetUserMission, User throwUser){
+        this.targetUserMission = targetUserMission;
+        this.throwUser = throwUser;
+    }
 
 
 }
