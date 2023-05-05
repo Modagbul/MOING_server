@@ -9,8 +9,11 @@ import com.modagbul.BE.domain.user.repository.UserRepository;
 import com.modagbul.BE.domain.vote.board.dto.VoteDto;
 import com.modagbul.BE.domain.vote.board.dto.VoteDto.CreateVoteRequest;
 import com.modagbul.BE.domain.vote.board.dto.VoteDto.CreateVoteResponse;
+import com.modagbul.BE.domain.vote.board.dto.VoteDto.DoVoteRequest;
 import com.modagbul.BE.domain.vote.board.dto.VoteMapper;
 import com.modagbul.BE.domain.vote.board.entity.Vote;
+import com.modagbul.BE.domain.vote.board.exception.NotFoundVoteContentException;
+import com.modagbul.BE.domain.vote.board.exception.NotFoundVoteIdException;
 import com.modagbul.BE.domain.vote.board.exception.NotFoundVoteUserException;
 import com.modagbul.BE.domain.vote.board.repository.VoteRepository;
 import com.modagbul.BE.domain.vote.content.entity.VoteContent;
@@ -53,18 +56,36 @@ public class VoteServiceImpl implements VoteService{
         return new CreateVoteResponse(vote.getVoteId());
     }
 
+    @Override
+    public void doVote(Long voteId, DoVoteRequest doVoteRequest) {
+        Vote vote=voteRepository.findById(voteId).orElseThrow(()->new NotFoundVoteIdException());
+        updateVoteContent(doVoteRequest, vote);
+        updateVoteRead(vote);
+    }
+
     /**
      * 투표 선택지를 저장하는 메서드
      * @param createVoteRequest
      */
     private void createVoteContent(CreateVoteRequest createVoteRequest, Vote vote){
         List<String> contents=createVoteRequest.getChoices();
-        System.out.println(contents.toString());
         contents.stream().forEach(content->{
             VoteContent voteContent=new VoteContent();
             voteContent.setContent(content);
             voteContent.setVote(vote);
             voteContentRepository.save(voteContent);
+        });
+    }
+
+    /**
+     * 투표할 때 투표 선택지를 업데이트하는 메서드
+     * @param doVoteRequest
+     */
+    private void updateVoteContent(DoVoteRequest doVoteRequest, Vote vote){
+        List<String> contents=doVoteRequest.getChoices();
+        contents.stream().forEach(content->{
+            VoteContent voteContent=voteContentRepository.findByContentAndVote(content, vote).orElseThrow(()->new NotFoundVoteContentException());
+            voteContent.setUsers(SecurityUtils.getLoggedInUser());
         });
     }
 

@@ -17,7 +17,7 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 @Getter
-@Table(name="vote_content")
+@Table(name = "vote_content")
 public class VoteContent {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -28,18 +28,27 @@ public class VoteContent {
 
     //선택한 사람
     @OneToMany
-    private List<User> users=new ArrayList<>();
+    private List<User> users = new ArrayList<>();
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "vote_id")
     private Vote vote;
 
-    public void setContent(String content){
-        this.content=content;
+    public void setContent(String content) {
+        this.content = content;
     }
 
-    public void setVote(Vote vote){
-        this.vote=vote;
+    public void setUsers(User user) {
+        this.users.add(user);
+    }
+
+    /**
+     * 연관관계 매핑
+     */
+    public void setVote(Vote vote) {
+        this.vote = vote;
         vote.getVoteContents().add(this);
     }
+
+
 }

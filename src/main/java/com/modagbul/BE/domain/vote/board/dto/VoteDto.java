@@ -52,4 +52,16 @@ public abstract class VoteDto {
         private Long voteId;
     }
 
+    @Getter
+    @AllArgsConstructor
+    @Builder
+    @ApiModel(description = "투표하기를 위한 요청 객체")
+    @NoArgsConstructor
+    public static class DoVoteRequest {
+
+        //선택한 투표 -> 복수투표, 일반투표 모두 가능
+        private List<String> choices=new ArrayList<>();
+
+    }
+
 }
