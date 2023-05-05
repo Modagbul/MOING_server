@@ -71,13 +71,19 @@ public class UserMissionService {
         Mission mission = missionRepository.findById(missionId).orElseThrow(NotFoundMissionException::new);
 
 
-        return  new UserMissionStatusDto(
-            mission.getTitle(),mission.getDueTo(),6L,
-            userMissionRepository.findCompleteUserMissionListById(teamId,missionId,Status.COMPLETE).orElseThrow(NotFoundUserMissionsException::new),
-            userMissionRepository.findCompleteUserMissionListById(teamId,missionId,Status.INCOMPLETE).orElseThrow(NotFoundUserMissionsException::new),
-            userMissionRepository.findCompleteUserMissionListById(teamId,missionId,Status.PENDING).orElseThrow(NotFoundUserMissionsException::new)
+        UserMissionStatusDto userMissionStatusDto = new UserMissionStatusDto(
+                mission.getTitle(),
+                userMissionRepository.findCompleteUserMissionListById(teamId, missionId, Status.COMPLETE).orElseThrow(NotFoundUserMissionsException::new),
+                userMissionRepository.findCompleteUserMissionListById(teamId, missionId, Status.INCOMPLETE).orElseThrow(NotFoundUserMissionsException::new)
 
         );
+        userMissionStatusDto.getCompleteList().addAll(userMissionRepository.findCompleteUserMissionListById(teamId, missionId, Status.PENDING).orElseThrow(NotFoundUserMissionsException::new));
+        int completeSize = userMissionStatusDto.getCompleteList().size();
+        int incompleteSize = userMissionStatusDto.getIncompleteList().size();
+
+        userMissionStatusDto.setUserNum(completeSize,incompleteSize);
+
+        return userMissionStatusDto;
 
 
     }
