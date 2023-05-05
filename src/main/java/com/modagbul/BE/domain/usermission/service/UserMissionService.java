@@ -76,7 +76,7 @@ public class UserMissionService {
         UserMissionStatusDto userMissionStatusDto = new UserMissionStatusDto(
                 mission.getTitle(),
                 userMissionRepository.findCompleteUserMissionListById(teamId, missionId, Status.COMPLETE).orElseThrow(NotFoundUserMissionsException::new),
-                userMissionRepository.findCompleteUserMissionListById(teamId, missionId, Status.INCOMPLETE).orElseThrow(NotFoundUserMissionsException::new)
+                userMissionRepository.findInCompleteUserMissionListById(teamId, missionId, Status.INCOMPLETE).orElseThrow(NotFoundUserMissionsException::new)
 
         );
         // pending list append
