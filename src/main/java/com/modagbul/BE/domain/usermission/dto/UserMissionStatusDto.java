@@ -12,10 +12,26 @@ import java.util.List;
 public class UserMissionStatusDto {
 
     private String title;
-    private String dueTo; // 남은 기간
-    private Long statusNum;
+    private String remainDay; // 남은 기간
+    private int completeUser;
+    private int incompleteUser;
+
     private List<UserMissionListDto> CompleteList;
     private List<UserMissionListDto> IncompleteList;
-    private List<UserMissionListDto> PendingList;
 
+    public UserMissionStatusDto(String title, List<UserMissionListDto> completeList, List<UserMissionListDto> incompleteList) {
+        this.title = title;
+        CompleteList = completeList;
+        IncompleteList = incompleteList;
+    }
+
+    public void setUserNum(int completeUser, int incompleteUser) {
+        this.completeUser = completeUser;
+        this.incompleteUser = incompleteUser;
+
+    }
+
+    public void setRemainDay(String remainDay) {
+        this.remainDay = remainDay;
+    }
 }
