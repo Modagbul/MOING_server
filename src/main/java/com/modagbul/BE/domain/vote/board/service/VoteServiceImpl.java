@@ -4,17 +4,23 @@ import com.modagbul.BE.domain.notice.board.exception.NotFoundNoticeUserException
 import com.modagbul.BE.domain.notice.board.dto.NoticeDto;
 import com.modagbul.BE.domain.team_member.entity.TeamMember;
 import com.modagbul.BE.domain.team_member.repository.TeamMemberRepository;
+import com.modagbul.BE.domain.user.entity.User;
 import com.modagbul.BE.domain.user.exception.NotFoundEmailException;
 import com.modagbul.BE.domain.user.repository.UserRepository;
 import com.modagbul.BE.domain.vote.board.dto.VoteDto;
 import com.modagbul.BE.domain.vote.board.dto.VoteDto.CreateVoteRequest;
 import com.modagbul.BE.domain.vote.board.dto.VoteDto.CreateVoteResponse;
+import com.modagbul.BE.domain.vote.board.dto.VoteDto.DoVoteRequest;
 import com.modagbul.BE.domain.vote.board.dto.VoteMapper;
 import com.modagbul.BE.domain.vote.board.entity.Vote;
+import com.modagbul.BE.domain.vote.board.exception.NotFoundVoteContentException;
+import com.modagbul.BE.domain.vote.board.exception.NotFoundVoteIdException;
 import com.modagbul.BE.domain.vote.board.exception.NotFoundVoteUserException;
 import com.modagbul.BE.domain.vote.board.repository.VoteRepository;
 import com.modagbul.BE.domain.vote.content.entity.VoteContent;
 import com.modagbul.BE.domain.vote.content.repository.VoteContentRepository;
+import com.modagbul.BE.domain.vote.content.user.VoteContentUser;
+import com.modagbul.BE.domain.vote.content.user.VoteContentUserRepository;
 import com.modagbul.BE.domain.vote.read.entity.VoteRead;
 import com.modagbul.BE.domain.vote.read.repository.VoteReadRepository;
 import com.modagbul.BE.global.config.security.util.SecurityUtils;
@@ -38,6 +44,8 @@ public class VoteServiceImpl implements VoteService{
     private final VoteReadRepository voteReadRepository;
     private final UserRepository userRepository;
 
+    private final VoteContentUserRepository voteContentUserRepository;
+
     @Override
     public CreateVoteResponse createVote(Long teamId, CreateVoteRequest createVoteRequest) {
         //1. 투표  생성, 저장
@@ -49,8 +57,14 @@ public class VoteServiceImpl implements VoteService{
 
         //3. 투표-읽음 db 생성
         createVoteRead(teamId, vote);
-        System.out.println("3");
         return new CreateVoteResponse(vote.getVoteId());
+    }
+
+    @Override
+    public void doVote(Long voteId, DoVoteRequest doVoteRequest) {
+        Vote vote=voteRepository.findById(voteId).orElseThrow(()->new NotFoundVoteIdException());
+        updateVoteContent(doVoteRequest, vote);
+        updateVoteRead(vote);
     }
 
     /**
@@ -59,7 +73,6 @@ public class VoteServiceImpl implements VoteService{
      */
     private void createVoteContent(CreateVoteRequest createVoteRequest, Vote vote){
         List<String> contents=createVoteRequest.getChoices();
-        System.out.println(contents.toString());
         contents.stream().forEach(content->{
             VoteContent voteContent=new VoteContent();
             voteContent.setContent(content);
@@ -69,8 +82,27 @@ public class VoteServiceImpl implements VoteService{
     }
 
     /**
+     * 투표할 때 투표 선택지를 업데이트하는 메서드 : 이때 해당 유저가 기존에 투표했던거는 삭제
+     * @param doVoteRequest
+     */
+    private void updateVoteContent(DoVoteRequest doVoteRequest, Vote vote){
+        //해당 유저가 기존에 투표했던 거 삭제
+        voteContentUserRepository.deleteAllByUser(SecurityUtils.getLoggedInUser());
+        //투표한 사람 업데이트
+        List<String> contents=doVoteRequest.getChoices();
+        contents.stream().forEach(content->{
+            VoteContent voteContent=voteContentRepository.findByContentAndVote(content, vote).orElseThrow(()->new NotFoundVoteContentException());
+            VoteContentUser voteContentUser=new VoteContentUser();
+            voteContentUser.setVoteContent(voteContent);
+            voteContentUser.setUser(userRepository.findById(SecurityUtils.getLoggedInUser().getUserId()).orElseThrow(()->new NotFoundEmailException()));
+            voteContentUserRepository.save(voteContentUser);
+        });
+    }
+
+
+    /**
      * 투표 읽음 정보 디비를 생성하는 메소드 : 생성한 사람은 무조건 읽음 처리
-     * @param teamId, notice
+     * @param teamId, vote
      */
     private void createVoteRead(Long teamId, Vote vote){
         //읽음 정보 데이터 생성
@@ -83,7 +115,7 @@ public class VoteServiceImpl implements VoteService{
         });
         //생성한 사람 읽음 처리
         updateVoteRead(vote);
-        //공지사항 안읽은 사람 알림 가기 (전체 소모임원에서 생성한 사람 빼면 !) -> sendMultipleDevices() 함수 이용하면 될 듯
+        //투표 안읽은 사람 알림 가기 (전체 소모임원에서 생성한 사람 빼면 !) -> sendMultipleDevices() 함수 이용하면 될 듯
     }
 
     private void updateVoteRead(Vote vote){
