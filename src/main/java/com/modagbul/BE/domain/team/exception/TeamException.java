@@ -4,7 +4,7 @@ import com.modagbul.BE.global.exception.ApplicationException;
 import org.springframework.http.HttpStatus;
 
 public abstract class TeamException extends ApplicationException {
-    public TeamException(String errorCode, HttpStatus httpStatus, String message) {
+    protected TeamException(String errorCode, HttpStatus httpStatus, String message) {
         super(errorCode, httpStatus, message);
     }
 }
