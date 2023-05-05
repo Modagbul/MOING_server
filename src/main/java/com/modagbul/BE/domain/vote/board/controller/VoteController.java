@@ -1,8 +1,10 @@
 package com.modagbul.BE.domain.vote.board.controller;
 
+import com.modagbul.BE.domain.vote.board.dto.VoteDto;
 import com.modagbul.BE.domain.vote.board.dto.VoteDto.CreateVoteRequest;
 import com.modagbul.BE.domain.vote.board.dto.VoteDto.CreateVoteResponse;
 import com.modagbul.BE.domain.vote.board.dto.VoteDto.DoVoteRequest;
+import com.modagbul.BE.domain.vote.board.dto.VoteDto.GetVoteDetailsResponse;
 import com.modagbul.BE.domain.vote.board.service.VoteService;
 import com.modagbul.BE.global.dto.ResponseDto;
 import io.swagger.annotations.Api;
@@ -32,8 +34,14 @@ public class VoteController {
 
     @ApiOperation(value = "투표하기", notes = "투표를 합니다.")
     @PutMapping("/{voteId}")
-    public ResponseEntity<ResponseDto<DoVoteRequest>> doVote(@PathVariable Long teamId, @PathVariable Long voteId, @Valid @RequestBody DoVoteRequest doVoteRequest) {
+    public ResponseEntity<ResponseDto> doVote(@PathVariable Long teamId, @PathVariable Long voteId, @Valid @RequestBody DoVoteRequest doVoteRequest) {
         voteService.doVote(voteId,doVoteRequest);
+        return ResponseEntity.ok(ResponseDto.create(HttpStatus.OK.value(), DO_VOTE_SUCCESS.getMessage()));
+    }
+
+    @ApiOperation(value = "투표결과 조회", notes = "투표 결과를 조회합니다.")
+    @GetMapping("/{voteId}")
+    public ResponseEntity<ResponseDto<GetVoteDetailsResponse>> getVoteDetail(@PathVariable Long teamId, @PathVariable Long voteId) {
         return ResponseEntity.ok(ResponseDto.create(HttpStatus.OK.value(), DO_VOTE_SUCCESS.getMessage()));
     }
 

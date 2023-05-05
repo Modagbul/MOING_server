@@ -1,16 +1,16 @@
 package com.modagbul.BE.domain.vote.board.service;
 
-import com.modagbul.BE.domain.notice.board.exception.NotFoundNoticeUserException;
-import com.modagbul.BE.domain.notice.board.dto.NoticeDto;
+import com.modagbul.BE.domain.notice.board.entity.Notice;
+import com.modagbul.BE.domain.notice.board.exception.NotFoundNoticeIdException;
 import com.modagbul.BE.domain.team_member.entity.TeamMember;
 import com.modagbul.BE.domain.team_member.repository.TeamMemberRepository;
-import com.modagbul.BE.domain.user.entity.User;
 import com.modagbul.BE.domain.user.exception.NotFoundEmailException;
 import com.modagbul.BE.domain.user.repository.UserRepository;
 import com.modagbul.BE.domain.vote.board.dto.VoteDto;
 import com.modagbul.BE.domain.vote.board.dto.VoteDto.CreateVoteRequest;
 import com.modagbul.BE.domain.vote.board.dto.VoteDto.CreateVoteResponse;
 import com.modagbul.BE.domain.vote.board.dto.VoteDto.DoVoteRequest;
+import com.modagbul.BE.domain.vote.board.dto.VoteDto.GetVoteDetailsResponse;
 import com.modagbul.BE.domain.vote.board.dto.VoteMapper;
 import com.modagbul.BE.domain.vote.board.entity.Vote;
 import com.modagbul.BE.domain.vote.board.exception.NotFoundVoteContentException;
@@ -19,8 +19,8 @@ import com.modagbul.BE.domain.vote.board.exception.NotFoundVoteUserException;
 import com.modagbul.BE.domain.vote.board.repository.VoteRepository;
 import com.modagbul.BE.domain.vote.content.entity.VoteContent;
 import com.modagbul.BE.domain.vote.content.repository.VoteContentRepository;
-import com.modagbul.BE.domain.vote.content.user.VoteContentUser;
-import com.modagbul.BE.domain.vote.content.user.VoteContentUserRepository;
+import com.modagbul.BE.domain.vote.content.user.enttiy.VoteContentUser;
+import com.modagbul.BE.domain.vote.content.user.repository.VoteContentUserRepository;
 import com.modagbul.BE.domain.vote.read.entity.VoteRead;
 import com.modagbul.BE.domain.vote.read.repository.VoteReadRepository;
 import com.modagbul.BE.global.config.security.util.SecurityUtils;
@@ -62,10 +62,29 @@ public class VoteServiceImpl implements VoteService{
 
     @Override
     public void doVote(Long voteId, DoVoteRequest doVoteRequest) {
-        Vote vote=voteRepository.findById(voteId).orElseThrow(()->new NotFoundVoteIdException());
+        //1. 유효성 체크
+        Vote vote=validateVote(voteId);
+        //2. 투표 선택지 업데이트
         updateVoteContent(doVoteRequest, vote);
+        //3. 읽음처리 업데이트
         updateVoteRead(vote);
     }
+
+    @Override
+    public GetVoteDetailsResponse getVoteDetail(Long voteId) {
+        //1. 유효성 체크
+        Vote vote=validateVote(voteId);
+        //2. 읽음처리 업데이트
+        updateVoteRead(vote);
+        //3. 투표 조회
+        return null;
+    }
+
+    @Override
+    public Vote validateVote(Long voteId){
+        return this.voteRepository.findNotDeletedByVoteId(voteId).orElseThrow(()->new NotFoundVoteIdException());
+    }
+
 
     /**
      * 투표 선택지를 저장하는 메서드

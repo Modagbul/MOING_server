@@ -1,4 +1,4 @@
-package com.modagbul.BE.domain.vote.content.user;
+package com.modagbul.BE.domain.vote.content.user.enttiy;
 
 import com.modagbul.BE.domain.user.entity.User;
 import com.modagbul.BE.domain.vote.content.entity.VoteContent;
