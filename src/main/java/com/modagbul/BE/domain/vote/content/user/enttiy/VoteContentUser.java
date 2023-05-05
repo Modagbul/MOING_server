@@ -1,4 +1,4 @@
-package com.modagbul.BE.domain.vote.content.user;
+package com.modagbul.BE.domain.vote.content.user.enttiy;
 
 import com.modagbul.BE.domain.user.entity.User;
 import com.modagbul.BE.domain.vote.content.entity.VoteContent;
@@ -31,6 +31,11 @@ public class VoteContentUser {
     @JoinColumn(name = "user_id")
     private User user;
 
+    //반정규화
+    private String nickName;
+
+    private String content;
+
 
     /**
      * 연관관계 매핑
@@ -38,10 +43,12 @@ public class VoteContentUser {
     public void setVoteContent(VoteContent voteContent){
         this.voteContent=voteContent;
         voteContent.getVoteContentUsers().add(this);
+        this.content=voteContent.getContent();
     }
 
     public void setUser(User user){
         this.user=user;
         user.getVoteContentUsers().add(this);
+        this.nickName=user.getNickName();
     }
 }

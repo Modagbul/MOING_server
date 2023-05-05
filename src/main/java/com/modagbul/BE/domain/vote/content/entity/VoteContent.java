@@ -1,8 +1,7 @@
 package com.modagbul.BE.domain.vote.content.entity;
 
-import com.modagbul.BE.domain.user.entity.User;
 import com.modagbul.BE.domain.vote.board.entity.Vote;
-import com.modagbul.BE.domain.vote.content.user.VoteContentUser;
+import com.modagbul.BE.domain.vote.content.user.enttiy.VoteContentUser;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
