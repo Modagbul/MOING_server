@@ -43,6 +43,7 @@ public interface UserMissionRepository extends JpaRepository<UserMission, Long> 
     Optional<List<UserMissionListDto>> findInCompleteUserMissionListById(@Param("teamId") Long teamId, @Param("missionId") Long missionId, @Param("status") Status status);
 
 
+
     @Query("select um from UserMission um where um.user.userId = :userId and um.team.teamId = :teamId and um.mission.missionId = :missionId")
     Optional<UserMission> findUserMissionById(@Param("userId") Long userId, @Param("teamId") Long teamId, @Param("missionId") Long missionId);
 
