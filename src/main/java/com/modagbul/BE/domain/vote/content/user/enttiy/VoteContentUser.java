@@ -31,6 +31,11 @@ public class VoteContentUser {
     @JoinColumn(name = "user_id")
     private User user;
 
+    //반정규화
+    private String nickName;
+
+    private String content;
+
 
     /**
      * 연관관계 매핑
