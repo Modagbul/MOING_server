@@ -11,6 +11,7 @@ import com.modagbul.BE.domain.user.repository.UserRepository;
 import com.modagbul.BE.domain.usermission.constant.Status;
 import com.modagbul.BE.domain.usermission.dto.UserMissionDetailDto;
 import com.modagbul.BE.domain.usermission.dto.UserMissionListDto;
+import com.modagbul.BE.domain.usermission.dto.UserMissionStatusDto;
 import com.modagbul.BE.domain.usermission.entity.UserMission;
 import com.modagbul.BE.domain.usermission.exception.NotFoundUserMissionsException;
 import com.modagbul.BE.domain.usermission.repository.UserMissionRepository;
@@ -25,7 +26,6 @@ import java.util.List;
 public class UserMissionService {
 
     private final UserMissionRepository userMissionRepository;
-
     private final TeamRepository teamRepository;
     private final MissionRepository missionRepository;
     private final UserRepository userRepository;
@@ -64,6 +64,23 @@ public class UserMissionService {
         userMissionRepository.save(userMission);
 
         return userMission.getStatus();
+
+    }
+
+    public UserMissionStatusDto getUserMissionList(Long teamId, Long missionId) {
+
+        Long userId = SecurityUtils.getLoggedInUser().getUserId();
+        Mission mission = missionRepository.findById(missionId).orElseThrow(NotFoundMissionException::new);
+
+
+        return  new UserMissionStatusDto(
+            mission.getTitle(),mission.getDueTo(),6L,
+            userMissionRepository.findCompleteUserMissionListById(teamId,missionId,Status.COMPLETE).orElseThrow(NotFoundUserMissionsException::new),
+            userMissionRepository.findCompleteUserMissionListById(teamId,missionId,Status.INCOMPLETE).orElseThrow(NotFoundUserMissionsException::new),
+            userMissionRepository.findCompleteUserMissionListById(teamId,missionId,Status.PENDING).orElseThrow(NotFoundUserMissionsException::new)
+
+        );
+
 
     }
 
