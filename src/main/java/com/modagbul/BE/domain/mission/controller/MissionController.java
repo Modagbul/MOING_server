@@ -40,7 +40,7 @@ public class MissionController {
     }
 
     @ApiOperation(value = "미션 수정", notes = "미션을 수정합니다.")
-    @PostMapping("/{missionId}/update")
+    @PutMapping("/{missionId}")
     public ResponseEntity<ResponseDto<MissionDto.MissionRes>> updateMission(@PathVariable Long teamId,@PathVariable Long missionId,@RequestBody MissionDto.MissionReq missionReq){
         return ResponseEntity.ok(ResponseDto.create(HttpStatus.OK.value(),UPDATE_MISSION_SUCCESS.getMessage(),missionService.updateMission(teamId,missionId,missionReq)));
     }

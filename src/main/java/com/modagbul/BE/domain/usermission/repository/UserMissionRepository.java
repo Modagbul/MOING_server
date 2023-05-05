@@ -1,5 +1,8 @@
 package com.modagbul.BE.domain.usermission.repository;
 
+import com.modagbul.BE.domain.mission.entity.Mission;
+import com.modagbul.BE.domain.team.entity.Team;
+import com.modagbul.BE.domain.user.entity.User;
 import com.modagbul.BE.domain.usermission.constant.Status;
 import com.modagbul.BE.domain.usermission.dto.UserMissionDetailDto;
 import com.modagbul.BE.domain.usermission.dto.UserMissionListDto;
@@ -33,4 +36,6 @@ public interface UserMissionRepository extends JpaRepository<UserMission, Long> 
     Optional<List<UserMissionListDto>> findCompleteUserMissionListById(@Param("teamId") Long teamId, @Param("missionId") Long missionId,Status status);
 
 
+    @Query("select um from UserMission um where um.user.userId = :userId and um.team.teamId = :teamId and um.mission.missionId = :missionId")
+    Optional<UserMission> findUserMissionById(@Param("userId") Long userId, @Param("teamId") Long teamId, @Param("missionId") Long missionId);
 }

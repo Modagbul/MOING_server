@@ -39,10 +39,9 @@ public class UserMissionService {
         Team team = teamRepository.findById(teamId).orElseThrow(NotFoundTeamIdException::new);
         Mission mission = missionRepository.findById(missionId).orElseThrow(NotFoundMissionException::new);
 
-        UserMission userMission = new UserMission();
-        userMission.createUserMission(user,team,mission);
+        UserMission userMission = userMissionRepository.findUserMissionById(userId, teamId, missionId).orElseThrow(NotFoundUserMissionsException::new);
 
-        userMission.setComplete(submitUrl);
+        userMission.setPending(submitUrl);
         userMissionRepository.save(userMission);
 
         return userMission.getStatus();
@@ -57,8 +56,7 @@ public class UserMissionService {
         Team team = teamRepository.findById(teamId).orElseThrow(() -> new IllegalStateException("해당 팀을 찾을 수 없습니다."));
         Mission mission = missionRepository.findById(missionId).orElseThrow(NotFoundMissionException::new);
 
-        UserMission userMission = new UserMission();
-        userMission.createUserMission(user,team,mission);
+        UserMission userMission = userMissionRepository.findUserMissionById(userId, teamId, missionId).orElseThrow(NotFoundUserMissionsException::new);
 
         userMission.setPending(skipReason);
         userMissionRepository.save(userMission);
