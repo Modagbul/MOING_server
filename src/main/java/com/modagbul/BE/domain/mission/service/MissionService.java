@@ -9,14 +9,18 @@ import com.modagbul.BE.domain.mission.entity.Mission;
 import com.modagbul.BE.domain.mission.repository.MissionRepository;
 import com.modagbul.BE.domain.team.entity.Team;
 import com.modagbul.BE.domain.team.repository.TeamRepository;
+import com.modagbul.BE.domain.team_member.repository.TeamMemberRepository;
+import com.modagbul.BE.domain.user.entity.User;
 import com.modagbul.BE.domain.usermission.constant.Status;
 import com.modagbul.BE.domain.usermission.dto.UserMissionDetailDto;
+import com.modagbul.BE.domain.usermission.entity.UserMission;
 import com.modagbul.BE.domain.usermission.exception.NotFoundUserMissionsException;
 import com.modagbul.BE.domain.usermission.repository.UserMissionRepository;
 import com.modagbul.BE.global.config.security.util.SecurityUtils;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import static com.modagbul.BE.domain.mission.dto.MissionDto.*;
@@ -28,6 +32,7 @@ public class MissionService {
     private final MissionRepository missionRepository;
     private final UserMissionRepository userMissionRepository;
     private final TeamRepository teamRepository;
+    private final TeamMemberRepository teamMemberRepository;
 
     // 소모임장의 미션 생성
     public MissionRes createMission(Long teamId, MissionReq missionReq) {
@@ -35,22 +40,22 @@ public class MissionService {
         //  로그인한 사용자의 id
         Long loginId = SecurityUtils.getLoggedInUser().getUserId();
 
-
         // 로그인한 사용자가 소모임장인지 확인 -> 팀 leaderid 확인
         Team findteam = teamRepository.findById(teamId).orElseThrow(() -> new IllegalStateException("해당 팀을 찾을 수 없습니다."));
 
         if ( findteam.getLeaderId().equals(loginId)){
             // 소모임장이라면 미션 생성
             Mission newMission = new Mission();
-            newMission.createMission(
-                    findteam,
-                    missionReq.getTitle(),
-                    missionReq.getDueTo(),
-                    missionReq.getContent(),
-                    missionReq.getRule()
-
-            );
+            newMission.createMission(findteam, missionReq.getTitle(), missionReq.getDueTo(), missionReq.getContent(), missionReq.getRule());
             Mission savedMission = missionRepository.save(newMission);
+
+            List<UserMission> userMissionList = new ArrayList<>();
+
+            teamMemberRepository.findUserListByTeamId(teamId).orElseThrow(NotFoundUserMissionsException::new).forEach(user -> {
+                userMissionList.add(new UserMission().createUserMission(user,findteam,savedMission));
+            });
+
+            userMissionRepository.saveAll(userMissionList);
 
             return new MissionRes(savedMission.getTitle(), savedMission.getDueTo(), savedMission.getContent(), savedMission.getRule(), Status.INCOMPLETE);
 
