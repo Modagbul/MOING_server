@@ -78,6 +78,12 @@ public class VoteServiceImpl implements VoteService{
     }
 
     @Override
+    public void deleteVote(Long voteId) {
+        Vote vote=validateVote(voteId);
+        vote.endVote();
+    }
+
+    @Override
     public Vote validateVote(Long voteId){
         return this.voteRepository.findNotDeletedByVoteId(voteId).orElseThrow(()->new NotFoundVoteIdException());
     }

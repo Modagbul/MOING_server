@@ -41,6 +41,4 @@ public class NoticeController {
     }
 
     //공지 전체 조회
-
-    //공지 수정
 }

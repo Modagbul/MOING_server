@@ -20,7 +20,7 @@ public class VoteRepositoryCustomImpl implements VoteRepositoryCustom {
     public Optional<Vote> findNotDeletedByVoteId(Long voteId) {
         return Optional.ofNullable(queryFactory.selectFrom(vote)
                 .where(vote.voteId.eq(voteId),
-                        vote.user.isDeleted.eq(false))
+                        vote.isEnd.eq(false))
                 .fetchFirst());
     }
 }

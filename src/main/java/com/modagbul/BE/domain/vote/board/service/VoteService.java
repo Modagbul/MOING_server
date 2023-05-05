@@ -11,5 +11,6 @@ public interface VoteService {
     CreateVoteResponse createVote(Long teamId, CreateVoteRequest createVoteRequest);
     void doVote(Long voteId, DoVoteRequest doVoteRequest);
     GetVoteDetailsResponse getVoteDetail(Long voteId);
+    void deleteVote(Long voteId);
     Vote validateVote(Long voteId);
 }

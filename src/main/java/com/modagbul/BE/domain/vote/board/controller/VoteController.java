@@ -44,4 +44,13 @@ public class VoteController {
         return ResponseEntity.ok(ResponseDto.create(HttpStatus.OK.value(), GET_VOTE_DETAIL_SUCCESS.getMessage(), voteService.getVoteDetail(voteId)));
     }
 
+    //투표 종료하기
+    @ApiOperation(value = "투표 종료하기", notes = "투표를 조회합니다.")
+    @DeleteMapping("/{voteId}")
+    public ResponseEntity<ResponseDto> deleteVote(@PathVariable Long teamId, @PathVariable Long voteId) {
+        voteService.deleteVote(voteId);
+        return ResponseEntity.ok(ResponseDto.create(HttpStatus.OK.value(), DELETE_VOTE_SUCCESS.getMessage()));
+    }
+
+    //투표 전체 조회하기
 }
