@@ -7,7 +7,7 @@ import javax.persistence.EntityManager;
 import java.util.List;
 import java.util.Optional;
 
-import static com.modagbul.BE.domain.notice_comment.entity.QNoticeComment.noticeComment;
+import static com.modagbul.BE.domain.notice.comment.entity.QNoticeComment.noticeComment;
 
 public class NoticeCommentRepositoryCustomImpl implements NoticeCommentRepositoryCustom{
 
