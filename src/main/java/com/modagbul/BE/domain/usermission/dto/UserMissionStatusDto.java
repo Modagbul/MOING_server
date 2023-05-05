@@ -18,6 +18,7 @@ public class UserMissionStatusDto {
 
     private List<UserMissionListDto> CompleteList;
     private List<UserMissionListDto> IncompleteList;
+    private List<Long> fireUserMissionList;
 
     public UserMissionStatusDto(String title, List<UserMissionListDto> completeList, List<UserMissionListDto> incompleteList) {
         this.title = title;
@@ -33,5 +34,9 @@ public class UserMissionStatusDto {
 
     public void setRemainDay(String remainDay) {
         this.remainDay = remainDay;
+    }
+
+    public void setFireUserMissionList(List<Long> fireUserMissionList) {
+        this.fireUserMissionList = fireUserMissionList;
     }
 }
