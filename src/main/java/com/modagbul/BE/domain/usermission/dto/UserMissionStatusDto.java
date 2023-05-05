@@ -1,12 +1,14 @@
 package com.modagbul.BE.domain.usermission.dto;
 
 import lombok.AllArgsConstructor;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import java.util.List;
 
 @AllArgsConstructor
 @NoArgsConstructor
+@Getter
 public class UserMissionStatusDto {
 
     private String title;

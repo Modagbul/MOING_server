@@ -70,8 +70,8 @@ public class MissionController {
 
     @ApiOperation(value = "개인별 미션 인증 현황", notes = "개인별 미션 인증 현황을 조회합니다..")
     @GetMapping("/{missionId}/status")
-    public ResponseEntity<ResponseDto<UserMissionStatusDto>> skipMission(@PathVariable Long teamId, @PathVariable Long missionId){
-        return ResponseEntity.ok(ResponseDto.create(HttpStatus.OK.value(),SKIP_MISSION_SUCCESS.getMessage(),userMissionService.getUserMissionList(teamId,missionId)));
+    public ResponseEntity<ResponseDto<UserMissionStatusDto>> statusMission(@PathVariable Long teamId, @PathVariable Long missionId){
+        return ResponseEntity.ok(ResponseDto.create(HttpStatus.OK.value(),STATUS_MISSION_SUCCESS.getMessage(),userMissionService.getUserMissionList(teamId,missionId)));
     }
 
 
