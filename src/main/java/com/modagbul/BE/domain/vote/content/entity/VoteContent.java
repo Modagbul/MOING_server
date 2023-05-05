@@ -2,6 +2,7 @@ package com.modagbul.BE.domain.vote.content.entity;
 
 import com.modagbul.BE.domain.user.entity.User;
 import com.modagbul.BE.domain.vote.board.entity.Vote;
+import com.modagbul.BE.domain.vote.content.user.VoteContentUser;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -27,8 +28,8 @@ public class VoteContent {
     private String content;
 
     //선택한 사람
-    @OneToMany
-    private List<User> users = new ArrayList<>();
+    @OneToMany(mappedBy = "voteContent")
+    private List<VoteContentUser> voteContentUsers=new ArrayList<>();
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "vote_id")
@@ -36,10 +37,6 @@ public class VoteContent {
 
     public void setContent(String content) {
         this.content = content;
-    }
-
-    public void setUsers(User user) {
-        this.users.add(user);
     }
 
     /**

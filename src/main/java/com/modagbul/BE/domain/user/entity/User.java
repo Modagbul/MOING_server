@@ -6,6 +6,7 @@ import com.modagbul.BE.domain.notice.read.entity.NoticeRead;
 import com.modagbul.BE.domain.team_member.entity.TeamMember;
 import com.modagbul.BE.domain.vote.board.entity.Vote;
 import com.modagbul.BE.domain.vote.content.entity.VoteContent;
+import com.modagbul.BE.domain.vote.content.user.VoteContentUser;
 import com.modagbul.BE.domain.vote.read.entity.VoteRead;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -65,6 +66,9 @@ public class User {
 
     @OneToMany(mappedBy = "user")
     private List<Vote> votes=new ArrayList<>();
+
+    @OneToMany(mappedBy = "user")
+    private List<VoteContentUser> voteContentUsers=new ArrayList<>();
 
     @Builder
     public User(String email, String imageUrl, String gender, String ageRange, Role role){
