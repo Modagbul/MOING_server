@@ -1,6 +1,6 @@
-package com.modagbul.BE.domain.team_member.entity;
+package com.modagbul.BE.domain.notice.read.entity;
 
-import com.modagbul.BE.domain.team.entity.Team;
+import com.modagbul.BE.domain.notice.board.entity.Notice;
 import com.modagbul.BE.domain.user.entity.User;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -14,30 +14,34 @@ import javax.persistence.*;
 @NoArgsConstructor
 @AllArgsConstructor
 @Getter
-public class TeamMember {
+public class NoticeRead {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "team_member_id")
-    private Long teamMemberId;
+    @Column(name = "notice_read_id")
+    private Long noticeReadId;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "team_id")
-    private Team team;
+    @JoinColumn(name = "notice_id")
+    private Notice notice;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
     private User user;
 
+    private boolean isRead;
 
-    public void setTeam(Team team){
-        this.team=team;
-        team.getTeamMembers().add(this);
+    public void setNotice(Notice notice){
+        this.notice=notice;
+        notice.getNoticeReads().add(this);
     }
 
     public void setUser(User user){
         this.user=user;
-        user.getTeamMembers().add(this);
+        user.getNoticeReads().add(this);
     }
 
+    public void readNotice(){
+        this.isRead=true;
+    }
 }

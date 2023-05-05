@@ -1,8 +1,9 @@
 package com.modagbul.BE.domain.team.entity;
 
-import com.modagbul.BE.domain.notice.entity.Notice;
+import com.modagbul.BE.domain.notice.board.entity.Notice;
 import com.modagbul.BE.domain.team.constant.TeamConstant.Category;
 import com.modagbul.BE.domain.team_member.entity.TeamMember;
+import com.modagbul.BE.domain.vote.board.entity.Vote;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -57,6 +58,9 @@ public class Team{
 
     @OneToMany(mappedBy = "team")
     private List<Notice> notices = new ArrayList<>();
+
+    @OneToMany(mappedBy = "team")
+    private List<Vote> votes=new ArrayList<>();
 
     public void createTeam(Category category, String name, Integer personnel, LocalDate startDate, Integer period, String info, String promise, String profileImg, Long leaderId){
         this.category=category;
