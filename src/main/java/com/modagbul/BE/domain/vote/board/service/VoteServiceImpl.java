@@ -74,7 +74,7 @@ public class VoteServiceImpl implements VoteService{
         //2. 읽음처리 업데이트
         updateVoteRead(vote);
         //3. 투표 조회
-        return voteMapper.toDto(vote, voteReadRepository.getNotReadUsersNickName(voteId), mappingFromVoteContent(vote.getVoteContents()));
+        return voteMapper.toDto(vote, voteReadRepository.getNotReadUsersNickName(voteId), mappingFromVoteContent(vote, vote.getVoteContents()));
     }
 
     @Override
@@ -147,12 +147,12 @@ public class VoteServiceImpl implements VoteService{
      * @param voteContents
      * @return voteChoices
      */
-    private List<VoteChoice> mappingFromVoteContent(List<VoteContent> voteContents){
+    private List<VoteChoice> mappingFromVoteContent(Vote vote, List<VoteContent> voteContents){
         List<VoteChoice> voteChoiceList=new ArrayList<>();
 
         voteContents.stream().forEach(voteContent->{
             String content=voteContent.getContent();
-            List<String> usersNickName=voteContentUserRepository.getUsersNickNameByContent(content);
+            List<String> usersNickName=voteContentUserRepository.getUsersNickNameByContent(vote, content);
             VoteChoice voteChoice=new VoteChoice(content, usersNickName.size(), usersNickName);
             voteChoiceList.add(voteChoice);
         });

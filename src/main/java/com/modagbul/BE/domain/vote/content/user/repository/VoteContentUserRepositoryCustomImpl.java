@@ -1,5 +1,6 @@
 package com.modagbul.BE.domain.vote.content.user.repository;
 
+import com.modagbul.BE.domain.vote.board.entity.Vote;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 
 import javax.persistence.EntityManager;
@@ -16,9 +17,10 @@ public class VoteContentUserRepositoryCustomImpl implements VoteContentUserRepos
     }
 
     @Override
-    public List<String> getUsersNickNameByContent(String content) {
+    public List<String> getUsersNickNameByContent(Vote vote, String content) {
         return queryFactory.select(voteContentUser.nickName)
                 .from(voteContentUser)
+                .where(voteContentUser.vote.eq(vote))
                 .where(voteContentUser.content.eq(content))
                 .fetch();
     }

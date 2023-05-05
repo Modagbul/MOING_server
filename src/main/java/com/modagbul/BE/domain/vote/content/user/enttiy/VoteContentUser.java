@@ -1,6 +1,7 @@
 package com.modagbul.BE.domain.vote.content.user.enttiy;
 
 import com.modagbul.BE.domain.user.entity.User;
+import com.modagbul.BE.domain.vote.board.entity.Vote;
 import com.modagbul.BE.domain.vote.content.entity.VoteContent;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -31,6 +32,10 @@ public class VoteContentUser {
     @JoinColumn(name = "user_id")
     private User user;
 
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "vote_id")
+    private Vote vote;
+
     //반정규화
     private String nickName;
 
@@ -50,5 +55,9 @@ public class VoteContentUser {
         this.user=user;
         user.getVoteContentUsers().add(this);
         this.nickName=user.getNickName();
+    }
+
+    public void setVote(Vote vote){
+        this.vote=vote;
     }
 }
