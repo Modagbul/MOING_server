@@ -43,10 +43,12 @@ public class VoteContentUser {
     public void setVoteContent(VoteContent voteContent){
         this.voteContent=voteContent;
         voteContent.getVoteContentUsers().add(this);
+        this.content=voteContent.getContent();
     }
 
     public void setUser(User user){
         this.user=user;
         user.getVoteContentUsers().add(this);
+        this.nickName=user.getNickName();
     }
 }
