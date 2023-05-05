@@ -88,17 +88,20 @@ public abstract class VoteDto {
         private List<VoteChoice> voteChoices=new ArrayList<>();
     }
 
-    public class VoteChoice{
+    @Getter
+    @Builder
+    @NoArgsConstructor
+    @AllArgsConstructor
+    public static class VoteChoice{
 
         //선택지 내용
         private String content;
 
         //그 선택지를 선택한 사람 수 (득표수)
-
         private Integer num;
+
         //그 선택지를 투표한 사람
         private List<String> voteUserNickName = new ArrayList<>();
-
 
     }
 

@@ -62,7 +62,7 @@ public class NoticeCommentServiceImpl implements NoticeCommentService{
     }
 
     /**
-     * 댓글을 작성한 유저인지 확인한느 메서드
+     * 댓글을 작성한 유저인지 확인하는 메서드
      * @param user
      * @param noticeComment
      */

@@ -16,8 +16,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 
-import static com.modagbul.BE.domain.vote.board.constant.VoteConstant.EVoteResponseMessage.CREATE_VOTE_SUCCESS;
-import static com.modagbul.BE.domain.vote.board.constant.VoteConstant.EVoteResponseMessage.DO_VOTE_SUCCESS;
+import static com.modagbul.BE.domain.vote.board.constant.VoteConstant.EVoteResponseMessage.*;
 
 @RestController
 @RequiredArgsConstructor
@@ -42,7 +41,7 @@ public class VoteController {
     @ApiOperation(value = "투표결과 조회", notes = "투표 결과를 조회합니다.")
     @GetMapping("/{voteId}")
     public ResponseEntity<ResponseDto<GetVoteDetailsResponse>> getVoteDetail(@PathVariable Long teamId, @PathVariable Long voteId) {
-        return ResponseEntity.ok(ResponseDto.create(HttpStatus.OK.value(), DO_VOTE_SUCCESS.getMessage()));
+        return ResponseEntity.ok(ResponseDto.create(HttpStatus.OK.value(), GET_VOTE_DETAIL_SUCCESS.getMessage(), voteService.getVoteDetail(voteId)));
     }
 
 }

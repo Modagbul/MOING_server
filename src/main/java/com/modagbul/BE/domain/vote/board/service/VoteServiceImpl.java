@@ -7,10 +7,7 @@ import com.modagbul.BE.domain.team_member.repository.TeamMemberRepository;
 import com.modagbul.BE.domain.user.exception.NotFoundEmailException;
 import com.modagbul.BE.domain.user.repository.UserRepository;
 import com.modagbul.BE.domain.vote.board.dto.VoteDto;
-import com.modagbul.BE.domain.vote.board.dto.VoteDto.CreateVoteRequest;
-import com.modagbul.BE.domain.vote.board.dto.VoteDto.CreateVoteResponse;
-import com.modagbul.BE.domain.vote.board.dto.VoteDto.DoVoteRequest;
-import com.modagbul.BE.domain.vote.board.dto.VoteDto.GetVoteDetailsResponse;
+import com.modagbul.BE.domain.vote.board.dto.VoteDto.*;
 import com.modagbul.BE.domain.vote.board.dto.VoteMapper;
 import com.modagbul.BE.domain.vote.board.entity.Vote;
 import com.modagbul.BE.domain.vote.board.exception.NotFoundVoteContentException;
@@ -29,6 +26,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -37,13 +35,12 @@ import java.util.List;
 @Transactional
 public class VoteServiceImpl implements VoteService{
 
-    private final VoteRepository voteRepository;
     private final VoteMapper voteMapper;
+    private final VoteRepository voteRepository;
     private final VoteContentRepository voteContentRepository;
     private final TeamMemberRepository teamMemberRepository;
     private final VoteReadRepository voteReadRepository;
     private final UserRepository userRepository;
-
     private final VoteContentUserRepository voteContentUserRepository;
 
     @Override
@@ -77,7 +74,7 @@ public class VoteServiceImpl implements VoteService{
         //2. 읽음처리 업데이트
         updateVoteRead(vote);
         //3. 투표 조회
-        return null;
+        return voteMapper.toDto(vote, voteReadRepository.getNotReadUsersNickName(voteId), mappingFromVoteContent(vote.getVoteContents()));
     }
 
     @Override
@@ -143,5 +140,23 @@ public class VoteServiceImpl implements VoteService{
                         vote)
                 .orElseThrow(()-> new NotFoundVoteUserException());
         voteRead.readVote();
+    }
+
+    /**
+     * From List<VoteContent> to List<VoteChoice>
+     * @param voteContents
+     * @return voteChoices
+     */
+    private List<VoteChoice> mappingFromVoteContent(List<VoteContent> voteContents){
+        List<VoteChoice> voteChoiceList=new ArrayList<>();
+
+        voteContents.stream().forEach(voteContent->{
+            String content=voteContent.getContent();
+            List<String> usersNickName=voteContentUserRepository.getUsersNickNameByContent(content);
+            VoteChoice voteChoice=new VoteChoice(content, usersNickName.size(), usersNickName);
+            voteChoiceList.add(voteChoice);
+        });
+
+        return voteChoiceList;
     }
 }
