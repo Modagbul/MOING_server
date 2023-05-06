@@ -20,7 +20,10 @@ import com.modagbul.BE.global.config.security.util.SecurityUtils;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import static com.modagbul.BE.domain.mission.dto.MissionDto.*;
@@ -110,7 +113,28 @@ public class MissionService {
         Long userId = SecurityUtils.getLoggedInUser().getUserId();
         MissionDetailDto missionDetailDto = missionRepository.findMissionDetailById(teamId, missionId).orElseThrow(NotFoundMissionException::new);
         missionDetailDto.setStatus(userMissionRepository.findUserMissionStatusById(userId, teamId, missionId).orElse(Status.INCOMPLETE));
+        missionDetailDto.setDueTo(getRemainPeriod(missionDetailDto.getDueTo()));
         return missionDetailDto;
+    }
+
+    public String getRemainPeriod(String dueTo) {
+        try {
+            SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm");
+            Date dueToDate = format.parse(dueTo);
+            Date now = new Date();
+
+            long diffInMillis = dueToDate.getTime() - now.getTime();
+            long diffInSeconds = diffInMillis / 1000;
+            long diffInMinutes = diffInSeconds / 60;
+            long diffInHours = diffInMinutes / 60;
+            long diffInDays = diffInHours / 24;
+
+            return Long.toString(diffInDays);
+
+        } catch(ParseException e) {
+            e.printStackTrace();
+        }
+        return null;
     }
 
 
