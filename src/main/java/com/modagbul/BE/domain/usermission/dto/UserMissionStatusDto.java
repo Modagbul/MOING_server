@@ -5,6 +5,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import java.util.List;
+import java.util.Set;
 
 @AllArgsConstructor
 @NoArgsConstructor
@@ -37,6 +38,10 @@ public class UserMissionStatusDto {
     }
 
     public void setFireUserMissionList(List<Long> fireUserMissionList) {
+        //set으로 중복 제거 후 다시 list로 변환
+        Set<Long> set = Set.copyOf(fireUserMissionList);
+        fireUserMissionList.clear();
+        fireUserMissionList.addAll(set);
         this.fireUserMissionList = fireUserMissionList;
     }
 }
