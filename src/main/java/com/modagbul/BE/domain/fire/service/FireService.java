@@ -1,9 +1,11 @@
 package com.modagbul.BE.domain.fire.service;
 
 import com.modagbul.BE.domain.fire.entity.Fire;
+import com.modagbul.BE.domain.fire.exception.FireAuthDeniedException;
 import com.modagbul.BE.domain.fire.repository.FireRepository;
 import com.modagbul.BE.domain.user.entity.User;
 import com.modagbul.BE.domain.user.repository.UserRepository;
+import com.modagbul.BE.domain.usermission.constant.Status;
 import com.modagbul.BE.domain.usermission.entity.UserMission;
 import com.modagbul.BE.domain.usermission.exception.NotFoundUserMissionsException;
 import com.modagbul.BE.domain.usermission.repository.UserMissionRepository;
@@ -25,10 +27,16 @@ public class FireService {
         User loginUser = userRepository.findById(loginId).orElseThrow(() -> new IllegalStateException("해당 유저를 찾을 수 없습니다."));
 
         UserMission userMission = userMissionRepository.findById(userMissionId).orElseThrow(NotFoundUserMissionsException::new);
+        if(userMission.getStatus().equals(Status.INCOMPLETE)){
+            Fire fire = new Fire();
+            fire.createFire(userMission,loginUser);
+            fireRepository.save(fire);
+        }
+        else{
+            throw new FireAuthDeniedException();
+        }
 
-        Fire fire = new Fire();
-        fire.createFire(userMission,loginUser);
-        fireRepository.save(fire);
+
 
         return userMissionId;
     }
