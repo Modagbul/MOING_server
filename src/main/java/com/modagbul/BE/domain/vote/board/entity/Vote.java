@@ -2,6 +2,7 @@ package com.modagbul.BE.domain.vote.board.entity;
 
 import com.modagbul.BE.domain.team.entity.Team;
 import com.modagbul.BE.domain.user.entity.User;
+import com.modagbul.BE.domain.vote.comment.entity.VoteComment;
 import com.modagbul.BE.domain.vote.content.entity.VoteContent;
 import com.modagbul.BE.domain.vote.read.entity.VoteRead;
 import com.modagbul.BE.global.entity.BaseTimeEntity;
@@ -52,6 +53,9 @@ public class Vote extends BaseTimeEntity {
 
     @OneToMany(mappedBy = "vote")
     private List<VoteRead> voteReads=new ArrayList<>();
+
+    @OneToMany(mappedBy = "vote")
+    private List<VoteComment> voteComments=new ArrayList<>();
 
     public void createVote(String title, String memo, boolean isAnonymous, boolean isMultiple){
         this.title=title;
