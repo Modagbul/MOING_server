@@ -46,7 +46,7 @@ public class UserMissionService {
 
         UserMission userMission = userMissionRepository.findUserMissionById(userId, teamId, missionId).orElseThrow(NotFoundUserMissionsException::new);
 
-        userMission.setPending(submitUrl);
+        userMission.setComplete(submitUrl);
         userMissionRepository.save(userMission);
 
         return userMission.getStatus();
