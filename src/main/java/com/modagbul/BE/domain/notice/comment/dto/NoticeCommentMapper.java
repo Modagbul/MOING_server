@@ -16,8 +16,8 @@ public class NoticeCommentMapper {
     private final NoticeService noticeService;
 
     private final UserRepository userRepository;
-    public NoticeComment toEntity(Long noticeId, NoticeCommentDto.CreateNoticeCommentRequest createNoticeCommentRequest){
-        Notice notice=noticeService.validateNotice(noticeId);
+    public NoticeComment toEntity(Long teamId, Long noticeId, NoticeCommentDto.CreateNoticeCommentRequest createNoticeCommentRequest){
+        Notice notice=noticeService.validateNotice(teamId, noticeId);
         NoticeComment noticeComment=new NoticeComment();
 
         noticeComment.createNoticeComment(createNoticeCommentRequest.getContent());

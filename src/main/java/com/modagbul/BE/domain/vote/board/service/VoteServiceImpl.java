@@ -2,6 +2,8 @@ package com.modagbul.BE.domain.vote.board.service;
 
 import com.modagbul.BE.domain.notice.board.entity.Notice;
 import com.modagbul.BE.domain.notice.board.exception.NotNoticeWriterException;
+import com.modagbul.BE.domain.team.entity.Team;
+import com.modagbul.BE.domain.team.service.TeamService;
 import com.modagbul.BE.domain.team_member.entity.TeamMember;
 import com.modagbul.BE.domain.team_member.repository.TeamMemberRepository;
 import com.modagbul.BE.domain.user.entity.User;
@@ -43,6 +45,8 @@ public class VoteServiceImpl implements VoteService{
     private final UserRepository userRepository;
     private final VoteContentUserRepository voteContentUserRepository;
 
+    private final TeamService teamService;
+
     @Override
     public CreateVoteResponse createVote(Long teamId, CreateVoteRequest createVoteRequest) {
         //1. 투표  생성, 저장
@@ -58,9 +62,9 @@ public class VoteServiceImpl implements VoteService{
     }
 
     @Override
-    public void doVote(Long voteId, DoVoteRequest doVoteRequest) {
+    public void doVote(Long teamId, Long voteId, DoVoteRequest doVoteRequest) {
         //1. 유효성 체크
-        Vote vote=validateVote(voteId);
+        Vote vote=validateVote(teamId, voteId);
         //2. 투표 선택지 업데이트
         updateVoteContent(doVoteRequest, vote);
         //3. 읽음처리 업데이트
@@ -68,9 +72,9 @@ public class VoteServiceImpl implements VoteService{
     }
 
     @Override
-    public GetVoteDetailsResponse getVoteDetail(Long voteId) {
+    public GetVoteDetailsResponse getVoteDetail(Long teamId, Long voteId) {
         //1. 유효성 체크
-        Vote vote=validateVote(voteId);
+        Vote vote=validateVote(teamId, voteId);
         //2. 읽음처리 업데이트
         updateVoteRead(vote);
         //3. 투표 조회
@@ -78,8 +82,8 @@ public class VoteServiceImpl implements VoteService{
     }
 
     @Override
-    public void closeVote(Long voteId) {
-        Vote vote=validateVote(voteId);
+    public void closeVote(Long teamId, Long voteId) {
+        Vote vote=validateVote(teamId, voteId);
         validateUser(SecurityUtils.getLoggedInUser(),vote);
         vote.closeVote();
     }
@@ -91,7 +95,8 @@ public class VoteServiceImpl implements VoteService{
      */
 
     @Override
-    public Vote validateVote(Long voteId){
+    public Vote validateVote(Long teamId, Long voteId){
+        Team team=teamService.validateTeam(teamId);
         return this.voteRepository.findNotClosedByVoteId(voteId).orElseThrow(()->new NotFoundVoteIdException());
     }
 

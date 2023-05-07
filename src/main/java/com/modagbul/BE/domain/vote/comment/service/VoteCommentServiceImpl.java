@@ -1,6 +1,8 @@
 package com.modagbul.BE.domain.vote.comment.service;
 
 import com.modagbul.BE.domain.user.entity.User;
+import com.modagbul.BE.domain.vote.board.entity.Vote;
+import com.modagbul.BE.domain.vote.board.service.VoteService;
 import com.modagbul.BE.domain.vote.comment.dto.VoteCommentDto;
 import com.modagbul.BE.domain.vote.comment.dto.VoteCommentDto.CreateVoteCommentResponse;
 import com.modagbul.BE.domain.vote.comment.dto.VoteCommentDto.GetVoteCommentResponse;
@@ -29,23 +31,26 @@ public class VoteCommentServiceImpl implements VoteCommentService {
     private final VoteCommentMapper voteCommentMapper;
     private final VoteCommentRepository voteCommentRepository;
 
+    private final VoteService voteService;
+
 
     @Override
-    public CreateVoteCommentResponse createVoteComment(Long voteId, VoteCommentDto.CreateVoteCommentRequest createVoteCommentRequest) {
-        VoteComment voteComment = voteCommentMapper.toEntity(voteId, createVoteCommentRequest);
+    public CreateVoteCommentResponse createVoteComment(Long teamId, Long voteId, VoteCommentDto.CreateVoteCommentRequest createVoteCommentRequest) {
+        VoteComment voteComment = voteCommentMapper.toEntity(teamId, voteId, createVoteCommentRequest);
         voteCommentRepository.save(voteComment);
         return new CreateVoteCommentResponse(voteComment.getVoteCommentId());
     }
 
     @Override
-    public void deleteVoteComment(Long voteCommentId) {
-        VoteComment voteComment = validateVoteComment(voteCommentId);
+    public void deleteVoteComment(Long teamId, Long voteId, Long voteCommentId) {
+        VoteComment voteComment = validateVoteComment(teamId, voteId, voteCommentId);
         validateUser(SecurityUtils.getLoggedInUser(), voteComment);
         voteComment.deleteVoteComment();
     }
 
     @Override
-    public List<GetVoteCommentResponse> getAllVoteCommentByVoteId(Long voteId) {
+    public List<GetVoteCommentResponse> getAllVoteCommentByVoteId(Long teamId, Long voteId) {
+        Vote vote=voteService.validateVote(teamId, voteId);
         List<VoteComment> voteComments = voteCommentRepository.findAllVotesByVoteId(voteId);
         List<GetVoteCommentResponse> result = new ArrayList<>();
         Map<Long, GetVoteCommentResponse> map = new HashMap<>();
@@ -59,12 +64,12 @@ public class VoteCommentServiceImpl implements VoteCommentService {
 
     /**
      * VoteComment 유효성 체크하는 메서드
-     *
-     * @param voteCommentId
+     * @param teamId, voteId, voteCommentId
      * @return
      */
     @Override
-    public VoteComment validateVoteComment(Long voteCommentId) {
+    public VoteComment validateVoteComment(Long teamId, Long voteId, Long voteCommentId) {
+        Vote vote=voteService.validateVote(teamId, voteId);
         return this.voteCommentRepository.findNotDeletedByCommentId(voteCommentId).orElseThrow(() -> new NotFoundVoteCommentIdException());
     }
 

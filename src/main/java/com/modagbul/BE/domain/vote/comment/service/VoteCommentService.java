@@ -8,11 +8,11 @@ import com.modagbul.BE.domain.vote.comment.entity.VoteComment;
 import java.util.List;
 
 public interface VoteCommentService {
-    CreateVoteCommentResponse createVoteComment(Long voteId, CreateVoteCommentRequest createVoteCommentRequest);
+    CreateVoteCommentResponse createVoteComment(Long teamId, Long voteId, CreateVoteCommentRequest createVoteCommentRequest);
 
-    void deleteVoteComment(Long voteCommentId);
+    void deleteVoteComment(Long teamId, Long voteId, Long voteCommentId);
 
-    VoteComment validateVoteComment(Long voteCommentId);
+    VoteComment validateVoteComment(Long teamId, Long voteId, Long voteCommentId);
 
-    List<GetVoteCommentResponse> getAllVoteCommentByVoteId(Long voteId);
+    List<GetVoteCommentResponse> getAllVoteCommentByVoteId(Long teamId, Long voteId);
 }

@@ -9,9 +9,8 @@ import com.modagbul.BE.domain.vote.board.entity.Vote;
 
 public interface VoteService {
     CreateVoteResponse createVote(Long teamId, CreateVoteRequest createVoteRequest);
-    void doVote(Long voteId, DoVoteRequest doVoteRequest);
-    GetVoteDetailsResponse getVoteDetail(Long voteId);
-    Vote validateVote(Long voteId);
-
-    void closeVote(Long voteId);
+    void doVote(Long teamId, Long voteId, DoVoteRequest doVoteRequest);
+    GetVoteDetailsResponse getVoteDetail(Long teamId, Long voteId);
+    Vote validateVote(Long teamId, Long voteId);
+    void closeVote(Long teamId, Long voteId);
 }

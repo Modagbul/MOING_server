@@ -30,25 +30,25 @@ public class NoticeCommentServiceImpl implements NoticeCommentService{
 
     private final NoticeCommentRepository noticeCommentRepository;
     private final NoticeCommentMapper noticeCommentMapper;
-
     private final NoticeService noticeService;
 
     @Override
-    public CreateNoticeCommentResponse createNoticeComment(Long noticeId, CreateNoticeCommentRequest createNoticeCommentRequest) {
-        NoticeComment noticeComment=noticeCommentMapper.toEntity(noticeId, createNoticeCommentRequest);
+    public CreateNoticeCommentResponse createNoticeComment(Long teamId, Long noticeId, CreateNoticeCommentRequest createNoticeCommentRequest) {
+        NoticeComment noticeComment=noticeCommentMapper.toEntity(teamId, noticeId, createNoticeCommentRequest);
         noticeCommentRepository.save(noticeComment);
         return new CreateNoticeCommentResponse(noticeComment.getNoticeCommentId());
     }
 
     @Override
-    public void deleteNoticeComment(Long noticeCommentId) {
-        NoticeComment noticeComment=validateNoticeComment(noticeCommentId);
+    public void deleteNoticeComment(Long teamId, Long noticeId, Long noticeCommentId) {
+        NoticeComment noticeComment=validateNoticeComment(teamId, noticeId, noticeCommentId);
         validateUser(SecurityUtils.getLoggedInUser(),noticeComment);
         noticeComment.deleteNoticeComment();
     }
 
     @Override
-    public List<GetNoticeCommentResponse> getAllNoticeCommentByNoticeId(Long noticeId) {
+    public List<GetNoticeCommentResponse> getAllNoticeCommentByNoticeId(Long teamId, Long noticeId) {
+        Notice notice=noticeService.validateNotice(teamId, noticeId);
         List<NoticeComment> noticeComments=noticeCommentRepository.findAllCommentsByNoticeId(noticeId);
         List<GetNoticeCommentResponse> result=new ArrayList<>();
         Map<Long, GetNoticeCommentResponse> map=new HashMap<>();
@@ -67,7 +67,8 @@ public class NoticeCommentServiceImpl implements NoticeCommentService{
      */
 
     @Override
-    public NoticeComment validateNoticeComment(Long noticeCommentId) {
+    public NoticeComment validateNoticeComment(Long teamId, Long noticeId, Long noticeCommentId) {
+        noticeService.validateNotice(teamId, noticeId);
         return this.noticeCommentRepository.findNotDeletedByCommentId(noticeCommentId).orElseThrow(()->new NotFoundNoticeCommentIdException());
     }
 

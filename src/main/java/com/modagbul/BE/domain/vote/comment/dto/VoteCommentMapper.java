@@ -17,8 +17,8 @@ public class VoteCommentMapper {
 
     private final UserRepository userRepository;
 
-    public VoteComment toEntity(Long voteId, VoteCommentDto.CreateVoteCommentRequest createVoteCommentRequest) {
-        Vote vote = voteService.validateVote(voteId);
+    public VoteComment toEntity(Long teamId, Long voteId, VoteCommentDto.CreateVoteCommentRequest createVoteCommentRequest) {
+        Vote vote = voteService.validateVote(teamId, voteId);
         VoteComment voteComment = new VoteComment();
 
         voteComment.createVoteComment(createVoteCommentRequest.getContent());

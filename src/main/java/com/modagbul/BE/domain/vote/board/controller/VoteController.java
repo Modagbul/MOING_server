@@ -34,21 +34,21 @@ public class VoteController {
     @ApiOperation(value = "투표하기", notes = "투표를 합니다.")
     @PutMapping("/{voteId}")
     public ResponseEntity<ResponseDto> doVote(@PathVariable Long teamId, @PathVariable Long voteId, @Valid @RequestBody DoVoteRequest doVoteRequest) {
-        voteService.doVote(voteId,doVoteRequest);
+        voteService.doVote(teamId, voteId,doVoteRequest);
         return ResponseEntity.ok(ResponseDto.create(HttpStatus.OK.value(), DO_VOTE_SUCCESS.getMessage()));
     }
 
     @ApiOperation(value = "투표결과 조회", notes = "투표 결과를 조회합니다.")
     @GetMapping("/{voteId}")
     public ResponseEntity<ResponseDto<GetVoteDetailsResponse>> getVoteDetail(@PathVariable Long teamId, @PathVariable Long voteId) {
-        return ResponseEntity.ok(ResponseDto.create(HttpStatus.OK.value(), GET_VOTE_DETAIL_SUCCESS.getMessage(), voteService.getVoteDetail(voteId)));
+        return ResponseEntity.ok(ResponseDto.create(HttpStatus.OK.value(), GET_VOTE_DETAIL_SUCCESS.getMessage(), voteService.getVoteDetail(teamId, voteId)));
     }
 
     //투표 종료
     @ApiOperation(value = "투표 종료", notes = "투표를 삭제합니다.")
     @DeleteMapping("/{voteId}")
     public ResponseEntity<ResponseDto> closeVote(@PathVariable Long teamId, @PathVariable Long voteId) {
-        this.voteService.closeVote(voteId);
+        this.voteService.closeVote(teamId, voteId);
         return ResponseEntity.ok(ResponseDto.create(HttpStatus.OK.value(), CLOSE_VOTE_SUCCESS.getMessage()));
     }
 

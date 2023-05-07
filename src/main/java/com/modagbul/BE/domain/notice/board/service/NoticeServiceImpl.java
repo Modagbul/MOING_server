@@ -11,6 +11,8 @@ import com.modagbul.BE.domain.notice.board.exception.NotNoticeWriterException;
 import com.modagbul.BE.domain.notice.board.repository.NoticeRepository;
 import com.modagbul.BE.domain.notice.read.entity.NoticeRead;
 import com.modagbul.BE.domain.notice.read.repository.NoticeReadRepository;
+import com.modagbul.BE.domain.team.entity.Team;
+import com.modagbul.BE.domain.team.service.TeamService;
 import com.modagbul.BE.domain.team_member.entity.TeamMember;
 import com.modagbul.BE.domain.team_member.repository.TeamMemberRepository;
 import com.modagbul.BE.domain.user.entity.User;
@@ -36,6 +38,8 @@ public class NoticeServiceImpl implements NoticeService{
     private final NoticeReadRepository noticeReadRepository;
     private final UserRepository userRepository;
 
+    private final TeamService teamService;
+
     @Override
     public CreateNoticeResponse createNotice(Long teamId, CreateNoticeRequest createNoticeRequest) {
         //1. 공지사항 생성, 저장
@@ -47,15 +51,15 @@ public class NoticeServiceImpl implements NoticeService{
     }
 
     @Override
-    public void deleteNotice(Long noticeId) {
-        Notice notice=validateNotice(noticeId);
+    public void deleteNotice(Long teamId, Long noticeId) {
+        Notice notice=validateNotice(teamId, noticeId);
         validateUser(SecurityUtils.getLoggedInUser(),notice);
         notice.deleteNotice();
     }
     @Override
-    public GetNoticeDetailsResponse getNoticeDetails(Long noticeId) {
+    public GetNoticeDetailsResponse getNoticeDetails(Long teamId, Long noticeId) {
         //1. 공지사항 유효성 체크
-        Notice notice=this.validateNotice(noticeId);
+        Notice notice=this.validateNotice(teamId, noticeId);
         //2. 사용자 읽음 처리
         updateNoticeRead(notice);
         //3. 공지 조회 -> 이때 읽은 사용자는 안 뜨게 해야 함
@@ -68,7 +72,8 @@ public class NoticeServiceImpl implements NoticeService{
      * @return 공지가 삭제되지 않았다면 Notice 반환
      */
     @Override
-    public Notice validateNotice(Long noticeId){
+    public Notice validateNotice(Long teamId,Long noticeId){
+        Team team=teamService.validateTeam(teamId);
         return this.noticeRepository.findNotDeletedByNoticeId(noticeId).orElseThrow(()->new NotFoundNoticeIdException());
     }
 
