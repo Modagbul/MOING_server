@@ -3,6 +3,7 @@ package com.modagbul.BE.domain.mission.controller;
 import com.modagbul.BE.domain.mission.dto.MissionDetailDto;
 import com.modagbul.BE.domain.mission.dto.MissionDto;
 import com.modagbul.BE.domain.mission.dto.MissionListDto;
+import com.modagbul.BE.domain.mission.service.MissionBoardService;
 import com.modagbul.BE.domain.mission.service.MissionService;
 import com.modagbul.BE.domain.user.dto.UserDto;
 import com.modagbul.BE.domain.usermission.constant.Status;
@@ -32,6 +33,7 @@ public class MissionController {
 
     private final MissionService missionService;
     private final UserMissionService userMissionService;
+    private final MissionBoardService missionBoardService;
 
     @ApiOperation(value = "미션 생성", notes = "미션을 생성합니다.")
     @PostMapping("/new")
@@ -76,6 +78,12 @@ public class MissionController {
 
 
 
+    @ApiOperation(value = "개인별 미션 인증 비율", notes = "개인별 미션 인증 비율을 조회합니다..")
+    @GetMapping("/personalRate")
+    public ResponseEntity<ResponseDto<Long>> statusMission(@PathVariable Long teamId){
+        return ResponseEntity.ok(ResponseDto.create(HttpStatus.OK.value(),STATUS_MISSION_SUCCESS.getMessage(),missionBoardService.getTeamPercentForGraph(teamId)));
+//        return ResponseEntity.ok(ResponseDto.create(HttpStatus.OK.value(),STATUS_MISSION_SUCCESS.getMessage(),missionBoardService.getPersonalRateForGraph(teamId)));
+    }
 
 
 }
