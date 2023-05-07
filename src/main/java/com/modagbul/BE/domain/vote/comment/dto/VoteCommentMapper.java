@@ -4,6 +4,7 @@ import com.modagbul.BE.domain.user.exception.NotFoundEmailException;
 import com.modagbul.BE.domain.user.repository.UserRepository;
 import com.modagbul.BE.domain.vote.board.entity.Vote;
 import com.modagbul.BE.domain.vote.board.service.VoteService;
+import com.modagbul.BE.domain.vote.comment.dto.VoteCommentDto.GetVoteCommentResponse;
 import com.modagbul.BE.domain.vote.comment.entity.VoteComment;
 import com.modagbul.BE.global.config.security.util.SecurityUtils;
 import lombok.AllArgsConstructor;
@@ -15,14 +16,18 @@ public class VoteCommentMapper {
     private final VoteService voteService;
 
     private final UserRepository userRepository;
-    public VoteComment toEntity(Long voteId, VoteCommentDto.CreateVoteCommentRequest createVoteCommentRequest){
-        Vote vote=voteService.validateVote(voteId);
-        VoteComment voteComment=new VoteComment();
+
+    public VoteComment toEntity(Long voteId, VoteCommentDto.CreateVoteCommentRequest createVoteCommentRequest) {
+        Vote vote = voteService.validateVote(voteId);
+        VoteComment voteComment = new VoteComment();
 
         voteComment.createVoteComment(createVoteCommentRequest.getContent());
         voteComment.setVote(vote);
-        voteComment.setUser(userRepository.findById(SecurityUtils.getLoggedInUser().getUserId()).orElseThrow(()->new NotFoundEmailException()));
+        voteComment.setUser(userRepository.findById(SecurityUtils.getLoggedInUser().getUserId()).orElseThrow(() -> new NotFoundEmailException()));
         return voteComment;
     }
 
+    public GetVoteCommentResponse toDto(VoteComment voteComment) {
+        return new GetVoteCommentResponse(voteComment.getVoteCommentId(), voteComment.getContent(), voteComment.getUser().getUserId(), voteComment.getUser().getNickName(), voteComment.getUser().getImageUrl(), voteComment.getCreatedDate());
+    }
 }

@@ -1,12 +1,9 @@
 package com.modagbul.BE.domain.vote.board.service;
 
-import com.modagbul.BE.domain.notice.board.entity.Notice;
-import com.modagbul.BE.domain.notice.board.exception.NotFoundNoticeIdException;
 import com.modagbul.BE.domain.team_member.entity.TeamMember;
 import com.modagbul.BE.domain.team_member.repository.TeamMemberRepository;
 import com.modagbul.BE.domain.user.exception.NotFoundEmailException;
 import com.modagbul.BE.domain.user.repository.UserRepository;
-import com.modagbul.BE.domain.vote.board.dto.VoteDto;
 import com.modagbul.BE.domain.vote.board.dto.VoteDto.*;
 import com.modagbul.BE.domain.vote.board.dto.VoteMapper;
 import com.modagbul.BE.domain.vote.board.entity.Vote;

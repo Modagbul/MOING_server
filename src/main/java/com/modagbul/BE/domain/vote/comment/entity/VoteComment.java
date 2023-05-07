@@ -2,6 +2,7 @@ package com.modagbul.BE.domain.vote.comment.entity;
 
 import com.modagbul.BE.domain.user.entity.User;
 import com.modagbul.BE.domain.vote.board.entity.Vote;
+import com.modagbul.BE.global.entity.BaseTimeEntity;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -14,7 +15,7 @@ import javax.persistence.*;
 @NoArgsConstructor
 @AllArgsConstructor
 @Getter
-public class VoteComment {
+public class VoteComment extends BaseTimeEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -34,19 +35,19 @@ public class VoteComment {
     @JoinColumn(name = "vote_id")
     private Vote vote;
 
-    public void createVoteComment(String content){
-        this.content=content;
+    public void createVoteComment(String content) {
+        this.content = content;
     }
 
-    public void deleteVoteComment(){
-        this.isDeleted=true;
+    public void deleteVoteComment() {
+        this.isDeleted = true;
     }
 
     /**
      * 연관관계 매핑
      */
     public void setVote(Vote vote) {
-        this.vote=vote;
+        this.vote = vote;
         vote.getVoteComments().add(this);
     }
 

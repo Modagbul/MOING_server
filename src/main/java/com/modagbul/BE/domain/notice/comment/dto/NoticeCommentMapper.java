@@ -1,8 +1,9 @@
 package com.modagbul.BE.domain.notice.comment.dto;
 
 import com.modagbul.BE.domain.notice.board.entity.Notice;
-import com.modagbul.BE.domain.notice.comment.entity.NoticeComment;
 import com.modagbul.BE.domain.notice.board.service.NoticeService;
+import com.modagbul.BE.domain.notice.comment.dto.NoticeCommentDto.GetNoticeCommentResponse;
+import com.modagbul.BE.domain.notice.comment.entity.NoticeComment;
 import com.modagbul.BE.domain.user.exception.NotFoundEmailException;
 import com.modagbul.BE.domain.user.repository.UserRepository;
 import com.modagbul.BE.global.config.security.util.SecurityUtils;
@@ -25,7 +26,7 @@ public class NoticeCommentMapper {
         return noticeComment;
     }
 
-    public NoticeCommentDto.GetNoticeCommentResponse toDto(NoticeComment noticeComment){
-        return new NoticeCommentDto.GetNoticeCommentResponse(noticeComment.getNoticeCommentId(),noticeComment.getContent(), noticeComment.getUser().getUserId(), noticeComment.getUser().getNickName(), noticeComment.getUser().getImageUrl(), noticeComment.getCreatedDate());
+    public GetNoticeCommentResponse toDto(NoticeComment noticeComment){
+        return new GetNoticeCommentResponse(noticeComment.getNoticeCommentId(),noticeComment.getContent(), noticeComment.getUser().getUserId(), noticeComment.getUser().getNickName(), noticeComment.getUser().getImageUrl(), noticeComment.getCreatedDate());
     }
 }
