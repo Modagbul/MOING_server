@@ -44,11 +44,6 @@ public class NoticeCommentServiceImpl implements NoticeCommentService{
     }
 
     @Override
-    public NoticeComment validateNoticeComment(Long noticeCommentId) {
-        return this.noticeCommentRepository.findNotDeletedByCommentId(noticeCommentId).orElseThrow(()->new NotFoundNoticeCommentIdException());
-    }
-
-    @Override
     public List<GetNoticeCommentResponse> getAllNoticeCommentByNoticeId(Long noticeId) {
         List<NoticeComment> noticeComments=noticeCommentRepository.findAllCommentsByNoticeId(noticeId);
         List<GetNoticeCommentResponse> result=new ArrayList<>();
@@ -62,12 +57,24 @@ public class NoticeCommentServiceImpl implements NoticeCommentService{
     }
 
     /**
+     * NoticeComment 유효성 체크 메서드
+     * @param noticeCommentId
+     * @return
+     */
+
+    @Override
+    public NoticeComment validateNoticeComment(Long noticeCommentId) {
+        return this.noticeCommentRepository.findNotDeletedByCommentId(noticeCommentId).orElseThrow(()->new NotFoundNoticeCommentIdException());
+    }
+
+
+    /**
      * 댓글을 작성한 유저인지 확인하는 메서드
      * @param user
      * @param noticeComment
      */
     private void validateUser(User user, NoticeComment noticeComment){
-        if(noticeComment.getUser()!=user)
+        if(noticeComment.getUser().getUserId()!=user.getUserId())
             throw new NotNoticeCommentWriterException();
     }
 

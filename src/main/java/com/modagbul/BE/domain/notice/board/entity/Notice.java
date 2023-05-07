@@ -38,7 +38,7 @@ public class Notice extends BaseTimeEntity {
 
     //작성자
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "usr_id")
+    @JoinColumn(name = "user_id")
     private User user;
 
     @OneToMany(mappedBy = "notice")

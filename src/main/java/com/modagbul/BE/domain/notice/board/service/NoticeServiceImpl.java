@@ -111,7 +111,7 @@ public class NoticeServiceImpl implements NoticeService{
      */
 
     private void validateUser(User user, Notice notice){
-        if(notice.getUser()!=user)
+        if(notice.getUser().getUserId()!=user.getUserId())
             throw new NotNoticeWriterException();
     }
 }
