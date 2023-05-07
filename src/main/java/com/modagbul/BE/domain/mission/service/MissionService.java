@@ -122,6 +122,18 @@ public class MissionService {
                 next.setDueTo(getRemainPeriod(next.getDueTo()));
             }
         }
+        //pastMission의 dueTo를 이용한 정렬을 통해 종료된 미션 순서 정렬
+        pastMissions.sort((o1, o2) -> {
+            try {
+                SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm");
+                Date o1Date = format.parse(o1.getDueTo());
+                Date o2Date = format.parse(o2.getDueTo());
+                return o2Date.compareTo(o1Date);
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
+            return 0;
+        });
 
         missionListDtos.addAll(pastMissions);
 
