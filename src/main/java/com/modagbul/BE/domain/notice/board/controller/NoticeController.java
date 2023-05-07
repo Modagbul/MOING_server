@@ -40,7 +40,4 @@ public class NoticeController {
         return ResponseEntity.ok(ResponseDto.create(HttpStatus.OK.value(), NoticeConstant.ENoticeResponseMessage.GET_NOTICE_DETAIL_SUCCESS.getMessage(), this.noticeService.getNoticeDetails(teamId, noticeId)));
     }
 
-    //공지 전체 조회
-
-    //공지 확인하지 않은 것만 조회
 }

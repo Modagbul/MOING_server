@@ -66,7 +66,6 @@ public class Vote extends BaseTimeEntity {
 
     public void closeVote(){
         this.isClosed=true;
-    }
 
     /**
      * 연관관계 매핑

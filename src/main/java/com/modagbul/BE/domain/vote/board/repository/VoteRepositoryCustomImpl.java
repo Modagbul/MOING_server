@@ -21,6 +21,7 @@ public class VoteRepositoryCustomImpl implements VoteRepositoryCustom {
         return Optional.ofNullable(queryFactory.selectFrom(vote)
                 .where(vote.voteId.eq(voteId),
                         vote.isClosed.eq(false))
+
                 .fetchFirst());
     }
 }

@@ -44,7 +44,6 @@ public class VoteController {
         return ResponseEntity.ok(ResponseDto.create(HttpStatus.OK.value(), GET_VOTE_DETAIL_SUCCESS.getMessage(), voteService.getVoteDetail(teamId, voteId)));
     }
 
-    //투표 종료
     @ApiOperation(value = "투표 종료", notes = "투표를 삭제합니다.")
     @DeleteMapping("/{voteId}")
     public ResponseEntity<ResponseDto> closeVote(@PathVariable Long teamId, @PathVariable Long voteId) {
@@ -54,5 +53,4 @@ public class VoteController {
 
     //투표 전체 조회
 
-    //투표 확인안한것만 조회
 }

@@ -13,4 +13,5 @@ public interface VoteService {
     GetVoteDetailsResponse getVoteDetail(Long teamId, Long voteId);
     Vote validateVote(Long teamId, Long voteId);
     void closeVote(Long teamId, Long voteId);
+
 }
