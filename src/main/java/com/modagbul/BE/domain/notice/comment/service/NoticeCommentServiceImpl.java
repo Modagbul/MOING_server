@@ -1,5 +1,7 @@
 package com.modagbul.BE.domain.notice.comment.service;
 
+import com.modagbul.BE.domain.notice.board.entity.Notice;
+import com.modagbul.BE.domain.notice.board.service.NoticeService;
 import com.modagbul.BE.domain.notice.comment.dto.NoticeCommentDto.CreateNoticeCommentRequest;
 import com.modagbul.BE.domain.notice.comment.dto.NoticeCommentDto.CreateNoticeCommentResponse;
 import com.modagbul.BE.domain.notice.comment.dto.NoticeCommentDto.GetNoticeCommentResponse;
@@ -28,6 +30,8 @@ public class NoticeCommentServiceImpl implements NoticeCommentService{
 
     private final NoticeCommentRepository noticeCommentRepository;
     private final NoticeCommentMapper noticeCommentMapper;
+
+    private final NoticeService noticeService;
 
     @Override
     public CreateNoticeCommentResponse createNoticeComment(Long noticeId, CreateNoticeCommentRequest createNoticeCommentRequest) {

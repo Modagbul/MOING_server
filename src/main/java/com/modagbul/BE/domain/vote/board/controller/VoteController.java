@@ -1,5 +1,6 @@
 package com.modagbul.BE.domain.vote.board.controller;
 
+import com.modagbul.BE.domain.notice.board.constant.NoticeConstant;
 import com.modagbul.BE.domain.vote.board.dto.VoteDto.CreateVoteRequest;
 import com.modagbul.BE.domain.vote.board.dto.VoteDto.CreateVoteResponse;
 import com.modagbul.BE.domain.vote.board.dto.VoteDto.DoVoteRequest;
@@ -44,6 +45,12 @@ public class VoteController {
     }
 
     //투표 종료
+    @ApiOperation(value = "투표 종료", notes = "투표를 삭제합니다.")
+    @DeleteMapping("/{voteId}")
+    public ResponseEntity<ResponseDto> closeVote(@PathVariable Long teamId, @PathVariable Long voteId) {
+        this.voteService.closeVote(voteId);
+        return ResponseEntity.ok(ResponseDto.create(HttpStatus.OK.value(), CLOSE_VOTE_SUCCESS.getMessage()));
+    }
 
     //투표 전체 조회
 

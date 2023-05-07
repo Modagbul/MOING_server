@@ -12,4 +12,6 @@ public interface VoteService {
     void doVote(Long voteId, DoVoteRequest doVoteRequest);
     GetVoteDetailsResponse getVoteDetail(Long voteId);
     Vote validateVote(Long voteId);
+
+    void closeVote(Long voteId);
 }

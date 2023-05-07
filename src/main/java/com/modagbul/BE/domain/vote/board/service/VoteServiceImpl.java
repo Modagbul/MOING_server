@@ -1,7 +1,10 @@
 package com.modagbul.BE.domain.vote.board.service;
 
+import com.modagbul.BE.domain.notice.board.entity.Notice;
+import com.modagbul.BE.domain.notice.board.exception.NotNoticeWriterException;
 import com.modagbul.BE.domain.team_member.entity.TeamMember;
 import com.modagbul.BE.domain.team_member.repository.TeamMemberRepository;
+import com.modagbul.BE.domain.user.entity.User;
 import com.modagbul.BE.domain.user.exception.NotFoundEmailException;
 import com.modagbul.BE.domain.user.repository.UserRepository;
 import com.modagbul.BE.domain.vote.board.dto.VoteDto.*;
@@ -74,6 +77,13 @@ public class VoteServiceImpl implements VoteService{
         return voteMapper.toDto(vote, voteReadRepository.getNotReadUsersNickName(voteId), mappingFromVoteContent(vote, vote.getVoteContents()));
     }
 
+    @Override
+    public void closeVote(Long voteId) {
+        Vote vote=validateVote(voteId);
+        validateUser(SecurityUtils.getLoggedInUser(),vote);
+        vote.closeVote();
+    }
+
     /**
      * 투표가 종료되었는지 확인하는 메서드 (유효성 체크 메서드)
      * @param voteId
@@ -82,7 +92,7 @@ public class VoteServiceImpl implements VoteService{
 
     @Override
     public Vote validateVote(Long voteId){
-        return this.voteRepository.findNotDeletedByVoteId(voteId).orElseThrow(()->new NotFoundVoteIdException());
+        return this.voteRepository.findNotClosedByVoteId(voteId).orElseThrow(()->new NotFoundVoteIdException());
     }
 
     /**
@@ -165,5 +175,16 @@ public class VoteServiceImpl implements VoteService{
         });
 
         return voteChoiceList;
+    }
+
+    /**
+     * 투표를 작성한 유저인지 확인하는 메서드
+     * @param user
+     * @param vote
+     */
+
+    private void validateUser(User user, Vote vote){
+        if(vote.getUser().getUserId()!=user.getUserId())
+            throw new NotNoticeWriterException();
     }
 }

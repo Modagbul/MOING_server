@@ -10,7 +10,7 @@ public class VoteConstant {
     public enum EVoteResponseMessage {
         CREATE_VOTE_SUCCESS("투표를 생성하였습니다"),
         DO_VOTE_SUCCESS("투표를 하였습니다"),
-        DELETE_VOTE_SUCCESS("투표를 삭제하였습니다"),
+        CLOSE_VOTE_SUCCESS("투표를 종료하였습니다"),
         GET_VOTE_DETAIL_SUCCESS("투표를 상세 조회하였습니다");
 
         private final String message;

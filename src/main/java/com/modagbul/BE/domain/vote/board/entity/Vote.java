@@ -37,7 +37,7 @@ public class Vote extends BaseTimeEntity {
     private boolean isAnonymous;
 
     //종료 여부
-    private boolean status;
+    private boolean isClosed;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "team_id")
@@ -64,6 +64,10 @@ public class Vote extends BaseTimeEntity {
         this.isMultiple=isMultiple;
     }
 
+    public void closeVote(){
+        this.isClosed=true;
+    }
+
     /**
      * 연관관계 매핑
      */
@@ -76,6 +80,7 @@ public class Vote extends BaseTimeEntity {
         this.user=user;
         user.getVotes().add(this);
     }
+
 
 
 }
