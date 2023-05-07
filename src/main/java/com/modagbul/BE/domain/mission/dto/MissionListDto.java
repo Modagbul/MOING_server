@@ -23,4 +23,8 @@ public class MissionListDto {
     public void setStatus(Status status) {
         this.status = status;
     }
+
+    public void setDueTo(String dueTo) {
+        this.dueTo = dueTo;
+    }
 }
