@@ -3,6 +3,7 @@ package com.modagbul.BE.domain.mission.repository;
 import com.modagbul.BE.domain.mission.dto.MissionDetailDto;
 import com.modagbul.BE.domain.mission.dto.MissionListDto;
 import com.modagbul.BE.domain.mission.entity.Mission;
+import com.modagbul.BE.domain.usermission.constant.Status;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -20,10 +21,15 @@ public interface MissionRepository extends JpaRepository<Mission, Long> {
     @Query("select m from Mission m where m.missionId = :missionId and m.team.teamId = :teamId")
     Optional<Mission> findByTeamIdAndMissionId( @Param("teamId") Long teamId, @Param("missionId") Long missionId);
 
-    @Query(value = "select new com.modagbul.BE.domain.mission.dto.MissionListDto(m.missionId,m.title,m.dueTo)" +
-            "from Mission m " +
-            "where m.team.teamId = :teamId")
-    Optional<List<MissionListDto>> findMissionListById(@Param("teamId") Long teamId);
+    @Query(value = "select new com.modagbul.BE.domain.mission.dto.MissionListDto(m.missionId,m.title,m.dueTo,um.status) " +
+            "from UserMission um join um.mission m " +
+            "where m.team.teamId = :teamId and um.user.userId = :userId and um.status = :status order by m.dueTo ")
+    Optional<List<MissionListDto>> findIncompleteMissionListById(@Param("teamId") Long teamId,@Param("userId") Long userId,@Param("status") Status status);
+
+    @Query(value = "select new com.modagbul.BE.domain.mission.dto.MissionListDto(m.missionId,m.title,m.dueTo,um.status) " +
+            "from UserMission um join um.mission m " +
+            "where m.team.teamId = :teamId and um.user.userId = :userId and (um.status = :status or um.status = com.modagbul.BE.domain.usermission.constant.Status.PENDING)order by um.lastModifiedDate")
+    Optional<List<MissionListDto>> findCompleteMissionListById(@Param("teamId") Long teamId,@Param("userId") Long userId,@Param("status") Status status);
 
     @Query(value=" select new com.modagbul.BE.domain.mission.dto.MissionDetailDto(m.title,m.dueTo,m.content,m.rule)" +
             "from Mission m  " +

@@ -24,6 +24,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.Iterator;
 import java.util.List;
 
 import static com.modagbul.BE.domain.mission.dto.MissionDto.*;
@@ -100,10 +101,42 @@ public class MissionService {
     public List<MissionListDto> getMissionList(Long teamId){
 
         Long userId = SecurityUtils.getLoggedInUser().getUserId();
-        List<MissionListDto> missionListDtos = missionRepository.findMissionListById(teamId).orElseThrow(NotFoundUserMissionsException::new);
-        for (MissionListDto missionListDto : missionListDtos) {
-            missionListDto.setStatus(userMissionRepository.findUserMissionStatusById(userId,teamId, missionListDto.getMissionId()).orElse(Status.INCOMPLETE));
+
+        List<MissionListDto> incompleteMissions = missionRepository.findIncompleteMissionListById(teamId,userId,Status.INCOMPLETE).orElseThrow(NotFoundUserMissionsException::new);
+        List<MissionListDto> completeMissions = missionRepository.findCompleteMissionListById(teamId, userId, Status.COMPLETE).orElseThrow(NotFoundUserMissionsException::new);
+
+        List<MissionListDto> missionListDtos = new ArrayList<>();
+        List<MissionListDto> pastMissions = new ArrayList<>();
+
+        missionListDtos.addAll(incompleteMissions);
+        missionListDtos.addAll(completeMissions);
+
+        Iterator<MissionListDto> iterator = missionListDtos.iterator();
+        while (iterator.hasNext()) {
+            MissionListDto next = iterator.next();
+            if(!getDueToOK(next.getDueTo())){
+                pastMissions.add(next);
+                iterator.remove();
+            }
+            else{
+                next.setDueTo(getRemainPeriod(next.getDueTo()));
+            }
         }
+        //pastMission의 dueTo를 이용한 정렬을 통해 종료된 미션 순서 정렬
+        pastMissions.sort((o1, o2) -> {
+            try {
+                SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm");
+                Date o1Date = format.parse(o1.getDueTo());
+                Date o2Date = format.parse(o2.getDueTo());
+                return o2Date.compareTo(o1Date);
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
+            return 0;
+        });
+
+        missionListDtos.addAll(pastMissions);
+
         return missionListDtos;
 
     }
@@ -116,6 +149,27 @@ public class MissionService {
         missionDetailDto.setDueTo(getRemainPeriod(missionDetailDto.getDueTo()));
         return missionDetailDto;
     }
+
+    public boolean getDueToOK(String dueTo) {
+        try {
+            SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm");
+            Date dueToDate = format.parse(dueTo);
+            Date now = new Date();
+
+            if (dueToDate.getTime() - now.getTime() > 0) {
+                System.out.println("미션 기간이 남았습니다.");
+                return true;
+            }else {
+                System.out.println("미션 기간이 지났습니다.");
+                return false;
+            }
+
+        } catch(ParseException e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
+
 
     public String getRemainPeriod(String dueTo) {
         try {
