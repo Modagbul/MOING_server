@@ -1,7 +1,9 @@
 package com.modagbul.BE.domain.notice.board.service;
 
+import com.modagbul.BE.domain.notice.board.dto.NoticeDto;
 import com.modagbul.BE.domain.notice.board.dto.NoticeDto.CreateNoticeRequest;
 import com.modagbul.BE.domain.notice.board.dto.NoticeDto.CreateNoticeResponse;
+import com.modagbul.BE.domain.notice.board.dto.NoticeDto.GetNoticeAllResponse;
 import com.modagbul.BE.domain.notice.board.dto.NoticeDto.GetNoticeDetailsResponse;
 import com.modagbul.BE.domain.notice.board.dto.NoticeMapper;
 import com.modagbul.BE.domain.notice.board.entity.Notice;
@@ -64,6 +66,16 @@ public class NoticeServiceImpl implements NoticeService{
         updateNoticeRead(notice);
         //3. 공지 조회 -> 이때 읽은 사용자는 안 뜨게 해야 함
         return noticeMapper.toDto(notice,noticeReadRepository.getNotReadUsersNickName(noticeId));
+    }
+
+    @Override
+    public GetNoticeAllResponse getNoticeAll(Long teamId) {
+        return noticeRepository.getNoticeAllByTeamId(teamId, SecurityUtils.getLoggedInUser().getUserId());
+    }
+
+    @Override
+    public List<NoticeDto.GetUnReadNoticeResponse> getUnReadNotice(Long teamId) {
+        return noticeRepository.getUnReadNoticeByTeamId(teamId, SecurityUtils.getLoggedInUser().getUserId());
     }
 
     /**
