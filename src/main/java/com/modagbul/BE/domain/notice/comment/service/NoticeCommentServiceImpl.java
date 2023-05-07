@@ -1,5 +1,7 @@
 package com.modagbul.BE.domain.notice.comment.service;
 
+import com.modagbul.BE.domain.notice.board.entity.Notice;
+import com.modagbul.BE.domain.notice.board.service.NoticeService;
 import com.modagbul.BE.domain.notice.comment.dto.NoticeCommentDto.CreateNoticeCommentRequest;
 import com.modagbul.BE.domain.notice.comment.dto.NoticeCommentDto.CreateNoticeCommentResponse;
 import com.modagbul.BE.domain.notice.comment.dto.NoticeCommentDto.GetNoticeCommentResponse;
@@ -28,28 +30,25 @@ public class NoticeCommentServiceImpl implements NoticeCommentService{
 
     private final NoticeCommentRepository noticeCommentRepository;
     private final NoticeCommentMapper noticeCommentMapper;
+    private final NoticeService noticeService;
 
     @Override
-    public CreateNoticeCommentResponse createNoticeComment(Long noticeId, CreateNoticeCommentRequest createNoticeCommentRequest) {
-        NoticeComment noticeComment=noticeCommentMapper.toEntity(noticeId, createNoticeCommentRequest);
+    public CreateNoticeCommentResponse createNoticeComment(Long teamId, Long noticeId, CreateNoticeCommentRequest createNoticeCommentRequest) {
+        NoticeComment noticeComment=noticeCommentMapper.toEntity(teamId, noticeId, createNoticeCommentRequest);
         noticeCommentRepository.save(noticeComment);
         return new CreateNoticeCommentResponse(noticeComment.getNoticeCommentId());
     }
 
     @Override
-    public void deleteNoticeComment(Long noticeCommentId) {
-        NoticeComment noticeComment=validateNoticeComment(noticeCommentId);
+    public void deleteNoticeComment(Long teamId, Long noticeId, Long noticeCommentId) {
+        NoticeComment noticeComment=validateNoticeComment(teamId, noticeId, noticeCommentId);
         validateUser(SecurityUtils.getLoggedInUser(),noticeComment);
         noticeComment.deleteNoticeComment();
     }
 
     @Override
-    public NoticeComment validateNoticeComment(Long noticeCommentId) {
-        return this.noticeCommentRepository.findNotDeletedByCommentId(noticeCommentId).orElseThrow(()->new NotFoundNoticeCommentIdException());
-    }
-
-    @Override
-    public List<GetNoticeCommentResponse> getAllNoticeCommentByNoticeId(Long noticeId) {
+    public List<GetNoticeCommentResponse> getAllNoticeCommentByNoticeId(Long teamId, Long noticeId) {
+        Notice notice=noticeService.validateNotice(teamId, noticeId);
         List<NoticeComment> noticeComments=noticeCommentRepository.findAllCommentsByNoticeId(noticeId);
         List<GetNoticeCommentResponse> result=new ArrayList<>();
         Map<Long, GetNoticeCommentResponse> map=new HashMap<>();
@@ -62,12 +61,25 @@ public class NoticeCommentServiceImpl implements NoticeCommentService{
     }
 
     /**
+     * NoticeComment 유효성 체크 메서드
+     * @param noticeCommentId
+     * @return
+     */
+
+    @Override
+    public NoticeComment validateNoticeComment(Long teamId, Long noticeId, Long noticeCommentId) {
+        noticeService.validateNotice(teamId, noticeId);
+        return this.noticeCommentRepository.findNotDeletedByCommentId(noticeCommentId).orElseThrow(()->new NotFoundNoticeCommentIdException());
+    }
+
+
+    /**
      * 댓글을 작성한 유저인지 확인하는 메서드
      * @param user
      * @param noticeComment
      */
     private void validateUser(User user, NoticeComment noticeComment){
-        if(noticeComment.getUser()!=user)
+        if(noticeComment.getUser().getUserId()!=user.getUserId())
             throw new NotNoticeCommentWriterException();
     }
 

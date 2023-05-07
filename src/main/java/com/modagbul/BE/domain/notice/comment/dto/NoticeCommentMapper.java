@@ -1,8 +1,9 @@
 package com.modagbul.BE.domain.notice.comment.dto;
 
 import com.modagbul.BE.domain.notice.board.entity.Notice;
-import com.modagbul.BE.domain.notice.comment.entity.NoticeComment;
 import com.modagbul.BE.domain.notice.board.service.NoticeService;
+import com.modagbul.BE.domain.notice.comment.dto.NoticeCommentDto.GetNoticeCommentResponse;
+import com.modagbul.BE.domain.notice.comment.entity.NoticeComment;
 import com.modagbul.BE.domain.user.exception.NotFoundEmailException;
 import com.modagbul.BE.domain.user.repository.UserRepository;
 import com.modagbul.BE.global.config.security.util.SecurityUtils;
@@ -15,8 +16,8 @@ public class NoticeCommentMapper {
     private final NoticeService noticeService;
 
     private final UserRepository userRepository;
-    public NoticeComment toEntity(Long noticeId, NoticeCommentDto.CreateNoticeCommentRequest createNoticeCommentRequest){
-        Notice notice=noticeService.validateNotice(noticeId);
+    public NoticeComment toEntity(Long teamId, Long noticeId, NoticeCommentDto.CreateNoticeCommentRequest createNoticeCommentRequest){
+        Notice notice=noticeService.validateNotice(teamId, noticeId);
         NoticeComment noticeComment=new NoticeComment();
 
         noticeComment.createNoticeComment(createNoticeCommentRequest.getContent());
@@ -25,7 +26,7 @@ public class NoticeCommentMapper {
         return noticeComment;
     }
 
-    public NoticeCommentDto.GetNoticeCommentResponse toDto(NoticeComment noticeComment){
-        return new NoticeCommentDto.GetNoticeCommentResponse(noticeComment.getNoticeCommentId(),noticeComment.getContent(), noticeComment.getUser().getUserId(), noticeComment.getUser().getNickName(), noticeComment.getUser().getImageUrl(), noticeComment.getCreatedDate());
+    public GetNoticeCommentResponse toDto(NoticeComment noticeComment){
+        return new GetNoticeCommentResponse(noticeComment.getNoticeCommentId(),noticeComment.getContent(), noticeComment.getUser().getUserId(), noticeComment.getUser().getNickName(), noticeComment.getUser().getImageUrl(), noticeComment.getCreatedDate());
     }
 }

@@ -7,7 +7,7 @@ import com.modagbul.BE.domain.notice.board.entity.Notice;
 
 public interface NoticeService {
     CreateNoticeResponse createNotice(Long teamId, CreateNoticeRequest createNoticeRequest);
-    void deleteNotice(Long noticeId);
-    Notice validateNotice(Long noticeId);
-    GetNoticeDetailsResponse getNoticeDetails(Long noticeId);
+    void deleteNotice(Long teamId, Long noticeId);
+    Notice validateNotice(Long teamId, Long noticeId);
+    GetNoticeDetailsResponse getNoticeDetails(Long teamId, Long noticeId);
 }

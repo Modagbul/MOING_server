@@ -8,8 +8,8 @@ import com.modagbul.BE.domain.notice.comment.entity.NoticeComment;
 import java.util.List;
 
 public interface NoticeCommentService {
-    CreateNoticeCommentResponse createNoticeComment(Long noticeId, CreateNoticeCommentRequest createNoticeCommentRequest);
-    void deleteNoticeComment(Long noticeCommentId);
-    NoticeComment validateNoticeComment(Long noticeCommentId);
-    List<GetNoticeCommentResponse> getAllNoticeCommentByNoticeId(Long noticeId);
+    CreateNoticeCommentResponse createNoticeComment(Long teamId, Long noticeId, CreateNoticeCommentRequest createNoticeCommentRequest);
+    void deleteNoticeComment(Long teamId, Long noticeId, Long noticeCommentId);
+    NoticeComment validateNoticeComment(Long teamId, Long noticeId, Long noticeCommentId);
+    List<GetNoticeCommentResponse> getAllNoticeCommentByNoticeId(Long teamId ,Long noticeId);
 }

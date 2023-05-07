@@ -11,6 +11,8 @@ import com.modagbul.BE.domain.notice.board.exception.NotNoticeWriterException;
 import com.modagbul.BE.domain.notice.board.repository.NoticeRepository;
 import com.modagbul.BE.domain.notice.read.entity.NoticeRead;
 import com.modagbul.BE.domain.notice.read.repository.NoticeReadRepository;
+import com.modagbul.BE.domain.team.entity.Team;
+import com.modagbul.BE.domain.team.service.TeamService;
 import com.modagbul.BE.domain.team_member.entity.TeamMember;
 import com.modagbul.BE.domain.team_member.repository.TeamMemberRepository;
 import com.modagbul.BE.domain.user.entity.User;
@@ -36,6 +38,8 @@ public class NoticeServiceImpl implements NoticeService{
     private final NoticeReadRepository noticeReadRepository;
     private final UserRepository userRepository;
 
+    private final TeamService teamService;
+
     @Override
     public CreateNoticeResponse createNotice(Long teamId, CreateNoticeRequest createNoticeRequest) {
         //1. 공지사항 생성, 저장
@@ -47,25 +51,30 @@ public class NoticeServiceImpl implements NoticeService{
     }
 
     @Override
-    public void deleteNotice(Long noticeId) {
-        Notice notice=validateNotice(noticeId);
+    public void deleteNotice(Long teamId, Long noticeId) {
+        Notice notice=validateNotice(teamId, noticeId);
         validateUser(SecurityUtils.getLoggedInUser(),notice);
         notice.deleteNotice();
     }
-
     @Override
-    public Notice validateNotice(Long noticeId){
-        return this.noticeRepository.findNotDeletedByNoticeId(noticeId).orElseThrow(()->new NotFoundNoticeIdException());
-    }
-
-    @Override
-    public GetNoticeDetailsResponse getNoticeDetails(Long noticeId) {
+    public GetNoticeDetailsResponse getNoticeDetails(Long teamId, Long noticeId) {
         //1. 공지사항 유효성 체크
-        Notice notice=this.validateNotice(noticeId);
+        Notice notice=this.validateNotice(teamId, noticeId);
         //2. 사용자 읽음 처리
         updateNoticeRead(notice);
         //3. 공지 조회 -> 이때 읽은 사용자는 안 뜨게 해야 함
         return noticeMapper.toDto(notice,noticeReadRepository.getNotReadUsersNickName(noticeId));
+    }
+
+    /**
+     * 공지가 삭제되었는지 확인하는 메서드: 유효성 체크
+     * @param noticeId
+     * @return 공지가 삭제되지 않았다면 Notice 반환
+     */
+    @Override
+    public Notice validateNotice(Long teamId,Long noticeId){
+        Team team=teamService.validateTeam(teamId);
+        return this.noticeRepository.findNotDeletedByNoticeId(noticeId).orElseThrow(()->new NotFoundNoticeIdException());
     }
 
     /**
@@ -87,6 +96,11 @@ public class NoticeServiceImpl implements NoticeService{
 
     }
 
+    /**
+     * 지금 현재 유저를 읽음 처리하는 메서드
+     * @param notice
+     */
+
     private void updateNoticeRead(Notice notice){
         NoticeRead noticeRead=noticeReadRepository.findByUserAndNotice(userRepository.findById
                                 (SecurityUtils.getLoggedInUser().getUserId()).orElseThrow(()->new NotFoundEmailException()),
@@ -95,8 +109,14 @@ public class NoticeServiceImpl implements NoticeService{
         noticeRead.readNotice();
     }
 
+    /**
+     * 공지를 작성한 유저인지 확인하는 메서드
+     * @param user
+     * @param notice
+     */
+
     private void validateUser(User user, Notice notice){
-        if(notice.getUser()!=user)
+        if(notice.getUser().getUserId()!=user.getUserId())
             throw new NotNoticeWriterException();
     }
 }

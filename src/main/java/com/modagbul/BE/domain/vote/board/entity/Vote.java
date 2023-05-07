@@ -2,6 +2,7 @@ package com.modagbul.BE.domain.vote.board.entity;
 
 import com.modagbul.BE.domain.team.entity.Team;
 import com.modagbul.BE.domain.user.entity.User;
+import com.modagbul.BE.domain.vote.comment.entity.VoteComment;
 import com.modagbul.BE.domain.vote.content.entity.VoteContent;
 import com.modagbul.BE.domain.vote.read.entity.VoteRead;
 import com.modagbul.BE.global.entity.BaseTimeEntity;
@@ -36,7 +37,7 @@ public class Vote extends BaseTimeEntity {
     private boolean isAnonymous;
 
     //종료 여부
-    private boolean isEnd;
+    private boolean isClosed;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "team_id")
@@ -53,6 +54,9 @@ public class Vote extends BaseTimeEntity {
     @OneToMany(mappedBy = "vote")
     private List<VoteRead> voteReads=new ArrayList<>();
 
+    @OneToMany(mappedBy = "vote")
+    private List<VoteComment> voteComments=new ArrayList<>();
+
     public void createVote(String title, String memo, boolean isAnonymous, boolean isMultiple){
         this.title=title;
         this.memo=memo;
@@ -60,9 +64,8 @@ public class Vote extends BaseTimeEntity {
         this.isMultiple=isMultiple;
     }
 
-    public void endVote(){
-        this.isEnd=true;
-    }
+    public void closeVote(){
+        this.isClosed=true;
 
     /**
      * 연관관계 매핑
@@ -76,6 +79,7 @@ public class Vote extends BaseTimeEntity {
         this.user=user;
         user.getVotes().add(this);
     }
+
 
 
 }

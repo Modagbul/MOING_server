@@ -30,15 +30,14 @@ public class NoticeController {
     @ApiOperation(value = "공지 삭제", notes = "공지를 삭제합니다.")
     @DeleteMapping("/{noticeId}")
     public ResponseEntity<ResponseDto> deleteNotice(@PathVariable Long teamId, @PathVariable Long noticeId) {
-        this.noticeService.deleteNotice(noticeId);
+        this.noticeService.deleteNotice(teamId, noticeId);
         return ResponseEntity.ok(ResponseDto.create(HttpStatus.OK.value(), NoticeConstant.ENoticeResponseMessage.DELETE_NOTICE_SUCCESS.getMessage()));
     }
 
     @ApiOperation(value = "공지 상세 조회", notes = "공지를 상세 조회합니다")
     @GetMapping("/{noticeId}")
     public ResponseEntity<ResponseDto<NoticeDto.GetNoticeDetailsResponse>> getNoticeDetail(@PathVariable Long teamId, @PathVariable Long noticeId) {
-        return ResponseEntity.ok(ResponseDto.create(HttpStatus.OK.value(), NoticeConstant.ENoticeResponseMessage.GET_NOTICE_DETAIL_SUCCESS.getMessage(), this.noticeService.getNoticeDetails(noticeId)));
+        return ResponseEntity.ok(ResponseDto.create(HttpStatus.OK.value(), NoticeConstant.ENoticeResponseMessage.GET_NOTICE_DETAIL_SUCCESS.getMessage(), this.noticeService.getNoticeDetails(teamId, noticeId)));
     }
 
-    //공지 전체 조회
 }

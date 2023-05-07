@@ -17,10 +17,11 @@ public class VoteRepositoryCustomImpl implements VoteRepositoryCustom {
     }
 
     @Override
-    public Optional<Vote> findNotDeletedByVoteId(Long voteId) {
+    public Optional<Vote> findNotClosedByVoteId(Long voteId) {
         return Optional.ofNullable(queryFactory.selectFrom(vote)
                 .where(vote.voteId.eq(voteId),
-                        vote.isEnd.eq(false))
+                        vote.isClosed.eq(false))
+
                 .fetchFirst());
     }
 }
