@@ -42,5 +42,5 @@ public class NoticeController {
 
     //공지 전체 조회
 
-    //공지 수정
+    //공지 확인하지 않은 것만 조회
 }

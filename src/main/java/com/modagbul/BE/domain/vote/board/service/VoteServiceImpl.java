@@ -77,11 +77,16 @@ public class VoteServiceImpl implements VoteService{
         return voteMapper.toDto(vote, voteReadRepository.getNotReadUsersNickName(voteId), mappingFromVoteContent(vote, vote.getVoteContents()));
     }
 
+    /**
+     * 투표가 종료되었는지 확인하는 메서드 (유효성 체크 메서드)
+     * @param voteId
+     * @return 투표가 종료되지 않으면 Vote 반환
+     */
+
     @Override
     public Vote validateVote(Long voteId){
         return this.voteRepository.findNotDeletedByVoteId(voteId).orElseThrow(()->new NotFoundVoteIdException());
     }
-
 
     /**
      * 투표 선택지를 저장하는 메서드
@@ -133,6 +138,11 @@ public class VoteServiceImpl implements VoteService{
         updateVoteRead(vote);
         //투표 안읽은 사람 알림 가기 (전체 소모임원에서 생성한 사람 빼면 !) -> sendMultipleDevices() 함수 이용하면 될 듯
     }
+
+    /**
+     * 지금 현재 유저를 읽음 처리하는 메서드
+     * @param vote
+     */
 
     private void updateVoteRead(Vote vote){
         VoteRead voteRead=voteReadRepository.findByUserAndVote(userRepository.findById

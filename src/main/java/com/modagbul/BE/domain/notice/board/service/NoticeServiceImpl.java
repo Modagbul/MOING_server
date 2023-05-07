@@ -52,12 +52,6 @@ public class NoticeServiceImpl implements NoticeService{
         validateUser(SecurityUtils.getLoggedInUser(),notice);
         notice.deleteNotice();
     }
-
-    @Override
-    public Notice validateNotice(Long noticeId){
-        return this.noticeRepository.findNotDeletedByNoticeId(noticeId).orElseThrow(()->new NotFoundNoticeIdException());
-    }
-
     @Override
     public GetNoticeDetailsResponse getNoticeDetails(Long noticeId) {
         //1. 공지사항 유효성 체크
@@ -66,6 +60,16 @@ public class NoticeServiceImpl implements NoticeService{
         updateNoticeRead(notice);
         //3. 공지 조회 -> 이때 읽은 사용자는 안 뜨게 해야 함
         return noticeMapper.toDto(notice,noticeReadRepository.getNotReadUsersNickName(noticeId));
+    }
+
+    /**
+     * 공지가 삭제되었는지 확인하는 메서드: 유효성 체크
+     * @param noticeId
+     * @return 공지가 삭제되지 않았다면 Notice 반환
+     */
+    @Override
+    public Notice validateNotice(Long noticeId){
+        return this.noticeRepository.findNotDeletedByNoticeId(noticeId).orElseThrow(()->new NotFoundNoticeIdException());
     }
 
     /**
@@ -87,6 +91,11 @@ public class NoticeServiceImpl implements NoticeService{
 
     }
 
+    /**
+     * 지금 현재 유저를 읽음 처리하는 메서드
+     * @param notice
+     */
+
     private void updateNoticeRead(Notice notice){
         NoticeRead noticeRead=noticeReadRepository.findByUserAndNotice(userRepository.findById
                                 (SecurityUtils.getLoggedInUser().getUserId()).orElseThrow(()->new NotFoundEmailException()),
@@ -94,6 +103,12 @@ public class NoticeServiceImpl implements NoticeService{
                 .orElseThrow(()-> new NotFoundNoticeUserException());
         noticeRead.readNotice();
     }
+
+    /**
+     * 공지를 작성한 유저인지 확인하는 메서드
+     * @param user
+     * @param notice
+     */
 
     private void validateUser(User user, Notice notice){
         if(notice.getUser()!=user)

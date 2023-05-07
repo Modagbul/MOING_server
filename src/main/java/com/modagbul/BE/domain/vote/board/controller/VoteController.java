@@ -1,6 +1,5 @@
 package com.modagbul.BE.domain.vote.board.controller;
 
-import com.modagbul.BE.domain.vote.board.dto.VoteDto;
 import com.modagbul.BE.domain.vote.board.dto.VoteDto.CreateVoteRequest;
 import com.modagbul.BE.domain.vote.board.dto.VoteDto.CreateVoteResponse;
 import com.modagbul.BE.domain.vote.board.dto.VoteDto.DoVoteRequest;
@@ -44,4 +43,9 @@ public class VoteController {
         return ResponseEntity.ok(ResponseDto.create(HttpStatus.OK.value(), GET_VOTE_DETAIL_SUCCESS.getMessage(), voteService.getVoteDetail(voteId)));
     }
 
+    //투표 종료
+
+    //투표 전체 조회
+
+    //투표 확인안한것만 조회
 }
