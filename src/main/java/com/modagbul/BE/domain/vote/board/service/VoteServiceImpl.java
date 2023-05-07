@@ -83,10 +83,10 @@ public class VoteServiceImpl implements VoteService{
 
     @Override
     public void closeVote(Long teamId, Long voteId) {
-        Vote vote=validateVote(teamId, voteId);
-        validateUser(SecurityUtils.getLoggedInUser(),vote);
+        Vote vote = validateVote(teamId, voteId);
+        validateUser(SecurityUtils.getLoggedInUser(), vote);
         vote.closeVote();
-
+    }
 
     /**
      * 투표가 종료되었는지 확인하는 메서드 (유효성 체크 메서드)

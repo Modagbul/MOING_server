@@ -64,12 +64,13 @@ public class Vote extends BaseTimeEntity {
         this.isMultiple=isMultiple;
     }
 
-    public void closeVote(){
-        this.isClosed=true;
-
+    public void closeVote() {
+        this.isClosed = true;
+    }
     /**
      * 연관관계 매핑
      */
+
     public void setTeam(Team team){
         this.team=team;
         team.getVotes().add(this);
@@ -79,7 +80,4 @@ public class Vote extends BaseTimeEntity {
         this.user=user;
         user.getVotes().add(this);
     }
-
-
-
 }
