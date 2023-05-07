@@ -1,5 +1,6 @@
 package com.modagbul.BE.domain.vote.board.dto;
 
+import com.querydsl.core.annotations.QueryProjection;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.AllArgsConstructor;
@@ -81,11 +82,30 @@ public abstract class VoteDto {
         private String nickName;
         private String userImageUrl;
 
+        @QueryProjection
+        public GetVoteDetailsResponse(String title, String memo, LocalDateTime createdDate,
+                                      Long userId, String nickName, String userImageUrl){
+            this.title=title;
+            this.memo=memo;
+            this.createdDate=createdDate;
+            this.userId=userId;
+            this.nickName=nickName;
+            this.userImageUrl=userImageUrl;
+        }
+
         //안읽은 사람
         private List<String> notReadUsersNickName = new ArrayList<>();
 
         //각 선택지마다의 결과
         private List<VoteChoice> voteChoices=new ArrayList<>();
+
+        public void setNotReadUsersNickName(List<String> usersNickName){
+            this.notReadUsersNickName=usersNickName;
+        }
+
+        public void setVoteChoices(List<VoteChoice> voteChoices){
+            this.voteChoices=voteChoices;
+        }
     }
 
     @Getter

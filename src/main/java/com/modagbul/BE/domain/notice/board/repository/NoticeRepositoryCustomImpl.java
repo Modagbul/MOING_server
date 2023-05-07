@@ -1,6 +1,5 @@
 package com.modagbul.BE.domain.notice.board.repository;
 
-import com.modagbul.BE.domain.notice.board.dto.NoticeDto;
 import com.modagbul.BE.domain.notice.board.dto.NoticeDto.GetNoticeAllResponse;
 import com.modagbul.BE.domain.notice.board.dto.NoticeDto.GetUnReadNoticeResponse;
 import com.modagbul.BE.domain.notice.board.dto.NoticeDto.NoticeBlock;
@@ -49,7 +48,7 @@ public class NoticeRepositoryCustomImpl implements NoticeRepositoryCustom {
     public List<GetUnReadNoticeResponse> getUnReadNoticeByTeamId(Long teamId, Long userId) {
         return queryFactory
                 .select(Projections.constructor(GetUnReadNoticeResponse.class,
-                        notice.title,notice.content))
+                        notice.title, notice.content))
                 .from(notice)
                 .join(notice.noticeReads, noticeRead)
                 .where(notice.team.teamId.eq(teamId),

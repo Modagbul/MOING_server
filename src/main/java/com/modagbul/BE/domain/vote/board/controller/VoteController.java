@@ -1,6 +1,5 @@
 package com.modagbul.BE.domain.vote.board.controller;
 
-import com.modagbul.BE.domain.notice.board.constant.NoticeConstant;
 import com.modagbul.BE.domain.vote.board.dto.VoteDto.CreateVoteRequest;
 import com.modagbul.BE.domain.vote.board.dto.VoteDto.CreateVoteResponse;
 import com.modagbul.BE.domain.vote.board.dto.VoteDto.DoVoteRequest;
@@ -53,4 +52,5 @@ public class VoteController {
 
     //투표 전체 조회
 
+    //투표 안 읽은 것만 조회
 }
