@@ -7,7 +7,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.Optional;
 
-public interface VoteReadRepository extends JpaRepository<VoteRead, Long>, VoteReadRepositoryCustom {
+public interface VoteReadRepository extends JpaRepository<VoteRead, Long> {
 
     Optional<VoteRead> findByUserAndVote(User user, Vote vote);
 }

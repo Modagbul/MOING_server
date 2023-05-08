@@ -81,14 +81,6 @@ public abstract class NoticeDto {
         private boolean isRead;
 
         private LocalDateTime createdDate;
-
-        public void setRead(Boolean isRead){
-            this.isRead=isRead;
-        }
-
-        public void setCommentNum(Integer commentNum){
-            this.commentNum=commentNum;
-        }
     }
 
     @Getter

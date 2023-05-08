@@ -1,6 +1,5 @@
 package com.modagbul.BE.domain.vote.board.service;
 
-import com.modagbul.BE.domain.notice.board.entity.Notice;
 import com.modagbul.BE.domain.notice.board.exception.NotNoticeWriterException;
 import com.modagbul.BE.domain.team.entity.Team;
 import com.modagbul.BE.domain.team.service.TeamService;
@@ -28,7 +27,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
-import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -44,7 +42,6 @@ public class VoteServiceImpl implements VoteService{
     private final VoteReadRepository voteReadRepository;
     private final UserRepository userRepository;
     private final VoteContentUserRepository voteContentUserRepository;
-
     private final TeamService teamService;
 
     @Override
@@ -78,7 +75,7 @@ public class VoteServiceImpl implements VoteService{
         //2. 읽음처리 업데이트
         updateVoteRead(vote);
         //3. 투표 조회
-        return voteMapper.toDto(vote, voteReadRepository.getNotReadUsersNickName(voteId), mappingFromVoteContent(vote, vote.getVoteContents()));
+        return voteRepository.getVoteDetailByVoteId(voteId);
     }
 
     @Override
@@ -86,6 +83,16 @@ public class VoteServiceImpl implements VoteService{
         Vote vote = validateVote(teamId, voteId);
         validateUser(SecurityUtils.getLoggedInUser(), vote);
         vote.closeVote();
+    }
+
+    @Override
+    public GetVoteAllResponse getVoteAll(Long teamId) {
+        return voteRepository.getVoteAllByTeamId(teamId,SecurityUtils.getLoggedInUser().getUserId());
+    }
+
+    @Override
+    public List<GetUnReadVoteResponse> getUnReadVote(Long teamId) {
+        return voteRepository.getUnReadVoteByTeamId(teamId, SecurityUtils.getLoggedInUser().getUserId());
     }
 
     /**
@@ -128,6 +135,7 @@ public class VoteServiceImpl implements VoteService{
             VoteContentUser voteContentUser=new VoteContentUser();
             voteContentUser.setVoteContent(voteContent);
             voteContentUser.setUser(userRepository.findById(SecurityUtils.getLoggedInUser().getUserId()).orElseThrow(()->new NotFoundEmailException()));
+            voteContentUser.setVote(vote);
             voteContentUserRepository.save(voteContentUser);
         });
     }
@@ -162,24 +170,6 @@ public class VoteServiceImpl implements VoteService{
                         vote)
                 .orElseThrow(()-> new NotFoundVoteUserException());
         voteRead.readVote();
-    }
-
-    /**
-     * From List<VoteContent> to List<VoteChoice>
-     * @param voteContents
-     * @return voteChoices
-     */
-    private List<VoteChoice> mappingFromVoteContent(Vote vote, List<VoteContent> voteContents){
-        List<VoteChoice> voteChoiceList=new ArrayList<>();
-
-        voteContents.stream().forEach(voteContent->{
-            String content=voteContent.getContent();
-            List<String> usersNickName=voteContentUserRepository.getUsersNickNameByContent(vote, content);
-            VoteChoice voteChoice=new VoteChoice(content, usersNickName.size(), usersNickName);
-            voteChoiceList.add(voteChoice);
-        });
-
-        return voteChoiceList;
     }
 
     /**
