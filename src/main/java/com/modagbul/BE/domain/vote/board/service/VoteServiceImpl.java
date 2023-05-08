@@ -1,6 +1,5 @@
 package com.modagbul.BE.domain.vote.board.service;
 
-import com.modagbul.BE.domain.notice.board.entity.Notice;
 import com.modagbul.BE.domain.notice.board.exception.NotNoticeWriterException;
 import com.modagbul.BE.domain.team.entity.Team;
 import com.modagbul.BE.domain.team.service.TeamService;
@@ -28,7 +27,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
-import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -85,6 +83,16 @@ public class VoteServiceImpl implements VoteService{
         Vote vote = validateVote(teamId, voteId);
         validateUser(SecurityUtils.getLoggedInUser(), vote);
         vote.closeVote();
+    }
+
+    @Override
+    public GetVoteAllResponse getVoteAll(Long teamId) {
+        return voteRepository.getVoteAllByTeamId(teamId,SecurityUtils.getLoggedInUser().getUserId());
+    }
+
+    @Override
+    public List<GetUnReadVoteResponse> getUnReadVote(Long teamId) {
+        return voteRepository.getUnReadVoteByTeamId(teamId, SecurityUtils.getLoggedInUser().getUserId());
     }
 
     /**

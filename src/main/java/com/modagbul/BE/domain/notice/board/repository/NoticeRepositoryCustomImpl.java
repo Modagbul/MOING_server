@@ -13,6 +13,8 @@ import java.util.Optional;
 
 import static com.modagbul.BE.domain.notice.board.entity.QNotice.notice;
 import static com.modagbul.BE.domain.notice.read.entity.QNoticeRead.noticeRead;
+import static com.modagbul.BE.domain.vote.board.entity.QVote.vote;
+import static com.modagbul.BE.domain.vote.read.entity.QVoteRead.voteRead;
 
 public class NoticeRepositoryCustomImpl implements NoticeRepositoryCustom {
     private final JPAQueryFactory queryFactory;
@@ -57,6 +59,7 @@ public class NoticeRepositoryCustomImpl implements NoticeRepositoryCustom {
                         noticeRead.isRead.eq(false))
                 .orderBy(notice.createdDate.desc())
                 .fetch();
+        
     }
 
 

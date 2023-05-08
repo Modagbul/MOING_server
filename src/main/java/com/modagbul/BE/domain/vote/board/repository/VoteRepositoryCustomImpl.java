@@ -2,9 +2,13 @@ package com.modagbul.BE.domain.vote.board.repository;
 
 import com.modagbul.BE.domain.vote.board.dto.QVoteDto_GetVoteDetailsResponse;
 import com.modagbul.BE.domain.vote.board.dto.VoteDto;
+import com.modagbul.BE.domain.vote.board.dto.VoteDto.GetUnReadVoteResponse;
+import com.modagbul.BE.domain.vote.board.dto.VoteDto.GetVoteAllResponse;
+import com.modagbul.BE.domain.vote.board.dto.VoteDto.VoteBlock;
 import com.modagbul.BE.domain.vote.board.dto.VoteDto.VoteChoice;
 import com.modagbul.BE.domain.vote.board.entity.Vote;
 import com.modagbul.BE.domain.vote.content.entity.VoteContent;
+import com.querydsl.core.types.Projections;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 
 import javax.persistence.EntityManager;
@@ -85,6 +89,59 @@ public class VoteRepositoryCustomImpl implements VoteRepositoryCustom {
                 .from(voteContentUser)
                 .where(voteContentUser.vote.voteId.eq(voteId))
                 .where(voteContentUser.content.eq(content))
+                .fetch();
+    }
+
+    @Override
+    public GetVoteAllResponse getVoteAllByTeamId(Long teamId, Long userId) {
+        List<VoteBlock> voteBlocks=findVoteBlocksByTeamId(teamId, userId);
+
+        Long notReadNum = queryFactory
+                .from(vote)
+                .join(vote.voteReads, voteRead)
+                .where(vote.team.teamId.eq(teamId),
+                        voteRead.user.userId.eq(userId),
+                        voteRead.isRead.eq(false))
+                .fetchCount();
+
+        return new GetVoteAllResponse(notReadNum, voteBlocks);
+    }
+
+    @Override
+    public List<GetUnReadVoteResponse> getUnReadVoteByTeamId(Long teamId, Long userId) {
+        return queryFactory
+                .select(Projections.constructor(GetUnReadVoteResponse.class,
+                        vote.voteId, vote.title,vote.memo))
+                .from(vote)
+                .join(vote.voteReads, voteRead)
+                .where(vote.team.teamId.eq(teamId),
+                        vote.isClosed.eq(false),
+                        voteRead.user.userId.eq(userId),
+                        voteRead.isRead.eq(false))
+                .orderBy(vote.createdDate.desc())
+                .fetch();
+    }
+
+    private List<VoteBlock> findVoteBlocksByTeamId(Long teamId, Long userId) {
+        return queryFactory
+                .select(Projections.constructor(VoteDto.VoteBlock.class,
+                        vote.voteId,
+                        vote.title,
+                        vote.memo,
+                        vote.user.userId,
+                        vote.user.nickName,
+                        vote.user.imageUrl,
+                        vote.voteComments.size(),
+                        voteRead.isRead,
+                        vote.createdDate))
+                .distinct()
+                .from(vote,voteRead)
+                .join(vote.voteReads, voteRead)
+                .where(vote.team.teamId.eq(teamId),
+                        vote.isClosed.eq(false),
+                        voteRead.user.userId.eq(userId))
+                .orderBy(voteRead.isRead.asc())
+                .orderBy(vote.createdDate.desc())
                 .fetch();
     }
 

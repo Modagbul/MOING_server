@@ -1,5 +1,6 @@
 package com.modagbul.BE.domain.vote.board.dto;
 
+import com.modagbul.BE.domain.notice.board.dto.NoticeDto;
 import com.querydsl.core.annotations.QueryProjection;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
@@ -125,4 +126,41 @@ public abstract class VoteDto {
 
     }
 
+    @Getter
+    @AllArgsConstructor
+    @Builder
+    @ApiModel(description = "투표 전체 조회를 위한 응답 객체")
+    @NoArgsConstructor
+    public static class GetVoteAllResponse {
+        private Long notReadNum;
+        private List<VoteBlock> voteBlocks=new ArrayList<>();
+    }
+
+    @Getter
+    @AllArgsConstructor
+    @Builder
+    @NoArgsConstructor
+    public static class VoteBlock{
+        private Long voteId;
+        private String title;
+        private String memo;
+        private Long userId;
+        private String nickName;
+        private String userImageUrl;
+        private Integer commentNum;
+        private boolean isRead;
+
+        private LocalDateTime createdDate;
+    }
+
+    @Getter
+    @AllArgsConstructor
+    @Builder
+    @ApiModel(description = "안 읽은 투표 조회를 위한 응답 객체")
+    @NoArgsConstructor
+    public static class GetUnReadVoteResponse {
+        private Long voteId;
+        private String title;
+        private String content;
+    }
 }
