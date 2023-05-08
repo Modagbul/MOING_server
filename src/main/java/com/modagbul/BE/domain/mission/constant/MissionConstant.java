@@ -29,7 +29,8 @@ public class MissionConstant {
     @RequiredArgsConstructor
     public enum MissionExceptionList{
         MISSION_AUTH_DENIED("M0001", HttpStatus.UNAUTHORIZED, "미션 생성 및 수정 권한이 없습니다."),
-        NOT_FOUND_MISSION("M0002", HttpStatus.NOT_FOUND, "해당 미션을 찾을 수 없습니다.");
+        NOT_FOUND_MISSION("M0002", HttpStatus.NOT_FOUND, "해당 미션을 찾을 수 없습니다."),
+        INVALID_COMPLETE_RATE("M0003", HttpStatus.NOT_FOUND, "비율 계산이 올바르지 않습니다.");
         private final String errorCode;
         private final HttpStatus httpStatus;
         private final String message;
