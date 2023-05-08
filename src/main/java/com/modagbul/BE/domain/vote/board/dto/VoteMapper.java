@@ -35,13 +35,4 @@ public class VoteMapper {
         return vote;
     }
 
-    public GetVoteDetailsResponse toDto(Vote vote, List<String> notReadUsersNickName, List<VoteChoice> voteChoices){
-        GetVoteDetailsResponse getVoteDetailsResponse=new GetVoteDetailsResponse(
-                vote.getTitle(), vote.getMemo(), vote.getCreatedDate(),
-                vote.getUser().getUserId(), vote.getUser().getNickName(), vote.getUser().getImageUrl(),
-                notReadUsersNickName, voteChoices
-        );
-        return getVoteDetailsResponse;
-    }
-
 }

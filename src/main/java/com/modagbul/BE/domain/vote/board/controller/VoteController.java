@@ -1,10 +1,8 @@
 package com.modagbul.BE.domain.vote.board.controller;
 
-import com.modagbul.BE.domain.notice.board.constant.NoticeConstant;
-import com.modagbul.BE.domain.vote.board.dto.VoteDto.CreateVoteRequest;
-import com.modagbul.BE.domain.vote.board.dto.VoteDto.CreateVoteResponse;
-import com.modagbul.BE.domain.vote.board.dto.VoteDto.DoVoteRequest;
-import com.modagbul.BE.domain.vote.board.dto.VoteDto.GetVoteDetailsResponse;
+import com.modagbul.BE.domain.notice.board.dto.NoticeDto;
+import com.modagbul.BE.domain.vote.board.dto.VoteDto;
+import com.modagbul.BE.domain.vote.board.dto.VoteDto.*;
 import com.modagbul.BE.domain.vote.board.service.VoteService;
 import com.modagbul.BE.global.dto.ResponseDto;
 import io.swagger.annotations.Api;
@@ -16,6 +14,9 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 
+import java.util.List;
+
+import static com.modagbul.BE.domain.notice.board.constant.NoticeConstant.ENoticeResponseMessage.GET_NOTICE_UNREAD_SUCCESS;
 import static com.modagbul.BE.domain.vote.board.constant.VoteConstant.EVoteResponseMessage.*;
 
 @RestController
@@ -51,6 +52,15 @@ public class VoteController {
         return ResponseEntity.ok(ResponseDto.create(HttpStatus.OK.value(), CLOSE_VOTE_SUCCESS.getMessage()));
     }
 
-    //투표 전체 조회
+    @ApiOperation(value="투표 전체 조회", notes="투표 블록에서 투표를 전체 조회합니다.")
+    @GetMapping
+    public ResponseEntity<ResponseDto<GetVoteAllResponse>> getVoteAll(@PathVariable Long teamId){
+        return ResponseEntity.ok(ResponseDto.create(HttpStatus.OK.value(), GET_VOTE_ALL_SUCCESS.getMessage(), voteService.getVoteAll(teamId)));
+    }
 
+    @ApiOperation(value="투표 안읽은 것만 조회", notes="투표에서 안 읽은 것만 최신순으로 조회합니다.")
+    @GetMapping("unread")
+    public ResponseEntity<ResponseDto<List<GetUnReadVoteResponse>>> getUnReadVote(@PathVariable Long teamId){
+        return ResponseEntity.ok(ResponseDto.create(HttpStatus.OK.value(), GET_VOTE_UNREAD_SUCCESS.getMessage(),voteService.getUnReadVote(teamId)));
+    }
 }

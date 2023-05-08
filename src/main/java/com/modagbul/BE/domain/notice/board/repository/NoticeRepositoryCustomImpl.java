@@ -1,6 +1,5 @@
 package com.modagbul.BE.domain.notice.board.repository;
 
-import com.modagbul.BE.domain.notice.board.dto.NoticeDto;
 import com.modagbul.BE.domain.notice.board.dto.NoticeDto.GetNoticeAllResponse;
 import com.modagbul.BE.domain.notice.board.dto.NoticeDto.GetUnReadNoticeResponse;
 import com.modagbul.BE.domain.notice.board.dto.NoticeDto.NoticeBlock;
@@ -14,6 +13,8 @@ import java.util.Optional;
 
 import static com.modagbul.BE.domain.notice.board.entity.QNotice.notice;
 import static com.modagbul.BE.domain.notice.read.entity.QNoticeRead.noticeRead;
+import static com.modagbul.BE.domain.vote.board.entity.QVote.vote;
+import static com.modagbul.BE.domain.vote.read.entity.QVoteRead.voteRead;
 
 public class NoticeRepositoryCustomImpl implements NoticeRepositoryCustom {
     private final JPAQueryFactory queryFactory;
@@ -49,7 +50,7 @@ public class NoticeRepositoryCustomImpl implements NoticeRepositoryCustom {
     public List<GetUnReadNoticeResponse> getUnReadNoticeByTeamId(Long teamId, Long userId) {
         return queryFactory
                 .select(Projections.constructor(GetUnReadNoticeResponse.class,
-                        notice.title,notice.content))
+                        notice.title, notice.content))
                 .from(notice)
                 .join(notice.noticeReads, noticeRead)
                 .where(notice.team.teamId.eq(teamId),
@@ -58,6 +59,7 @@ public class NoticeRepositoryCustomImpl implements NoticeRepositoryCustom {
                         noticeRead.isRead.eq(false))
                 .orderBy(notice.createdDate.desc())
                 .fetch();
+        
     }
 
 
