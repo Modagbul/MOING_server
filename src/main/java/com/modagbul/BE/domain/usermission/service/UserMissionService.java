@@ -2,6 +2,7 @@ package com.modagbul.BE.domain.usermission.service;
 
 import com.modagbul.BE.domain.fire.repository.FireRepository;
 import com.modagbul.BE.domain.mission.Exception.NotFoundMissionException;
+import com.modagbul.BE.domain.mission.dto.MissionListDto;
 import com.modagbul.BE.domain.mission.entity.Mission;
 import com.modagbul.BE.domain.mission.repository.MissionRepository;
 import com.modagbul.BE.domain.team.entity.Team;
@@ -23,6 +24,7 @@ import org.springframework.stereotype.Service;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.Iterator;
 import java.util.List;
 
 @Service
@@ -34,7 +36,6 @@ public class UserMissionService {
     private final MissionRepository missionRepository;
     private final UserRepository userRepository;
     private final FireRepository fireRepository;
-
 
     public Status submitUserMission(Long teamId, Long missionId, String submitUrl) {
 
@@ -73,20 +74,34 @@ public class UserMissionService {
     public UserMissionStatusDto getUserMissionList(Long teamId, Long missionId) {
 
         Long userId = SecurityUtils.getLoggedInUser().getUserId();
+        User loginUser = userRepository.findById(userId).orElseThrow(() -> new IllegalStateException("해당 유저를 찾을 수 없습니다."));
         Mission mission = missionRepository.findById(missionId).orElseThrow(NotFoundMissionException::new);
 
         UserMissionStatusDto userMissionStatusDto = new UserMissionStatusDto(
                 mission.getTitle(),
                 userMissionRepository.findCompleteUserMissionListById(teamId, missionId, Status.COMPLETE).orElseThrow(NotFoundUserMissionsException::new),
                 userMissionRepository.findInCompleteUserMissionListById(teamId, missionId, Status.INCOMPLETE).orElseThrow(NotFoundUserMissionsException::new)
-
         );
+        // my submit
+        List<UserMissionListDto> completeList = userMissionStatusDto.getCompleteList();
+        UserMissionListDto mine = null;
+
+        Iterator<UserMissionListDto> iterator = completeList.iterator();
+        while (iterator.hasNext()) {
+            UserMissionListDto next = iterator.next();
+            if (next.getNickname().equals(loginUser.getNickName())) {
+                mine = next;
+                iterator.remove();
+            }
+        }
+        completeList.add(0, mine);
+
         // pending list append
-        userMissionStatusDto.getCompleteList().addAll(userMissionRepository.findCompleteUserMissionListById(teamId, missionId, Status.PENDING).orElseThrow(NotFoundUserMissionsException::new));
+        completeList.addAll(userMissionRepository.findCompleteUserMissionListById(teamId, missionId, Status.PENDING).orElseThrow(NotFoundUserMissionsException::new));
         userMissionStatusDto.setFireUserMissionList(fireRepository.findFireByUserId(userId,missionId).orElseThrow(NotFoundUserMissionsException::new));
 
         // complete/incomplete num
-        int completeSize = userMissionStatusDto.getCompleteList().size();
+        int completeSize = completeList.size();
         int incompleteSize = userMissionStatusDto.getIncompleteList().size();
         userMissionStatusDto.setUserNum(completeSize,incompleteSize);
         userMissionStatusDto.setRemainDay(getRemainPeriod(mission.getDueTo()));
