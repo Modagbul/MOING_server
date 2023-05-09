@@ -12,6 +12,9 @@ import lombok.NoArgsConstructor;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
+import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
 
 public abstract class TeamDto {
 
@@ -124,6 +127,30 @@ public abstract class TeamDto {
         @ApiModelProperty(notes = "소모임 대표사진 url을 입력해 주세요.")
         private String profileImg;
 
+    }
+
+    @Getter
+    @Builder
+    @AllArgsConstructor
+    @NoArgsConstructor
+    @ApiModel(description = "진행 중인 소모임 정보를 위한 응답 객체")
+    public static class GetTeamResponse {
+        private Long inProgressNum;
+        private List<TeamBlock> teamBlocks=new ArrayList<>();
+    }
+
+    @Getter
+    @AllArgsConstructor
+    @Builder
+    @NoArgsConstructor
+    public static class TeamBlock{
+        private Long teamId;
+        private String name;
+        private Integer personnel;
+        private LocalDate startDate;
+        private LocalDate endDate;
+        private String profileImg;
+        private boolean approvalStatus;
     }
 
 }

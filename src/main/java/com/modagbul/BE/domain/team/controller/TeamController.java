@@ -12,6 +12,8 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 
+import java.util.List;
+
 import static com.modagbul.BE.domain.team.constant.TeamConstant.ETeamResponseMessage.*;
 
 @RestController
@@ -46,4 +48,12 @@ public class TeamController {
         return ResponseEntity.ok(ResponseDto.create(HttpStatus.OK.value(), UPDATE_TEAM_SUCCESS.getMessage()));
     }
 
+    //진행 중인 소모임 조회
+    @ApiOperation(value="소모임 정보 조회", notes="홈 화면에서 소모임 정보를 조회합니다")
+    @GetMapping
+    public ResponseEntity<ResponseDto<GetTeamResponse>> getTeam(){
+        return ResponseEntity.ok(ResponseDto.create(HttpStatus.OK.value(), GET_TEAM_SUCCESS.getMessage(), teamService.getTeam()));
+    }
+
+    //소모임 이름 중복 체크
 }

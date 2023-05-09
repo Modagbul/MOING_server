@@ -44,7 +44,8 @@ public class TeamServiceImpl implements TeamService {
         Team team= teamMapper.toEntity(createTeamRequest);
         String code=invitationCodeGenerator.generateCode();
         team.setInvitationCode(code);
-        team.setApprovalStatus();
+        //추후에 승인 절차 만들 예정
+        approveTeam(team);
         teamRepository.save(team);
 
         this.addTeamMember(team);
@@ -79,6 +80,11 @@ public class TeamServiceImpl implements TeamService {
                 .orElseThrow(() -> new NotFoundTeamIdException());
     }
 
+    @Override
+    public TeamDto.GetTeamResponse getTeam() {
+        return teamRepository.getTeam(SecurityUtils.getLoggedInUser().getUserId());
+    }
+
     private void addTeamMember(Team team) {
 
         TeamMember teamMember=new TeamMember();
@@ -98,5 +104,9 @@ public class TeamServiceImpl implements TeamService {
     private void checkLeader(Team team){
        if( team.getLeaderId() != SecurityUtils.getLoggedInUser().getUserId() )
            throw new AccessException();
+    }
+
+    private void approveTeam(Team team){
+        team.setApprovalStatus();
     }
 }
