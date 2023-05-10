@@ -37,7 +37,7 @@ public class MissionController {
     private final MissionBoardService missionBoardService;
 
     @ApiOperation(value = "미션 생성", notes = "미션을 생성합니다.")
-    @PostMapping("/new")
+    @PostMapping("")
     public ResponseEntity<ResponseDto<MissionDto.MissionRes>> createMission(@PathVariable Long teamId, @RequestBody MissionDto.MissionReq missionReq){
         return ResponseEntity.ok(ResponseDto.create(HttpStatus.OK.value(),CREATE_MISSION_SUCCESS.getMessage(),missionService.createMission(teamId,missionReq)));
     }
