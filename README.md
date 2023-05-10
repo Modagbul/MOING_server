@@ -322,6 +322,6 @@
 ![깃 플로우](https://user-images.githubusercontent.com/53565255/232306917-76f0b6d7-eeb3-413d-b899-f307c7eab765.png)
 <br> 
 ## 🚀 시스템 아키텍쳐
-<img width="937" alt="image" src="https://user-images.githubusercontent.com/86006389/232286749-662f02fa-4f18-4483-b5ee-5c0b295d79dc.png">
+![image](https://github.com/KUSITMS-MeetUp-2/27th_Meetup_T2_service_back/assets/86006389/4a99b471-518d-4392-8450-86b1dcd35310)
 
 
