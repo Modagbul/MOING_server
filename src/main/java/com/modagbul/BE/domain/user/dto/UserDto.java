@@ -88,4 +88,14 @@ public abstract class UserDto {
         private String result;
     }
 
+    @Getter
+    @Builder
+    @AllArgsConstructor
+    @NoArgsConstructor
+    @ApiModel(description = "마이페이지를 위한 객체")
+    public static class EditInfoDto {
+        private String nickName;
+        private String introduction;
+    }
+
 }

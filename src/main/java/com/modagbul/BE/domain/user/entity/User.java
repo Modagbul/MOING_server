@@ -49,6 +49,9 @@ public class User {
     @Enumerated(EnumType.STRING)
     private Role role;
 
+    private String introduction;
+
+
     @OneToMany(mappedBy = "user")
     private List<NoticeComment> noticeComments=new ArrayList<>();
 
@@ -85,6 +88,11 @@ public class User {
     public void setUser(String nickName, String address){
         this.nickName=nickName;
         this.address=address;
+    }
+
+    public void setMypage(String nickName, String introduction) {
+        this.nickName=nickName;
+        this.introduction=introduction;
     }
 
     public void setDeleted(){

@@ -25,7 +25,8 @@ public class UserConstant {
     public enum Process {
         SIGN_UP_ING("회원가입 중-추가 정보를 입력해주세요."),
         SIGN_UP_SUCCESS("회원가입이 완료되었습니다"),
-        LOGIN_SUCCESS("로그인이 완료되었습니다");
+        LOGIN_SUCCESS("로그인이 완료되었습니다"),
+        MYPAGE_UPDATE_SUCCESS("마이페이지 수정이 완료되었습니다");
         private final String message;
     }
 
@@ -33,7 +34,8 @@ public class UserConstant {
     @RequiredArgsConstructor
     public enum UserExceptionList {
         CONNECTION_ERROR("U0001", HttpStatus.UNAUTHORIZED, "AccessToken 값이 잘못되었습니다"),
-        NOT_HAVE_EMAIL_ERROR("U0002", HttpStatus.NOT_FOUND, "해당 email로 User를 찾을 수 없습니다.");
+        NOT_HAVE_EMAIL_ERROR("U0002", HttpStatus.NOT_FOUND, "해당 email로 User를 찾을 수 없습니다."),
+        NOT_FOUND_USER_ERROR("U0003", HttpStatus.NOT_FOUND, "해당 id로 User를 찾을 수 없습니다.");
         private final String errorCode;
         private final HttpStatus httpStatus;
         private final String message;

@@ -4,10 +4,12 @@ import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import com.modagbul.BE.domain.user.dto.UserDto;
 import com.modagbul.BE.domain.user.dto.UserDto.CheckNicknameResponse;
+import com.modagbul.BE.domain.user.dto.UserDto.EditInfoDto;
 import com.modagbul.BE.domain.user.dto.UserDto.LoginResponse;
 import com.modagbul.BE.domain.user.entity.User;
 import com.modagbul.BE.domain.user.exception.ConnException;
 import com.modagbul.BE.domain.user.exception.NotFoundEmailException;
+import com.modagbul.BE.domain.user.exception.NotFoundUserException;
 import com.modagbul.BE.domain.user.repository.UserRepository;
 import com.modagbul.BE.global.config.jwt.TokenProvider;
 import com.modagbul.BE.global.config.security.util.SecurityUtils;
@@ -123,6 +125,18 @@ public class UserServiceImpl implements UserService {
         TokenInfoResponse tokenInfoResponse = tokenProvider.createToken(auth, true);
         return LoginResponse.from(tokenInfoResponse, LOGIN_SUCCESS.getMessage());
     }
+    @Override
+    public EditInfoDto updateUser(EditInfoDto editInfoDto) {
+
+        Long userId = SecurityUtils.getLoggedInUser().getUserId();
+
+        User user = userRepository.findById(userId).orElseThrow(NotFoundUserException::new);
+        user.setMypage(editInfoDto.getNickName(), editInfoDto.getIntroduction());
+        userRepository.save(user);
+        return new EditInfoDto(user.getNickName(),user.getIntroduction());
+
+    }
+
 
     /**
      * User -> OAuth2User
@@ -235,5 +249,9 @@ public class UserServiceImpl implements UserService {
         }
         return userRepository.findNotDeletedByEmail(email).get();
     }
+
+
+
+
 
 }

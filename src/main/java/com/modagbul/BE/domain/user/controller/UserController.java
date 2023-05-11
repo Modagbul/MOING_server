@@ -2,6 +2,7 @@ package com.modagbul.BE.domain.user.controller;
 
 import com.modagbul.BE.domain.user.dto.UserDto.*;
 import com.modagbul.BE.domain.user.service.UserService;
+import com.modagbul.BE.global.config.security.util.SecurityUtils;
 import com.modagbul.BE.global.dto.ResponseDto;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -13,6 +14,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.validation.Valid;
 
 import static com.modagbul.BE.domain.user.constant.UserConstant.EUserResponseMessage.*;
+import static com.modagbul.BE.domain.user.constant.UserConstant.Process.MYPAGE_UPDATE_SUCCESS;
 
 @RestController
 @AllArgsConstructor
@@ -25,7 +27,7 @@ public class UserController {
     @ApiOperation(value = "카카오 로그인", notes = "카카오 로그인을 합니다.")
     @PostMapping("/auth/kakao")
     public ResponseEntity<ResponseDto<LoginResponse>> login(@Valid @RequestBody LoginRequest loginRequest){
-        return ResponseEntity.ok(ResponseDto.create(HttpStatus.OK.value(),LOGIN_SUCCESS.getMessage(),this.userService.login(loginRequest)));
+        return ResponseEntity.ok(ResponseDto.create(HttpStatus.OK.value(),MYPAGE_UPDATE_SUCCESS.getMessage(),this.userService.login(loginRequest)));
     }
 
     @ApiOperation(value="닉네임 중복 검사", notes="닉네임 중복 검사를 합니다.")
@@ -51,6 +53,12 @@ public class UserController {
     @PostMapping("/auth/test")
     public ResponseEntity<ResponseDto<LoginResponse>> login(@Valid @RequestBody TestLoginRequest testLoginRequest){
         return ResponseEntity.ok(ResponseDto.create(HttpStatus.OK.value(),LOGIN_SUCCESS.getMessage(),this.userService.testLogin(testLoginRequest)));
+    }
+
+
+    @PutMapping("/mypage")
+    public ResponseEntity<ResponseDto<EditInfoDto >> editInfo(@Valid @RequestBody EditInfoDto editInfoDto){
+        return ResponseEntity.ok(ResponseDto.create(HttpStatus.OK.value(),MYPAGE_UPDATE_SUCCESS.getMessage(),this.userService.updateUser(editInfoDto)));
     }
 
 }
