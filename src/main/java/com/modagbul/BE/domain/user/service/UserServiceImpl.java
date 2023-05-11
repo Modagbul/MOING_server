@@ -16,7 +16,6 @@ import com.modagbul.BE.global.config.security.util.SecurityUtils;
 import com.modagbul.BE.global.dto.TokenInfoResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.checkerframework.checker.units.qual.A;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
@@ -72,7 +71,7 @@ public class UserServiceImpl implements UserService {
 
         //3. JWT 토큰 생성
         TokenInfoResponse tokenInfoResponse = tokenProvider.createToken(auth, isSignedUp);
-        return LoginResponse.from(tokenInfoResponse, isSignedUp ? LOGIN_SUCCESS.getMessage() : SIGN_UP_ING.getMessage());
+        return LoginResponse.from(tokenInfoResponse, token, isSignedUp ? LOGIN_SUCCESS.getMessage() : SIGN_UP_ING.getMessage());
     }
 
     @Override
@@ -93,7 +92,7 @@ public class UserServiceImpl implements UserService {
 
         //4. JWT 토큰 생성
         TokenInfoResponse tokenInfoResponse = tokenProvider.createToken(auth, true);
-        return LoginResponse.from(tokenInfoResponse, LOGIN_SUCCESS.getMessage());
+        return LoginResponse.from(tokenInfoResponse, null, LOGIN_SUCCESS.getMessage());
     }
 
     @Override
@@ -131,7 +130,7 @@ public class UserServiceImpl implements UserService {
         OAuth2AuthenticationToken auth = configureAuthentication(userDetails, authorities);
 
         TokenInfoResponse tokenInfoResponse = tokenProvider.createToken(auth, true);
-        return LoginResponse.from(tokenInfoResponse, LOGIN_SUCCESS.getMessage());
+        return LoginResponse.from(tokenInfoResponse, null, LOGIN_SUCCESS.getMessage());
     }
 
 

@@ -51,12 +51,14 @@ public abstract class UserDto {
     public static class LoginResponse {
         private String accessToken;
         private String refreshToken;
+        private String kakaoAccessToken;
         private String process;
 
-        public static LoginResponse from(TokenInfoResponse tokenInfoResponse, String process) {
+        public static LoginResponse from(TokenInfoResponse tokenInfoResponse, String kakaoAccessToken, String process) {
             return LoginResponse.builder()
                     .accessToken(tokenInfoResponse.getAccessToken())
                     .refreshToken(tokenInfoResponse.getRefreshToken())
+                    .kakaoAccessToken(kakaoAccessToken)
                     .process(process)
                     .build();
         }
