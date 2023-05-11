@@ -24,6 +24,12 @@ public class UserController {
 
     private UserService userService;
 
+    @ApiOperation(value = "카카오 로그인", notes = "카카오 로그인을 합니다.")
+    @PostMapping("/auth/kakao")
+    public ResponseEntity<ResponseDto<LoginResponse>> login(@Valid @RequestBody LoginRequest loginRequest){
+        return ResponseEntity.ok(ResponseDto.create(HttpStatus.OK.value(),MYPAGE_UPDATE_SUCCESS.getMessage(),this.userService.login(loginRequest)));
+    }
+
     @ApiOperation(value="닉네임 중복 검사", notes="닉네임 중복 검사를 합니다.")
     @GetMapping("/nickname/{nickName}/available")
     public ResponseEntity<ResponseDto<CheckNicknameResponse>> checkNickname(@PathVariable String nickName){
