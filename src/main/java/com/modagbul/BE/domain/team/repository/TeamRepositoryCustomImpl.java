@@ -1,11 +1,7 @@
 package com.modagbul.BE.domain.team.repository;
 
-import com.modagbul.BE.domain.team.dto.TeamDto;
 import com.modagbul.BE.domain.team.dto.TeamDto.GetTeamResponse;
 import com.modagbul.BE.domain.team.dto.TeamDto.TeamBlock;
-import com.modagbul.BE.domain.team.entity.QTeam;
-import com.modagbul.BE.domain.team_member.entity.QTeamMember;
-import com.modagbul.BE.domain.user.entity.QUser;
 import com.querydsl.core.types.Projections;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 
@@ -15,7 +11,6 @@ import java.util.List;
 
 import static com.modagbul.BE.domain.team.entity.QTeam.team;
 import static com.modagbul.BE.domain.team_member.entity.QTeamMember.teamMember;
-import static com.modagbul.BE.domain.user.entity.QUser.user;
 
 public class TeamRepositoryCustomImpl implements TeamRepositoryCustom{
     private final JPAQueryFactory queryFactory;
@@ -26,8 +21,8 @@ public class TeamRepositoryCustomImpl implements TeamRepositoryCustom{
 
     @Override
     public GetTeamResponse getTeam(Long userId) {
-        List<TeamBlock> teamBlocks=getTeamBlock(userId);
-        Long inProgressNum=queryFactory.select(team)
+        List<TeamBlock> teamBlocks = getTeamBlock(userId);
+        Long inProgressNum = queryFactory.select(team)
                 .from(team)
                 .join(team.teamMembers, teamMember)
                 .where(teamMember.user.userId.eq(userId))
@@ -37,6 +32,7 @@ public class TeamRepositoryCustomImpl implements TeamRepositoryCustom{
                 .fetchCount();
         return new GetTeamResponse(inProgressNum, teamBlocks);
     }
+
     private List<TeamBlock> getTeamBlock(Long userId){
         return queryFactory.select(Projections.constructor(TeamBlock.class,
                 team.teamId, team.name, team.personnel, team.startDate, team.endDate, team.profileImg, team.approvalStatus))

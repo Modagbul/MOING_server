@@ -1,10 +1,7 @@
 package com.modagbul.BE.domain.team.service;
 
 import com.modagbul.BE.domain.team.dto.TeamDto;
-import com.modagbul.BE.domain.team.dto.TeamDto.CreateTeamRequest;
-import com.modagbul.BE.domain.team.dto.TeamDto.CreateTeamResponse;
-import com.modagbul.BE.domain.team.dto.TeamDto.GetTeamInfo;
-import com.modagbul.BE.domain.team.dto.TeamDto.JoinTeamResponse;
+import com.modagbul.BE.domain.team.dto.TeamDto.*;
 import com.modagbul.BE.domain.team.dto.TeamMapper;
 import com.modagbul.BE.domain.team.entity.Team;
 import com.modagbul.BE.domain.team.exception.AccessException;
@@ -24,6 +21,9 @@ import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
 import java.time.LocalDate;
+
+import static com.modagbul.BE.domain.team.constant.TeamConstant.TeamServiceMessage.EXISTED_TEAMNAME;
+import static com.modagbul.BE.domain.team.constant.TeamConstant.TeamServiceMessage.VALID_TEAMNAME;
 
 @Service
 @Slf4j
@@ -83,6 +83,15 @@ public class TeamServiceImpl implements TeamService {
     @Override
     public TeamDto.GetTeamResponse getTeam() {
         return teamRepository.getTeam(SecurityUtils.getLoggedInUser().getUserId());
+    }
+
+    @Override
+    public CheckTeamNameResponse checkTeamName(String teamName) {
+        if(teamRepository.findByName(teamName).isPresent()){
+            return new CheckTeamNameResponse(EXISTED_TEAMNAME.getValue());
+        }else{
+            return new CheckTeamNameResponse(VALID_TEAMNAME.getValue());
+        }
     }
 
     private void addTeamMember(Team team) {

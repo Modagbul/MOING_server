@@ -48,12 +48,15 @@ public class TeamController {
         return ResponseEntity.ok(ResponseDto.create(HttpStatus.OK.value(), UPDATE_TEAM_SUCCESS.getMessage()));
     }
 
-    //진행 중인 소모임 조회
     @ApiOperation(value="소모임 정보 조회", notes="홈 화면에서 소모임 정보를 조회합니다")
     @GetMapping
     public ResponseEntity<ResponseDto<GetTeamResponse>> getTeam(){
         return ResponseEntity.ok(ResponseDto.create(HttpStatus.OK.value(), GET_TEAM_SUCCESS.getMessage(), teamService.getTeam()));
     }
 
-    //소모임 이름 중복 체크
+    @ApiOperation(value="소모임 이름 중복 검사", notes="소모임 이름 중복 검사를 합니다")
+    @GetMapping("/teamname/{teamName}/available")
+    public ResponseEntity<ResponseDto<CheckTeamNameResponse>> checkTeamName(@PathVariable String teamName){
+        return ResponseEntity.ok(ResponseDto.create(HttpStatus.OK.value(), CHECK_TEAM_NAME_SUCCESS.getMessage(), teamService.checkTeamName(teamName)));
+    }
 }

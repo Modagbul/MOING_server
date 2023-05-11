@@ -12,4 +12,5 @@ public interface TeamService {
     void updateTeam(Long teamId, UpdateTeamRequest updateTeamRequest);
     Team validateTeam(Long teamId);
     GetTeamResponse getTeam();
+    CheckTeamNameResponse checkTeamName(String teamName);
 }

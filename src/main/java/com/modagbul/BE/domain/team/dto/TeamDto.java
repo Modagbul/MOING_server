@@ -153,4 +153,12 @@ public abstract class TeamDto {
         private boolean approvalStatus;
     }
 
+    @Getter
+    @Builder
+    @AllArgsConstructor
+    @NoArgsConstructor
+    @ApiModel(description = "닉네임 중복 검사를 위한 응답 객체")
+    public static class CheckTeamNameResponse {
+        private String result;
+    }
 }
