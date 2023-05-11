@@ -15,4 +15,6 @@ public interface UserService{
 
     MyPageInfoDto getUserInfo();
     MyPageEditDto updateUserInfo(MyPageEditDto myPageEditDto );
+
+    String getKakaoAccessToken (String code);
 }
