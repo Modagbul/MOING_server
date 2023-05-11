@@ -2,7 +2,6 @@ package com.modagbul.BE.domain.user.controller;
 
 import com.modagbul.BE.domain.user.dto.UserDto.*;
 import com.modagbul.BE.domain.user.service.UserService;
-import com.modagbul.BE.global.config.security.util.SecurityUtils;
 import com.modagbul.BE.global.dto.ResponseDto;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -24,12 +23,6 @@ import static com.modagbul.BE.domain.user.constant.UserConstant.Process.MYPAGE_U
 public class UserController {
 
     private UserService userService;
-
-    @ApiOperation(value = "카카오 로그인", notes = "카카오 로그인을 합니다.")
-    @PostMapping("/auth/kakao")
-    public ResponseEntity<ResponseDto<LoginResponse>> login(@Valid @RequestBody LoginRequest loginRequest){
-        return ResponseEntity.ok(ResponseDto.create(HttpStatus.OK.value(),MYPAGE_UPDATE_SUCCESS.getMessage(),this.userService.login(loginRequest)));
-    }
 
     @ApiOperation(value="닉네임 중복 검사", notes="닉네임 중복 검사를 합니다.")
     @GetMapping("/nickname/{nickName}/available")

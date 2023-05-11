@@ -1,9 +1,8 @@
 package com.modagbul.BE.test.controller;
 
-import com.modagbul.BE.global.dto.ResponseDto;
+import com.modagbul.BE.domain.user.service.UserService;
 import com.modagbul.BE.test.entity.TestMember;
 import com.modagbul.BE.test.repository.TestRepository;
-import com.modagbul.BE.test.service.TestService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -17,7 +16,8 @@ import java.util.List;
 public class TestController {
 
     private final TestRepository testRepository;
-    @GetMapping("test")
+
+    private final UserService userService;    @GetMapping("test")
     public ResponseEntity<List<TestMember>> testApi() {
         List<TestMember> list = new ArrayList<>();
         list.add(new TestMember("손현석", 26, "숭실"));
@@ -33,20 +33,5 @@ public class TestController {
 
         return new ResponseEntity( list, HttpStatus.OK);
     }
-
-
-    /**
-     * 카카오 callback
-     * [GET] /oauth/kakao/callback
-     */
-
-    private final TestService testService;
-    @ResponseBody
-    @GetMapping("oauth/kakao")
-    public ResponseEntity<ResponseDto<String>> kakaoCallback(@RequestParam String code) {
-        return ResponseEntity.ok(ResponseDto.create(HttpStatus.OK.value(),"카카오 액세스 토큰 발급", testService.getKakaoAccessToken(code)));
-    }
-
-
 
 }
