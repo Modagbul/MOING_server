@@ -9,6 +9,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import javax.validation.constraints.NotBlank;
+import java.util.List;
 
 public abstract class UserDto {
 
@@ -92,10 +93,35 @@ public abstract class UserDto {
     @Builder
     @AllArgsConstructor
     @NoArgsConstructor
-    @ApiModel(description = "마이페이지를 위한 객체")
-    public static class EditInfoDto {
+    @ApiModel(description = "마이페이지를 수정 위한 객체")
+    public static class MyPageEditDto {
         private String nickName;
         private String introduction;
     }
+    @Getter
+    @Builder
+    @AllArgsConstructor
+    @NoArgsConstructor
+    @ApiModel(description = "마이페이지를 위한 객체")
+    public static class MyPageInfoDto {
+        private String nickName;
+        private String introduction;
+        private int teamCount;
+        private List<TeamList> teamList;
+
+    }
+
+    @Getter
+    @Builder
+    @AllArgsConstructor
+    @NoArgsConstructor
+    public static class TeamList {
+        private String teamName;
+        private String profileUrl;
+        private String date;
+
+    }
+
+
 
 }

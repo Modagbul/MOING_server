@@ -26,7 +26,8 @@ public class UserConstant {
         SIGN_UP_ING("회원가입 중-추가 정보를 입력해주세요."),
         SIGN_UP_SUCCESS("회원가입이 완료되었습니다"),
         LOGIN_SUCCESS("로그인이 완료되었습니다"),
-        MYPAGE_UPDATE_SUCCESS("마이페이지 수정이 완료되었습니다");
+        MYPAGE_UPDATE_SUCCESS("마이페이지 수정이 완료되었습니다"),
+        MYPAGE_GET_SUCCESS("마이페이지 로딩이 완료되었습니다");
         private final String message;
     }
 

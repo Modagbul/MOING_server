@@ -2,10 +2,9 @@ package com.modagbul.BE.domain.user.service;
 
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
+import com.modagbul.BE.domain.team_member.entity.TeamMember;
 import com.modagbul.BE.domain.user.dto.UserDto;
-import com.modagbul.BE.domain.user.dto.UserDto.CheckNicknameResponse;
-import com.modagbul.BE.domain.user.dto.UserDto.EditInfoDto;
-import com.modagbul.BE.domain.user.dto.UserDto.LoginResponse;
+import com.modagbul.BE.domain.user.dto.UserDto.*;
 import com.modagbul.BE.domain.user.entity.User;
 import com.modagbul.BE.domain.user.exception.ConnException;
 import com.modagbul.BE.domain.user.exception.NotFoundEmailException;
@@ -16,6 +15,7 @@ import com.modagbul.BE.global.config.security.util.SecurityUtils;
 import com.modagbul.BE.global.dto.TokenInfoResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.checkerframework.checker.units.qual.A;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -125,15 +125,33 @@ public class UserServiceImpl implements UserService {
         TokenInfoResponse tokenInfoResponse = tokenProvider.createToken(auth, true);
         return LoginResponse.from(tokenInfoResponse, LOGIN_SUCCESS.getMessage());
     }
+
+
     @Override
-    public EditInfoDto updateUser(EditInfoDto editInfoDto) {
+    public MyPageInfoDto getUserInfo() {
+
+        Long userId = SecurityUtils.getLoggedInUser().getUserId();
+        User user = userRepository.findById(userId).orElseThrow(NotFoundUserException::new);
+
+        List<TeamList> teamList= new ArrayList<>();
+
+        List<TeamMember> teamMembers = user.getTeamMembers();
+        for (TeamMember teamMember : teamMembers) {
+            teamList.add(new TeamList(teamMember.getTeam().getName(), teamMember.getTeam().getProfileImg(),teamMember.getTeam().getEndDate().toString()));
+        }
+
+        return new MyPageInfoDto(user.getNickName(), user.getIntroduction(), teamList.size(),teamList);
+
+    }
+    @Override
+    public MyPageEditDto updateUserInfo(MyPageEditDto myPageEditDto) {
 
         Long userId = SecurityUtils.getLoggedInUser().getUserId();
 
         User user = userRepository.findById(userId).orElseThrow(NotFoundUserException::new);
-        user.setMypage(editInfoDto.getNickName(), editInfoDto.getIntroduction());
+        user.setMypage(myPageEditDto.getNickName(), myPageEditDto.getIntroduction());
         userRepository.save(user);
-        return new EditInfoDto(user.getNickName(),user.getIntroduction());
+        return new MyPageEditDto(user.getNickName(),user.getIntroduction());
 
     }
 

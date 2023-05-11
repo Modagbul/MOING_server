@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.validation.Valid;
 
 import static com.modagbul.BE.domain.user.constant.UserConstant.EUserResponseMessage.*;
+import static com.modagbul.BE.domain.user.constant.UserConstant.Process.MYPAGE_GET_SUCCESS;
 import static com.modagbul.BE.domain.user.constant.UserConstant.Process.MYPAGE_UPDATE_SUCCESS;
 
 @RestController
@@ -56,9 +57,15 @@ public class UserController {
     }
 
 
+
+    @GetMapping("/mypage")
+    public ResponseEntity<ResponseDto<MyPageInfoDto>> getMypage(){
+        return ResponseEntity.ok(ResponseDto.create(HttpStatus.OK.value(),MYPAGE_GET_SUCCESS.getMessage(),this.userService.getUserInfo()));
+    }
+
     @PutMapping("/mypage")
-    public ResponseEntity<ResponseDto<EditInfoDto >> editInfo(@Valid @RequestBody EditInfoDto editInfoDto){
-        return ResponseEntity.ok(ResponseDto.create(HttpStatus.OK.value(),MYPAGE_UPDATE_SUCCESS.getMessage(),this.userService.updateUser(editInfoDto)));
+    public ResponseEntity<ResponseDto<MyPageEditDto >> editMypage(@Valid @RequestBody MyPageEditDto myPageEditDto){
+        return ResponseEntity.ok(ResponseDto.create(HttpStatus.OK.value(),MYPAGE_UPDATE_SUCCESS.getMessage(),this.userService.updateUserInfo(myPageEditDto)));
     }
 
 }

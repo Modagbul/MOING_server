@@ -13,5 +13,6 @@ public interface UserService{
     User validateEmail(String email);
     LoginResponse testLogin(TestLoginRequest testLoginRequest);
 
-    EditInfoDto updateUser(EditInfoDto editInfoDto );
+    MyPageInfoDto getUserInfo();
+    MyPageEditDto updateUserInfo(MyPageEditDto myPageEditDto );
 }
