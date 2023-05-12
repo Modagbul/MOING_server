@@ -12,9 +12,6 @@ public interface UserService{
     CheckNicknameResponse checkNickname(String nickName);
     User validateEmail(String email);
     LoginResponse testLogin(TestLoginRequest testLoginRequest);
-
     MyPageInfoDto getUserInfo();
     MyPageEditDto updateUserInfo(MyPageEditDto myPageEditDto );
-
-    String getKakaoAccessToken (String code);
 }
