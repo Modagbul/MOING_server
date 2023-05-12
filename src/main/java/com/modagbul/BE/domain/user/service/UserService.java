@@ -14,4 +14,9 @@ public interface UserService{
     LoginResponse testLogin(TestLoginRequest testLoginRequest);
     MyPageInfoDto getUserInfo();
     MyPageEditDto updateUserInfo(MyPageEditDto myPageEditDto );
+
+    AlarmDto getAlarmSetting();
+    AlarmChangeDto changeNoticeAlarm(AlarmChangeDto alarmChangeDto);
+    AlarmChangeDto changeRemindAlarm(AlarmChangeDto alarmChangeDto);
+    AlarmChangeDto changeFireAlarm(AlarmChangeDto alarmChangeDto);
 }

@@ -156,6 +156,40 @@ public class UserServiceImpl implements UserService {
 
     }
 
+    @Override
+    public AlarmDto getAlarmSetting() {
+        Long userId = SecurityUtils.getLoggedInUser().getUserId();
+        User user = userRepository.findById(userId).orElseThrow(NotFoundUserException::new);
+        return new AlarmDto(user.isNoticePush(), user.isRemindPush(), user.isFirePush());
+    }
+
+    @Override
+    public AlarmChangeDto changeNoticeAlarm(AlarmChangeDto alarmChangeDto) {
+        Long userId = SecurityUtils.getLoggedInUser().getUserId();
+        User user = userRepository.findById(userId).orElseThrow(NotFoundUserException::new);
+
+        user.setNoticePush(alarmChangeDto.getData());
+        return new AlarmChangeDto(user.isNoticePush());
+    }
+
+    @Override
+    public AlarmChangeDto changeRemindAlarm(AlarmChangeDto alarmChangeDto) {
+        Long userId = SecurityUtils.getLoggedInUser().getUserId();
+        User user = userRepository.findById(userId).orElseThrow(NotFoundUserException::new);
+
+        user.setRemindPush(alarmChangeDto.getData());
+        return new AlarmChangeDto(user.isRemindPush());
+    }
+
+    @Override
+    public AlarmChangeDto changeFireAlarm(AlarmChangeDto alarmChangeDto) {
+        Long userId = SecurityUtils.getLoggedInUser().getUserId();
+        User user = userRepository.findById(userId).orElseThrow(NotFoundUserException::new);
+
+        user.setFirePush(alarmChangeDto.getData());
+        return new AlarmChangeDto(user.isFirePush());
+    }
+
 
     /**
      * User -> OAuth2User

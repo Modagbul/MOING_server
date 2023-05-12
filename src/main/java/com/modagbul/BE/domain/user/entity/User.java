@@ -63,6 +63,9 @@ public class User {
     @ColumnDefault("true")
     private boolean isFirePush;
 
+    public void setFcmToken(String fcmToken) {
+        this.fcmToken = fcmToken;
+    }
 
 
     @OneToMany(mappedBy = "user")
@@ -111,4 +114,17 @@ public class User {
     public void setDeleted(){
         this.isDeleted=true;
     }
+
+    public void setNoticePush(boolean noticePush) {
+        this.isNoticePush = noticePush;
+    }
+
+    public void setRemindPush(boolean remindPush) {
+        this.isRemindPush = remindPush;
+    }
+
+    public void setFirePush(boolean firePush) {
+        this.isFirePush = firePush;
+    }
+
 }

@@ -11,7 +11,11 @@ public class UserConstant {
         LOGIN_SUCCESS("카카오 로그인을 했습니다"),
         SIGN_UP_SUCCESS("회원 가입을 완료했습니다"),
         CHECK_NICKNAME("닉네임 중복 검사를 하였습니다"),
-        DELETE_SUCCESS("회원 탈퇴를 하였습니다");
+        DELETE_SUCCESS("회원 탈퇴를 하였습니다"),
+        MYPAGE_UPDATE_SUCCESS("마이페이지 수정이 완료되었습니다"),
+        MYPAGE_GET_SUCCESS("마이페이지 로딩이 완료되었습니다"),
+        ALARM_GET_SUCCESS("알림 설정 로딩이 완료되었습니다"),
+        ALARM_UPDATE_SUCCESS("알림 설정 수정이 완료되었습니다");
         private final String message;
     }
 
@@ -25,9 +29,8 @@ public class UserConstant {
     public enum Process {
         SIGN_UP_ING("회원가입 중-추가 정보를 입력해주세요."),
         SIGN_UP_SUCCESS("회원가입이 완료되었습니다"),
-        LOGIN_SUCCESS("로그인이 완료되었습니다"),
-        MYPAGE_UPDATE_SUCCESS("마이페이지 수정이 완료되었습니다"),
-        MYPAGE_GET_SUCCESS("마이페이지 로딩이 완료되었습니다");
+        LOGIN_SUCCESS("로그인이 완료되었습니다");
+
         private final String message;
     }
 
