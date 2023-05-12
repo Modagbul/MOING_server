@@ -1,6 +1,5 @@
 package com.modagbul.BE.domain.user.service;
 
-import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import com.modagbul.BE.domain.team_member.entity.TeamMember;
@@ -16,7 +15,6 @@ import com.modagbul.BE.global.config.security.util.SecurityUtils;
 import com.modagbul.BE.global.dto.TokenInfoResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -27,7 +25,9 @@ import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
-import java.io.*;
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.ArrayList;
@@ -45,12 +45,6 @@ import static com.modagbul.BE.domain.user.constant.UserConstant.UserServiceMessa
 @RequiredArgsConstructor
 @Transactional
 public class UserServiceImpl implements UserService {
-
-    @Value("${kakao.client_id}")
-    private String kakoClietId;
-
-    @Value("${kakao.redirect_uri}")
-    private String redirectUri;
 
     private final TokenProvider tokenProvider;
     private final UserRepository userRepository;
@@ -71,7 +65,7 @@ public class UserServiceImpl implements UserService {
 
         //3. JWT 토큰 생성
         TokenInfoResponse tokenInfoResponse = tokenProvider.createToken(auth, isSignedUp);
-        return LoginResponse.from(tokenInfoResponse, token, isSignedUp ? LOGIN_SUCCESS.getMessage() : SIGN_UP_ING.getMessage());
+        return LoginResponse.from(tokenInfoResponse, isSignedUp ? LOGIN_SUCCESS.getMessage() : SIGN_UP_ING.getMessage());
     }
 
     @Override
@@ -92,7 +86,7 @@ public class UserServiceImpl implements UserService {
 
         //4. JWT 토큰 생성
         TokenInfoResponse tokenInfoResponse = tokenProvider.createToken(auth, true);
-        return LoginResponse.from(tokenInfoResponse, null, LOGIN_SUCCESS.getMessage());
+        return LoginResponse.from(tokenInfoResponse, LOGIN_SUCCESS.getMessage());
     }
 
     @Override
@@ -130,7 +124,7 @@ public class UserServiceImpl implements UserService {
         OAuth2AuthenticationToken auth = configureAuthentication(userDetails, authorities);
 
         TokenInfoResponse tokenInfoResponse = tokenProvider.createToken(auth, true);
-        return LoginResponse.from(tokenInfoResponse, null, LOGIN_SUCCESS.getMessage());
+        return LoginResponse.from(tokenInfoResponse, LOGIN_SUCCESS.getMessage());
     }
 
 
@@ -160,58 +154,6 @@ public class UserServiceImpl implements UserService {
         userRepository.save(user);
         return new MyPageEditDto(user.getNickName(),user.getIntroduction());
 
-    }
-
-    public String getKakaoAccessToken (String code) {
-        String access_Token = "";
-        String refresh_Token = "";
-        String reqURL = "https://kauth.kakao.com/oauth/token";
-
-        try {
-            URL url = new URL(reqURL);
-            HttpURLConnection conn = (HttpURLConnection) url.openConnection();
-
-            //POST 요청을 위해 기본값이 false인 setDoOutput을 true로
-            conn.setRequestMethod("POST");
-            conn.setDoOutput(true);
-
-            //POST 요청에 필요로 요구하는 파라미터 스트림을 통해 전송
-            BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(conn.getOutputStream()));
-            StringBuilder sb = new StringBuilder();
-            sb.append("grant_type=authorization_code");
-            sb.append("&client_id="+kakoClietId); // TODO REST_API_KEY 입력
-            sb.append("&redirect_uri="+redirectUri); // TODO 인가코드 받은 redirect_uri 입력
-            sb.append("&code=" + code);
-            bw.write(sb.toString());
-            bw.flush();
-
-            //결과 코드가 200이라면 성공
-            int responseCode = conn.getResponseCode();
-
-            //요청을 통해 얻은 JSON타입의 Response 메세지 읽어오기
-            BufferedReader br = new BufferedReader(new InputStreamReader(conn.getInputStream()));
-            String line = "";
-            String result = "";
-
-            while ((line = br.readLine()) != null) {
-                result += line;
-            }
-
-            //Gson 라이브러리에 포함된 클래스로 JSON파싱 객체 생성
-            JsonParser parser = new JsonParser();
-            JsonElement element = parser.parse(result);
-
-            access_Token = element.getAsJsonObject().get("access_token").getAsString();
-            refresh_Token = element.getAsJsonObject().get("refresh_token").getAsString();
-
-            br.close();
-            bw.close();
-
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-
-        return access_Token;
     }
 
 
