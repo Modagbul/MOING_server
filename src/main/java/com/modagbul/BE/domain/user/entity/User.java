@@ -14,6 +14,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import com.modagbul.BE.domain.user.constant.UserConstant.Role;
+import org.hibernate.annotations.ColumnDefault;
 
 import javax.persistence.*;
 import java.util.ArrayList;
@@ -50,6 +51,18 @@ public class User {
     private Role role;
 
     private String introduction;
+
+    private String fcmToken;
+
+    @ColumnDefault("true")
+    private boolean isNoticePush;
+
+    @ColumnDefault("true")
+    private boolean isRemindPush;
+
+    @ColumnDefault("true")
+    private boolean isFirePush;
+
 
 
     @OneToMany(mappedBy = "user")
