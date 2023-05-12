@@ -141,6 +141,8 @@ public class UserServiceImpl implements UserService {
             teamList.add(new TeamList(teamMember.getTeam().getName(), teamMember.getTeam().getProfileImg(),teamMember.getTeam().getEndDate().toString()));
         }
 
+        teamList.sort((o1, o2) -> o2.getDate().compareTo(o1.getDate()));
+
         return new MyPageInfoDto(user.getNickName(), user.getIntroduction(), teamList.size(),teamList);
 
     }
