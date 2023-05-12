@@ -121,6 +121,23 @@ public abstract class UserDto {
         private String date;
 
     }
+    @Getter
+    @Builder
+    @AllArgsConstructor
+    @NoArgsConstructor
+    public static class AlarmDto {
+        private Boolean isRemind;
+        private Boolean isNotice;
+        private Boolean isFire;
+
+    }
+    @Getter
+    @Builder
+    @AllArgsConstructor
+    @NoArgsConstructor
+    public static class AlarmChangeDto {
+        private Boolean data;
+    }
 
 
 
