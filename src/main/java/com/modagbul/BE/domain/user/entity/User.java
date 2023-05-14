@@ -101,9 +101,10 @@ public class User {
         this.role=role;
     }
 
-    public void setUser(String nickName, String address){
+    public void setUser(String nickName, String address, String fcmToken){
         this.nickName=nickName;
         this.address=address;
+        this.fcmToken=fcmToken;
     }
 
     public void setMypage(String nickName, String introduction) {
