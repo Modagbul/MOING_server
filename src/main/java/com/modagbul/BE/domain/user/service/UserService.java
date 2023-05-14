@@ -15,7 +15,7 @@ public interface UserService{
     MyPageInfoDto getUserInfo();
     MyPageEditDto updateUserInfo(MyPageEditDto myPageEditDto );
     AlarmDto getAlarmSetting();
-    AlarmChangeDto changeNoticeAlarm(AlarmChangeDto alarmChangeDto);
+    AlarmChangeDto changeNewUploadAlarm(AlarmChangeDto alarmChangeDto);
     AlarmChangeDto changeRemindAlarm(AlarmChangeDto alarmChangeDto);
     AlarmChangeDto changeFireAlarm(AlarmChangeDto alarmChangeDto);
 }

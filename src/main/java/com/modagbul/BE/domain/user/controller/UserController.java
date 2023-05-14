@@ -70,9 +70,9 @@ public class UserController {
         return ResponseEntity.ok(ResponseDto.create(HttpStatus.OK.value(),ALARM_GET_SUCCESS.getMessage(),this.userService.getAlarmSetting()));
     }
 
-    @PutMapping("/alarm-setting/notice")
+    @PutMapping("/alarm-setting/new-upload")
     public ResponseEntity<ResponseDto<AlarmChangeDto>> changeNoticeAlarm(@Valid @RequestBody AlarmChangeDto alarmChangeDto){
-        return ResponseEntity.ok(ResponseDto.create(HttpStatus.OK.value(),ALARM_UPDATE_SUCCESS.getMessage(),this.userService.changeNoticeAlarm(alarmChangeDto)));
+        return ResponseEntity.ok(ResponseDto.create(HttpStatus.OK.value(),ALARM_UPDATE_SUCCESS.getMessage(),this.userService.changeNewUploadAlarm(alarmChangeDto)));
     }
 
     @PutMapping("/alarm-setting/remind")
