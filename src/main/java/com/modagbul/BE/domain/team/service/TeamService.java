@@ -3,8 +3,6 @@ package com.modagbul.BE.domain.team.service;
 import com.modagbul.BE.domain.team.dto.TeamDto.*;
 import com.modagbul.BE.domain.team.entity.Team;
 
-import java.util.List;
-
 public interface TeamService {
     CreateTeamResponse createTeam(CreateTeamRequest createTeamRequest);
     JoinTeamResponse authenticateCode(JoinTeamRequest joinTeamRequest);
@@ -13,4 +11,5 @@ public interface TeamService {
     Team validateTeam(Long teamId);
     GetTeamResponse getTeam();
     CheckTeamNameResponse checkTeamName(String teamName);
+    GetProfileResponse getTeamProfile(Long teamId);
 }

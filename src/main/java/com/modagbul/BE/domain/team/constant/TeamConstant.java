@@ -14,7 +14,8 @@ public class TeamConstant {
         GET_TEAM_INFO_SUCCESS("소모임 수정을 위한 정보를 조회하였습니다"),
         UPDATE_TEAM_SUCCESS("소모임을 수정하였습니다"),
         GET_TEAM_SUCCESS("모든 소모임을 조회하였습니다"),
-        CHECK_TEAM_NAME_SUCCESS("소모임 이름 중복 검사를 하였습니다");
+        CHECK_TEAM_NAME_SUCCESS("소모임 이름 중복 검사를 하였습니다"),
+        GET_GOAL_BOARD_PROFILE_SUCCESS("목표보드 프로필을 조회하였습니다");
         private final String message;
     }
     @Getter

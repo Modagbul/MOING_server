@@ -94,6 +94,12 @@ public class TeamServiceImpl implements TeamService {
         }
     }
 
+    @Override
+    public GetProfileResponse getTeamProfile(Long teamId) {
+        Team team=validateTeam(teamId);
+        return new GetProfileResponse(team);
+    }
+
     private void addTeamMember(Team team) {
 
         TeamMember teamMember=new TeamMember();

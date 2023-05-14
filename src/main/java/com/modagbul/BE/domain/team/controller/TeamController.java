@@ -12,8 +12,6 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 
-import java.util.List;
-
 import static com.modagbul.BE.domain.team.constant.TeamConstant.ETeamResponseMessage.*;
 
 @RestController
@@ -58,5 +56,11 @@ public class TeamController {
     @GetMapping("/teamname/{teamName}/available")
     public ResponseEntity<ResponseDto<CheckTeamNameResponse>> checkTeamName(@PathVariable String teamName){
         return ResponseEntity.ok(ResponseDto.create(HttpStatus.OK.value(), CHECK_TEAM_NAME_SUCCESS.getMessage(), teamService.checkTeamName(teamName)));
+    }
+
+    @ApiOperation(value="목표보드 프로필 조회", notes="목표보드 프로필을 조회합니다")
+    @GetMapping("/{teamId}/goal-board")
+    public ResponseEntity<ResponseDto<GetProfileResponse>> getProfile(@PathVariable Long teamId){
+        return ResponseEntity.ok(ResponseDto.create(HttpStatus.OK.value(), GET_GOAL_BOARD_PROFILE_SUCCESS.getMessage(), teamService.getTeamProfile(teamId)));
     }
 }
