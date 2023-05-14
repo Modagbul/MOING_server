@@ -1,6 +1,7 @@
 package com.modagbul.BE.domain.team.dto;
 
 import com.modagbul.BE.domain.team.constant.TeamConstant.Category;
+import com.modagbul.BE.domain.team.entity.Team;
 import com.modagbul.BE.global.annotation.Enum;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
@@ -13,6 +14,9 @@ import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.Period;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -160,5 +164,36 @@ public abstract class TeamDto {
     @ApiModel(description = "닉네임 중복 검사를 위한 응답 객체")
     public static class CheckTeamNameResponse {
         private String result;
+    }
+
+    @Getter
+    @Builder
+    @AllArgsConstructor
+    @NoArgsConstructor
+    @ApiModel(description = "목표보드 프로필을 위한 응답 객체")
+    public static class GetProfileResponse {
+        private String name;
+        private String profileImg;
+        private String remainingPeriod;
+        private String nowTime;
+        public GetProfileResponse(Team team){
+            this.name=team.getName();
+            this.profileImg=team.getProfileImg();
+            this.remainingPeriod=getRemainingDays(team.getEndDate());
+            this.nowTime=getNowTime();
+        }
+
+        public String getRemainingDays(LocalDate endDate) {
+            LocalDate today = LocalDate.now();
+            Period period = Period.between(today, endDate);
+            long remainingDays = Math.abs(period.getDays());
+            return "D-" + remainingDays;
+        }
+
+        public String getNowTime() {
+            LocalDateTime now = LocalDateTime.now();
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy.MM.dd HH:mm");
+            return now.format(formatter);
+        }
     }
 }

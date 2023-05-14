@@ -125,7 +125,7 @@ class UserServiceImplTest {
     @Test
     void 추가정보를_입력한다() {
         //given
-        UserDto.AdditionInfoRequest additionInfoRequest = new UserDto.AdditionInfoRequest("access-token", "밍수", "위례동");
+        UserDto.AdditionInfoRequest additionInfoRequest = new UserDto.AdditionInfoRequest("access-token", "밍수", "위례동","fcmToken");
         User mockUser = UserFactory.beforeSignUpUser();
         TokenInfoResponse mockTokenInfoResponse = new TokenInfoResponse("grant_type", "access_token", "refresh_token", 3600L);
         Authentication mockAuthentication = new TestingAuthenticationToken(mockUser.getEmail(), null);
