@@ -4,6 +4,8 @@ import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import com.modagbul.BE.domain.user.exception.ConnException;
 import com.modagbul.BE.domain.user.exception.NotFoundEmailException;
+import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Component;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -13,6 +15,8 @@ import java.net.URL;
 
 import static com.modagbul.BE.domain.user.constant.UserConstant.UserServiceMessage.KAKAO_ACOUNT;
 
+@RequiredArgsConstructor
+@Component
 public class Kakao {
     public JsonObject connectKakao(String reqURL, String token) {
         try {
