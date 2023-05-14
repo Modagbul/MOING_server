@@ -145,9 +145,12 @@ public class NoticeServiceImpl implements NoticeService{
      */
     public void sendNewUploadNoticeAlarm(Long userId){
         User user=userRepository.findById(userId).orElseThrow(()->new NotFoundEmailException());
-        String title= UPLOAD_NOTICE_NEW_TITLE.getTitle();
-        String message=user.getNickName()+"님, "+UPLOAD_NOTICE_NEW_MESSAGE.getMessage();
-        ToSingleRequest toSingleRequest=new ToSingleRequest(user.getFcmToken(),title,message);
-        fcmService.sendSingleDevice(toSingleRequest);
+        //신규 업로드 알림이 true인지 확인
+        if(user.isNewUploadPush()){
+            String title= UPLOAD_NOTICE_NEW_TITLE.getTitle();
+            String message=user.getNickName()+"님, "+UPLOAD_NOTICE_NEW_MESSAGE.getMessage();
+            ToSingleRequest toSingleRequest=new ToSingleRequest(user.getFcmToken(),title,message);
+            fcmService.sendSingleDevice(toSingleRequest);
+        }
     }
 }
