@@ -3,6 +3,7 @@ package com.modagbul.BE.domain.mission.constant;
 import com.modagbul.BE.domain.mission.entity.Mission;
 import com.modagbul.BE.domain.team_member.entity.TeamMember;
 import com.modagbul.BE.domain.user.entity.User;
+import com.modagbul.BE.domain.usermission.repository.UserMissionRepository;
 import lombok.Getter;
 
 import java.util.*;
@@ -10,23 +11,26 @@ import java.util.*;
 @Getter
 public class MissionFcmMessage {
 
-    private Mission mission;
+    private final Mission mission;
+    private final List<User> notCompleteMembers = new ArrayList<>();
     private String title;
-    private List<User> teamMembers;
 
 
     public MissionFcmMessage(Mission mission) {
         this.mission = mission;
     }
 
-    public void init() {
-        mission.getTeam().getTeamMembers().forEach(teamMember -> this.teamMembers.add(teamMember.getUser()));
+    public void init(List<User> teamMembers) {
+
+        for (User user : teamMembers) {
+            if(user.isRemindPush())
+                // 완료하지 않은 멤버만
+                this.notCompleteMembers.add(user);
+        }
     }
 
 
     public Map<Integer,List<String>> messageInitOneDay(String nickname,String title) {
-
-//        List<Map<String, String>> messages = new ArrayList<Map<String, String>>();
 
         Map<Integer,List<String>> dOneDay = new HashMap<>();
 

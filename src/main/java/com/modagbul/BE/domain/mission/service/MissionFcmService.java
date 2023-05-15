@@ -6,60 +6,62 @@ import com.modagbul.BE.domain.mission.Exception.NotFoundMissionException;
 import com.modagbul.BE.domain.mission.constant.MissionFcmMessage;
 import com.modagbul.BE.domain.mission.entity.Mission;
 import com.modagbul.BE.domain.mission.repository.MissionRepository;
+import com.modagbul.BE.domain.user.entity.User;
+import com.modagbul.BE.domain.usermission.repository.UserMissionRepository;
 import com.modagbul.BE.fcm.dto.FcmDto;
 import com.modagbul.BE.fcm.service.FcmService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.scheduling.annotation.Scheduled;
+import org.springframework.scheduling.support.CronTrigger;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.PostConstruct;
-import java.util.List;
-import java.util.Map;
-import java.util.Random;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.*;
+import java.util.concurrent.ScheduledFuture;
+
+import static com.modagbul.BE.fcm.dto.FcmDto.*;
+
+@Slf4j
 
 @Service
 @RequiredArgsConstructor
-@Slf4j
 public class MissionFcmService {
-    //mission의 dueTo가 하루전이면 알림을 보내준다.
-    //mission의 dueTo가 1시간전이면 알림을 보내준다.
 
     private final FcmService fcmService;
     private final MissionRepository missionRepository;
+    private final UserMissionRepository userMissionRepository;
+    private Mission mission;
 
-    Mission mission = missionRepository.findById(1L).orElseThrow(NotFoundMissionException::new);
-
-    MissionFcmMessage message = new MissionFcmMessage(mission);
-
+    public void setMission(Mission mission) {
+        this.mission = mission;
+    }
 
     public void pushBeforeOneDay() throws FirebaseMessagingException {
 
-        Random rand = new Random();
-        message.init();
-        message.getTeamMembers().forEach(member -> {
-            List<String> strings = message.messageInitOneDay(member.getNickName(), mission.getTitle()).get(rand.nextInt(2));
-            FcmDto.ToSingleRequest toSingleRequest = new FcmDto.ToSingleRequest(
-                    strings.get(0),strings.get(1),member.getFcmToken()
-            );
-            fcmService.sendSingleDevice(toSingleRequest);
 
+        MissionFcmMessage message = new MissionFcmMessage(mission);
+
+        // 하루 전에 완료 하지 않은 인원
+        List<User> users = userMissionRepository.getInCompleteUsersByMission(mission).orElseThrow(NotFoundMissionException::new);
+
+        // 개인별 메시지 생성
+        message.init(users);
+
+        // 개인별 메시지 전송 (현재 user에 fcm token 없어서 sendSingleDevice 안됨
+        message.getNotCompleteMembers().forEach(member -> {
+            log.info("pushBeforeOneDay" + member.getNickName() + " " + mission.getTitle());
+
+            List<String> strings = message.messageInitOneDay(member.getNickName(), mission.getTitle()).get((int) (Math.random() * 3));
+            ToSingleRequest toSingleRequest = new ToSingleRequest(
+                    strings.get(0), strings.get(1), member.getFcmToken()
+            );
+            System.out.println(strings.get(0) + " " + strings.get(1) + " " + member.getFcmToken());
+//                fcmService.sendSingleDevice(toSingleRequest);
         });
 
     }
-    public void pushBeforeDDay() throws FirebaseMessagingException {
-
-        Random rand = new Random();
-        message.init();
-        message.getTeamMembers().forEach(member -> {
-            List<String> strings = message.messageInitDDay(member.getNickName(), mission.getTitle()).get(rand.nextInt(3));
-            FcmDto.ToSingleRequest toSingleRequest = new FcmDto.ToSingleRequest(
-                    strings.get(0),strings.get(1),member.getFcmToken()
-            );
-            fcmService.sendSingleDevice(toSingleRequest);
-
-        });
-
-    }
-
 }
+//
