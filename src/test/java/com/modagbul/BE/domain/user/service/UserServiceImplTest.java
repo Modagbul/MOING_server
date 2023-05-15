@@ -82,7 +82,7 @@ class UserServiceImplTest {
     }
 
     @Test
-    void 이미_있는_사용자를_저장하지_않는다() {
+    void 이미_있는_사용자는_저장하지_않는다() {
         //given
         given(userRepository.findNotDeletedByEmail(afterSignUpUser.getEmail())).willReturn(Optional.of(afterSignUpUser));
         //when
@@ -94,7 +94,7 @@ class UserServiceImplTest {
 
 
     @Test
-    void 추가정보입력전_사용자_로그인_테스트() {
+    void 추가정보입력전_로그인한다() {
         //given
         given(kakao.connectKakao(LOGIN_URL.getValue(), loginRequest.getToken())).willReturn(mockUserInfo);
         given(kakao.getAgeRange(mockUserInfo)).willReturn(beforeSignUpUser.getAgeRange());
@@ -114,7 +114,7 @@ class UserServiceImplTest {
     }
 
     @Test
-    void 추가정보입력후_사용자_로그인_테스트() {
+    void 추가정보입력후_로그인한다() {
         //given
         given(kakao.connectKakao(LOGIN_URL.getValue(), loginRequest.getToken())).willReturn(mockUserInfo);
         given(kakao.getAgeRange(mockUserInfo)).willReturn(afterSignUpUser.getAgeRange());
