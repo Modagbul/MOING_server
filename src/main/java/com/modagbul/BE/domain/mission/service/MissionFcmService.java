@@ -63,5 +63,29 @@ public class MissionFcmService {
         });
 
     }
+    public void pushBeforeDDay() throws FirebaseMessagingException {
+
+
+        MissionFcmMessage message = new MissionFcmMessage(mission);
+
+        // 하루 전에 완료 하지 않은 인원
+        List<User> users = userMissionRepository.getInCompleteUsersByMission(mission).orElseThrow(NotFoundMissionException::new);
+
+        // 개인별 메시지 생성
+        message.init(users);
+
+        // 개인별 메시지 전송 (현재 user에 fcm token 없어서 sendSingleDevice 안됨
+        message.getNotCompleteMembers().forEach(member -> {
+            log.info("pushBeforeOneDay" + member.getNickName() + " " + mission.getTitle());
+
+            List<String> strings = message.messageInitDDay(member.getNickName(), mission.getTitle()).get((int) (Math.random() * 4));
+            ToSingleRequest toSingleRequest = new ToSingleRequest(
+                    strings.get(0), strings.get(1), member.getFcmToken()
+            );
+            System.out.println(strings.get(0) + " " + strings.get(1) + " " + member.getFcmToken());
+//                fcmService.sendSingleDevice(toSingleRequest);
+        });
+
+    }
 }
 //
