@@ -23,7 +23,8 @@ import org.springframework.security.oauth2.client.authentication.OAuth2Authentic
 
 import java.util.Optional;
 
-import static com.modagbul.BE.domain.user.constant.UserConstant.UserServiceMessage.DELETE_URL;
+import static com.modagbul.BE.domain.user.constant.UserConstant.UserServiceMessage.EXISTED_NCIKNAME;
+import static com.modagbul.BE.domain.user.constant.UserConstant.UserServiceMessage.VALID_NICKNAME;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.*;
 import static org.mockito.BDDMockito.given;
@@ -171,13 +172,24 @@ class UserServiceImplTest {
 
     @Test
     void 닉네임이_중복한다() {
+        //given
+        String nickname="닉네임 테스트";
+        User mockUser = UserFactory.afterSignUpUser();
+        given(userRepository.findNotDeletedByNickName(nickname)).willReturn(Optional.of(mockUser));
+        //when
+        UserDto.CheckNicknameResponse checkNicknameResponse=userService.checkNickname(nickname);
+        //then
+        assertThat(checkNicknameResponse.getResult()).isEqualTo(EXISTED_NCIKNAME.getValue());
     }
 
     @Test
     void 닉네임이_중복하지_않는다() {
-    }
-
-    @Test
-    void validateEmail() {
+        //given
+        String nickname="닉네임 테스트";
+        given(userRepository.findNotDeletedByNickName(nickname)).willReturn(Optional.empty());
+        //when
+        UserDto.CheckNicknameResponse checkNicknameResponse=userService.checkNickname(nickname);
+        //then
+        assertThat(checkNicknameResponse.getResult()).isEqualTo(VALID_NICKNAME.getValue());
     }
 }
