@@ -30,7 +30,6 @@ import org.springframework.stereotype.Service;
 import javax.transaction.Transactional;
 import java.util.List;
 
-import static com.modagbul.BE.fcm.constant.FcmConstant.NewUploadMessage.UPLOAD_NOTICE_NEW_MESSAGE;
 import static com.modagbul.BE.fcm.constant.FcmConstant.NewUploadTitle.UPLOAD_NOTICE_NEW_TITLE;
 
 @Service
@@ -55,7 +54,7 @@ public class NoticeServiceImpl implements NoticeService{
         //2. 공지사항-읽음 db 생성
         createNoticeRead(teamId, notice);
         //3. 공지사항 fcm 알람
-        sendNewUploadNoticeAlarm(SecurityUtils.getLoggedInUser().getUserId());
+        sendNewUploadNoticeAlarm(notice,teamId, SecurityUtils.getLoggedInUser().getUserId());
         return new CreateNoticeResponse(notice.getNoticeId());
     }
 
@@ -143,12 +142,13 @@ public class NoticeServiceImpl implements NoticeService{
      * Fcm 이용해서 알림 메시지 보내는 메서드
      * @param userId
      */
-    public void sendNewUploadNoticeAlarm(Long userId){
+    public void sendNewUploadNoticeAlarm(Notice notice, Long teamId, Long userId){
+        Team team=teamService.validateTeam(teamId);
         User user=userRepository.findById(userId).orElseThrow(()->new NotFoundEmailException());
         //신규 업로드 알림이 true인지 확인
         if(user.isNewUploadPush()){
-            String title= UPLOAD_NOTICE_NEW_TITLE.getTitle();
-            String message=user.getNickName()+"님, "+UPLOAD_NOTICE_NEW_MESSAGE.getMessage();
+            String title=team.getName()+" "+UPLOAD_NOTICE_NEW_TITLE.getTitle();
+            String message=notice.getTitle();
             ToSingleRequest toSingleRequest=new ToSingleRequest(user.getFcmToken(),title,message);
             fcmService.sendSingleDevice(toSingleRequest);
         }

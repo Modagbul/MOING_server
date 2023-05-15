@@ -18,17 +18,10 @@ public class FcmConstant {
     @Getter
     @RequiredArgsConstructor
     public enum NewUploadTitle{
-        UPLOAD_NOTICE_NEW_TITLE("[신규 굥지 업로드]"),
-        UPLOAD_VOTE_NEW_TITLE("[신규 투표 업로드]");
+        UPLOAD_NOTICE_NEW_TITLE("새로운 공지 알려드려요!"),
+        UPLOAD_VOTE_NEW_TITLE("새로운 투표 알려드려요!"),
+        UPLOAD_MISSION_NEW_TITLE("새로운 미션 알려드려요!");
         private final String title;
-    }
-
-    @Getter
-    @RequiredArgsConstructor
-    public enum NewUploadMessage{
-        UPLOAD_NOTICE_NEW_MESSAGE("새로운 공지가 업로드 됐어요!\n빠르게 확인하러 가볼까요?"),
-        UPLOAD_VOTE_NEW_MESSAGE("새로운 투표가 업로드 됐어요!\n빠르게 투표하러 가볼까요?");
-        private final String message;
     }
 
 
