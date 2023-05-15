@@ -4,7 +4,7 @@ import com.google.gson.JsonObject;
 import com.modagbul.BE.common.factory.UserFactory;
 import com.modagbul.BE.domain.user.constant.UserConstant;
 import com.modagbul.BE.domain.user.dto.UserDto;
-import com.modagbul.BE.domain.user.dto.UserDto.LoginResponse;
+import com.modagbul.BE.domain.user.dto.UserDto.*;
 import com.modagbul.BE.domain.user.entity.User;
 import com.modagbul.BE.domain.user.repository.UserRepository;
 import com.modagbul.BE.global.config.jwt.TokenProvider;
@@ -23,10 +23,10 @@ import org.springframework.security.oauth2.client.authentication.OAuth2Authentic
 
 import java.util.Optional;
 
-import static com.modagbul.BE.domain.user.constant.UserConstant.UserServiceMessage.EXISTED_NCIKNAME;
-import static com.modagbul.BE.domain.user.constant.UserConstant.UserServiceMessage.VALID_NICKNAME;
+import static com.modagbul.BE.domain.user.constant.UserConstant.UserServiceMessage.*;
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.mockito.ArgumentMatchers.*;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyBoolean;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.BDDMockito.then;
 import static org.mockito.Mockito.mockStatic;
@@ -47,34 +47,48 @@ class UserServiceImplTest {
     @Mock
     KakaoAPIConnector kakao;
 
+    User beforeSignUpUser;
+    User afterSignUpUser;
+    UserDto.LoginRequest loginRequest;
+    AdditionInfoRequest additionInfoRequest;
+    DeleteAccountRequest deleteAccountRequest;
+    JsonObject mockUserInfo = new JsonObject();
+    TokenInfoResponse mockTokenInfoResponse;
+    Authentication mockAuthentication;
+    String nickname;
     private static MockedStatic<SecurityUtils> securityUtilsMock;
 
     @BeforeEach
     void setUp() {
-        userService = new UserServiceImpl(tokenProvider, userRepository, kakao);
+        beforeSignUpUser = UserFactory.beforeSignUpUser();
+        afterSignUpUser = UserFactory.afterSignUpUser();
+        loginRequest = new LoginRequest("test_token");
+        mockTokenInfoResponse = new TokenInfoResponse("grant_type", "access_token", "refresh_token", 3600L);
+        additionInfoRequest = new AdditionInfoRequest("access-token", "밍수", "위례동", "fcmToken");
+        mockAuthentication = new TestingAuthenticationToken(beforeSignUpUser.getEmail(), null);
+        deleteAccountRequest = new DeleteAccountRequest("token", "탈퇴이유");
+        nickname = "nickname";
     }
 
     @Test
     void 새로운_사용자를_저장한다() {
         //given
-        User mockUser = UserFactory.beforeSignUpUser();
-        given(userRepository.findNotDeletedByEmail(anyString())).willReturn(Optional.empty());
+        given(userRepository.findNotDeletedByEmail(beforeSignUpUser.getEmail())).willReturn(Optional.empty());
         //when
-        userService.saveUser(mockUser.getEmail(), mockUser.getImageUrl(), mockUser.getGender(), mockUser.getAgeRange());
+        userService.saveUser(beforeSignUpUser.getEmail(), beforeSignUpUser.getImageUrl(), beforeSignUpUser.getGender(), beforeSignUpUser.getAgeRange());
         //then
-        assertThat(mockUser.getEmail()).isNotNull();
+        assertThat(beforeSignUpUser.getEmail()).isNotNull();
         then(userRepository).should(times(1)).save(any(User.class));
     }
 
     @Test
     void 이미_있는_사용자를_저장하지_않는다() {
         //given
-        User mockUser = UserFactory.beforeSignUpUser();
-        given(userRepository.findNotDeletedByEmail(anyString())).willReturn(Optional.of(mockUser));
+        given(userRepository.findNotDeletedByEmail(afterSignUpUser.getEmail())).willReturn(Optional.of(afterSignUpUser));
         //when
-        userService.saveUser(mockUser.getEmail(), mockUser.getImageUrl(), mockUser.getGender(), mockUser.getAgeRange());
+        userService.saveUser(afterSignUpUser.getEmail(), afterSignUpUser.getImageUrl(), afterSignUpUser.getGender(), afterSignUpUser.getAgeRange());
         //then
-        assertThat(mockUser.getEmail()).isNotNull();
+        assertThat(afterSignUpUser.getEmail()).isNotNull();
         then(userRepository).should(times(0)).save(any(User.class));
     }
 
@@ -82,17 +96,12 @@ class UserServiceImplTest {
     @Test
     void 추가정보입력전_사용자_로그인_테스트() {
         //given
-        UserDto.LoginRequest loginRequest = new UserDto.LoginRequest("test_token");
-        User mockUser = UserFactory.beforeSignUpUser();
-        JsonObject mockUserInfo = new JsonObject();
-        TokenInfoResponse mockTokenInfoResponse = new TokenInfoResponse("grant_type", "access_token", "refresh_token", 3600L);
-
-        given(kakao.connectKakao(anyString(), anyString())).willReturn(mockUserInfo);
-        given(kakao.getAgeRange(any())).willReturn(mockUser.getAgeRange());
-        given(kakao.getEmail(any())).willReturn(mockUser.getEmail());
-        given(kakao.getGender(any())).willReturn(mockUser.getGender());
-        given(kakao.getPictureUrl(any())).willReturn(mockUser.getImageUrl());
-        given(userRepository.findNotDeletedByEmail(anyString())).willReturn(Optional.of(mockUser));
+        given(kakao.connectKakao(LOGIN_URL.getValue(), loginRequest.getToken())).willReturn(mockUserInfo);
+        given(kakao.getAgeRange(mockUserInfo)).willReturn(beforeSignUpUser.getAgeRange());
+        given(kakao.getEmail(mockUserInfo)).willReturn(beforeSignUpUser.getEmail());
+        given(kakao.getGender(mockUserInfo)).willReturn(beforeSignUpUser.getGender());
+        given(kakao.getPictureUrl(mockUserInfo)).willReturn(beforeSignUpUser.getImageUrl());
+        given(userRepository.findNotDeletedByEmail(beforeSignUpUser.getEmail())).willReturn(Optional.of(beforeSignUpUser));
         given(tokenProvider.createToken(any(OAuth2AuthenticationToken.class), anyBoolean())).willReturn(mockTokenInfoResponse);
 
         //when
@@ -107,17 +116,12 @@ class UserServiceImplTest {
     @Test
     void 추가정보입력후_사용자_로그인_테스트() {
         //given
-        UserDto.LoginRequest loginRequest = new UserDto.LoginRequest("test_token");
-        User mockUser = UserFactory.afterSignUpUser();
-        JsonObject mockUserInfo = new JsonObject();
-        TokenInfoResponse mockTokenInfoResponse = new TokenInfoResponse("grant_type", "access_token", "refresh_token", 3600L);
-
-        given(kakao.connectKakao(anyString(), anyString())).willReturn(mockUserInfo);
-        given(kakao.getAgeRange(any())).willReturn(mockUser.getAgeRange());
-        given(kakao.getEmail(any())).willReturn(mockUser.getEmail());
-        given(kakao.getGender(any())).willReturn(mockUser.getGender());
-        given(kakao.getPictureUrl(any())).willReturn(mockUser.getImageUrl());
-        given(userRepository.findNotDeletedByEmail(anyString())).willReturn(Optional.of(mockUser));
+        given(kakao.connectKakao(LOGIN_URL.getValue(), loginRequest.getToken())).willReturn(mockUserInfo);
+        given(kakao.getAgeRange(mockUserInfo)).willReturn(afterSignUpUser.getAgeRange());
+        given(kakao.getEmail(mockUserInfo)).willReturn(afterSignUpUser.getEmail());
+        given(kakao.getGender(mockUserInfo)).willReturn(afterSignUpUser.getGender());
+        given(kakao.getPictureUrl(mockUserInfo)).willReturn(afterSignUpUser.getImageUrl());
+        given(userRepository.findNotDeletedByEmail(afterSignUpUser.getEmail())).willReturn(Optional.of(afterSignUpUser));
         given(tokenProvider.createToken(any(OAuth2AuthenticationToken.class), anyBoolean())).willReturn(mockTokenInfoResponse);
 
         //when
@@ -132,12 +136,8 @@ class UserServiceImplTest {
     @Test
     void 추가정보를_입력한다() {
         //given
-        UserDto.AdditionInfoRequest additionInfoRequest = new UserDto.AdditionInfoRequest("access-token", "밍수", "위례동","fcmToken");
-        User mockUser = UserFactory.beforeSignUpUser();
-        TokenInfoResponse mockTokenInfoResponse = new TokenInfoResponse("grant_type", "access_token", "refresh_token", 3600L);
-        Authentication mockAuthentication = new TestingAuthenticationToken(mockUser.getEmail(), null);
-        given(tokenProvider.getAuthentication(anyString())).willReturn(mockAuthentication);
-        given(userRepository.findNotDeletedByEmail(anyString())).willReturn(Optional.of(mockUser));
+        given(tokenProvider.getAuthentication(additionInfoRequest.getAccessToken())).willReturn(mockAuthentication);
+        given(userRepository.findNotDeletedByEmail(beforeSignUpUser.getEmail())).willReturn(Optional.of(beforeSignUpUser));
         given(tokenProvider.createToken(any(OAuth2AuthenticationToken.class), anyBoolean())).willReturn(mockTokenInfoResponse);
 
         //when
@@ -153,14 +153,11 @@ class UserServiceImplTest {
     @Test
     void 회원이_탈퇴한다() {
         //given
-        UserDto.DeleteAccountRequest deleteAccountRequest=new UserDto.DeleteAccountRequest("token","탈퇴이유");
-        User mockUser = UserFactory.afterSignUpUser();
-        JsonObject mockUserInfo = new JsonObject();
         securityUtilsMock = mockStatic(SecurityUtils.class);
-        securityUtilsMock.when(SecurityUtils::getLoggedInUser).thenReturn(mockUser);
+        securityUtilsMock.when(SecurityUtils::getLoggedInUser).thenReturn(afterSignUpUser);
 
-        given(kakao.connectKakao(anyString(), anyString())).willReturn(mockUserInfo);
-        given(userRepository.findNotDeletedByEmail(anyString())).willReturn(Optional.of(mockUser));
+        given(kakao.connectKakao(DELETE_URL.getValue(), deleteAccountRequest.getToken())).willReturn(mockUserInfo);
+        given(userRepository.findNotDeletedByEmail(afterSignUpUser.getEmail())).willReturn(Optional.of(afterSignUpUser));
 
         //when
         userService.deleteAccount(deleteAccountRequest);
@@ -173,11 +170,9 @@ class UserServiceImplTest {
     @Test
     void 닉네임이_중복한다() {
         //given
-        String nickname="닉네임 테스트";
-        User mockUser = UserFactory.afterSignUpUser();
-        given(userRepository.findNotDeletedByNickName(nickname)).willReturn(Optional.of(mockUser));
+        given(userRepository.findNotDeletedByNickName(nickname)).willReturn(Optional.of(afterSignUpUser));
         //when
-        UserDto.CheckNicknameResponse checkNicknameResponse=userService.checkNickname(nickname);
+        CheckNicknameResponse checkNicknameResponse = userService.checkNickname(nickname);
         //then
         assertThat(checkNicknameResponse.getResult()).isEqualTo(EXISTED_NCIKNAME.getValue());
     }
@@ -185,10 +180,9 @@ class UserServiceImplTest {
     @Test
     void 닉네임이_중복하지_않는다() {
         //given
-        String nickname="닉네임 테스트";
         given(userRepository.findNotDeletedByNickName(nickname)).willReturn(Optional.empty());
         //when
-        UserDto.CheckNicknameResponse checkNicknameResponse=userService.checkNickname(nickname);
+        CheckNicknameResponse checkNicknameResponse = userService.checkNickname(nickname);
         //then
         assertThat(checkNicknameResponse.getResult()).isEqualTo(VALID_NICKNAME.getValue());
     }
