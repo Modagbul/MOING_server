@@ -40,7 +40,7 @@ class UserServiceImplTest {
     TokenProvider tokenProvider;
 
     @Mock
-    Kakao kakao;
+    KakaoAPIConnector kakao;
 
     @BeforeEach
     void setUp() {

@@ -23,9 +23,21 @@ public abstract class UserDto {
         @ApiModelProperty(notes = "카카오 accessToken을 주세요.")
         private String token;
 
-        public void setToken(String token) {
-            this.token = token;
-        }
+    }
+
+    @Getter
+    @AllArgsConstructor
+    @Builder
+    @ApiModel(description = "회원 탈퇴를 위한 요청 객체")
+    @NoArgsConstructor
+    public static class DeleteAccountRequest {
+        @NotBlank(message = "카카오 액세스 토큰을 입력해주세요.")
+        @ApiModelProperty(notes = "카카오 accessToken을 주세요.")
+        private String token;
+
+        @NotBlank(message = "탈퇴 이유를 입력해주세요.")
+        @ApiModelProperty(notes = "탈퇴 이유를 입력해주세요.")
+        private String reasonToLeave;
     }
 
     @Getter
