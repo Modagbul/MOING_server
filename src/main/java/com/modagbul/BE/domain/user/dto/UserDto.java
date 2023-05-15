@@ -78,6 +78,10 @@ public abstract class UserDto {
         @NotBlank(message = "주소를 입력해주세요.")
         @ApiModelProperty(notes = "주소를 입력해주세요.")
         private String address;
+
+        @NotBlank(message = "fcmToken을 입력해주세요.")
+        @ApiModelProperty(notes = "fcmToken을 입력해주세요.")
+        private String fcmToken;
     }
 
     @Getter
@@ -127,7 +131,7 @@ public abstract class UserDto {
     @NoArgsConstructor
     public static class AlarmDto {
         private Boolean isRemind;
-        private Boolean isNotice;
+        private Boolean isNewUpload;
         private Boolean isFire;
 
     }

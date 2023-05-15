@@ -70,7 +70,7 @@ public class UserServiceImpl implements UserService {
         User user = validateEmail(authentication.getName());
 
         //2. 추가 정보 저장
-        user.setUser(additionInfoRequest.getNickName(), additionInfoRequest.getAddress());
+        user.setUser(additionInfoRequest.getNickName(), additionInfoRequest.getAddress(), additionInfoRequest.getFcmToken());
         userRepository.save(user);
 
         //3. 스프링 시큐리티 처리
@@ -109,7 +109,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public LoginResponse testLogin(UserDto.TestLoginRequest testLoginRequest) {
         User user = new User(testLoginRequest.getEmail(), testLoginRequest.getImageUrl(), testLoginRequest.getGender(), testLoginRequest.getAgeRange(), ROLE_USER);
-        user.setUser(testLoginRequest.getNickName(), testLoginRequest.getAddress());
+        user.setUser(testLoginRequest.getNickName(), testLoginRequest.getAddress(), "fcmToken");
         userRepository.save(user);
 
         List<GrantedAuthority> authorities = new ArrayList<>();
@@ -156,16 +156,16 @@ public class UserServiceImpl implements UserService {
     public AlarmDto getAlarmSetting() {
         Long userId = SecurityUtils.getLoggedInUser().getUserId();
         User user = userRepository.findById(userId).orElseThrow(NotFoundUserException::new);
-        return new AlarmDto(user.isNoticePush(), user.isRemindPush(), user.isFirePush());
+        return new AlarmDto(user.isNewUploadPush(), user.isRemindPush(), user.isFirePush());
     }
 
     @Override
-    public AlarmChangeDto changeNoticeAlarm(AlarmChangeDto alarmChangeDto) {
+    public AlarmChangeDto changeNewUploadAlarm(AlarmChangeDto alarmChangeDto) {
         Long userId = SecurityUtils.getLoggedInUser().getUserId();
         User user = userRepository.findById(userId).orElseThrow(NotFoundUserException::new);
 
-        user.setNoticePush(alarmChangeDto.getData());
-        return new AlarmChangeDto(user.isNoticePush());
+        user.setNewUploadPush(alarmChangeDto.getData());
+        return new AlarmChangeDto(user.isNewUploadPush());
     }
 
     @Override

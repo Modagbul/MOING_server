@@ -14,6 +14,17 @@ public class FcmConstant {
         SUCCESS_BY_TOPIC("주제를 이용해 메시지를 전송하였습니다");
         private final String message;
     }
+
+    @Getter
+    @RequiredArgsConstructor
+    public enum NewUploadTitle{
+        UPLOAD_NOTICE_NEW_TITLE("새로운 공지 알려드려요!"),
+        UPLOAD_VOTE_NEW_TITLE("새로운 투표 알려드려요!"),
+        UPLOAD_MISSION_NEW_TITLE("새로운 미션 알려드려요!");
+        private final String title;
+    }
+
+
     @Getter
     @RequiredArgsConstructor
     public enum FirebaseExceptionList{

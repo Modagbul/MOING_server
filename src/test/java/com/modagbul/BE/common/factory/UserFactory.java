@@ -13,7 +13,7 @@ public class UserFactory {
 
     public static User afterSignUpUser(){
         User user = new User("1000L","imageUrl","female","20-29", UserConstant.Role.ROLE_USER);
-        user.setUser("밍수","위례동");
+        user.setUser("밍수","위례동", "fcmToken");
         return user;
     }
 
