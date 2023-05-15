@@ -20,6 +20,8 @@ import com.modagbul.BE.domain.team_member.repository.TeamMemberRepository;
 import com.modagbul.BE.domain.user.entity.User;
 import com.modagbul.BE.domain.user.exception.NotFoundEmailException;
 import com.modagbul.BE.domain.user.repository.UserRepository;
+import com.modagbul.BE.fcm.dto.FcmDto.ToSingleRequest;
+import com.modagbul.BE.fcm.service.FcmService;
 import com.modagbul.BE.global.config.security.util.SecurityUtils;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -27,6 +29,9 @@ import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
 import java.util.List;
+
+import static com.modagbul.BE.fcm.constant.FcmConstant.NewUploadMessage.UPLOAD_NOTICE_NEW_MESSAGE;
+import static com.modagbul.BE.fcm.constant.FcmConstant.NewUploadTitle.UPLOAD_NOTICE_NEW_TITLE;
 
 @Service
 @Slf4j
@@ -39,8 +44,8 @@ public class NoticeServiceImpl implements NoticeService{
     private final TeamMemberRepository teamMemberRepository;
     private final NoticeReadRepository noticeReadRepository;
     private final UserRepository userRepository;
-
     private final TeamService teamService;
+    private final FcmService fcmService;
 
     @Override
     public CreateNoticeResponse createNotice(Long teamId, CreateNoticeRequest createNoticeRequest) {
@@ -49,6 +54,8 @@ public class NoticeServiceImpl implements NoticeService{
         noticeRepository.save(notice);
         //2. 공지사항-읽음 db 생성
         createNoticeRead(teamId, notice);
+        //3. 공지사항 fcm 알람
+        sendNewUploadNoticeAlarm(SecurityUtils.getLoggedInUser().getUserId());
         return new CreateNoticeResponse(notice.getNoticeId());
     }
 
@@ -130,5 +137,20 @@ public class NoticeServiceImpl implements NoticeService{
     private void validateUser(User user, Notice notice){
         if(notice.getUser().getUserId()!=user.getUserId())
             throw new NotNoticeWriterException();
+    }
+
+    /**
+     * Fcm 이용해서 알림 메시지 보내는 메서드
+     * @param userId
+     */
+    public void sendNewUploadNoticeAlarm(Long userId){
+        User user=userRepository.findById(userId).orElseThrow(()->new NotFoundEmailException());
+        //신규 업로드 알림이 true인지 확인
+        if(user.isNewUploadPush()){
+            String title= UPLOAD_NOTICE_NEW_TITLE.getTitle();
+            String message=user.getNickName()+"님, "+UPLOAD_NOTICE_NEW_MESSAGE.getMessage();
+            ToSingleRequest toSingleRequest=new ToSingleRequest(user.getFcmToken(),title,message);
+            fcmService.sendSingleDevice(toSingleRequest);
+        }
     }
 }

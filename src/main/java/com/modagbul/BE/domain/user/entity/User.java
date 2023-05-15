@@ -55,7 +55,7 @@ public class User {
     private String fcmToken;
 
     @ColumnDefault("true")
-    private boolean isNoticePush;
+    private boolean isNewUploadPush;
 
     @ColumnDefault("true")
     private boolean isRemindPush;
@@ -66,7 +66,6 @@ public class User {
     public void setFcmToken(String fcmToken) {
         this.fcmToken = fcmToken;
     }
-
 
     @OneToMany(mappedBy = "user")
     private List<NoticeComment> noticeComments=new ArrayList<>();
@@ -116,8 +115,8 @@ public class User {
         this.isDeleted=true;
     }
 
-    public void setNoticePush(boolean noticePush) {
-        this.isNoticePush = noticePush;
+    public void setNewUploadPush(boolean newUploadPush){
+        this.isNewUploadPush=newUploadPush;
     }
 
     public void setRemindPush(boolean remindPush) {

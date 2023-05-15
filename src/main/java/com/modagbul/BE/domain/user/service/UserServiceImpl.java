@@ -156,16 +156,16 @@ public class UserServiceImpl implements UserService {
     public AlarmDto getAlarmSetting() {
         Long userId = SecurityUtils.getLoggedInUser().getUserId();
         User user = userRepository.findById(userId).orElseThrow(NotFoundUserException::new);
-        return new AlarmDto(user.isNoticePush(), user.isRemindPush(), user.isFirePush());
+        return new AlarmDto(user.isNewUploadPush(), user.isRemindPush(), user.isFirePush());
     }
 
     @Override
-    public AlarmChangeDto changeNoticeAlarm(AlarmChangeDto alarmChangeDto) {
+    public AlarmChangeDto changeNewUploadAlarm(AlarmChangeDto alarmChangeDto) {
         Long userId = SecurityUtils.getLoggedInUser().getUserId();
         User user = userRepository.findById(userId).orElseThrow(NotFoundUserException::new);
 
-        user.setNoticePush(alarmChangeDto.getData());
-        return new AlarmChangeDto(user.isNoticePush());
+        user.setNewUploadPush(alarmChangeDto.getData());
+        return new AlarmChangeDto(user.isNewUploadPush());
     }
 
     @Override
