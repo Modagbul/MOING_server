@@ -15,9 +15,9 @@ import java.net.URL;
 
 import static com.modagbul.BE.domain.user.constant.UserConstant.UserServiceMessage.KAKAO_ACOUNT;
 
-@RequiredArgsConstructor
 @Component
-public class Kakao {
+@RequiredArgsConstructor
+public class KakaoAPIConnector {
     public JsonObject connectKakao(String reqURL, String token) {
         try {
             URL url = new URL(reqURL);

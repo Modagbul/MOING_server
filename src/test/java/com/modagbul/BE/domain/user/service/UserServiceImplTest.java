@@ -8,12 +8,14 @@ import com.modagbul.BE.domain.user.dto.UserDto.LoginResponse;
 import com.modagbul.BE.domain.user.entity.User;
 import com.modagbul.BE.domain.user.repository.UserRepository;
 import com.modagbul.BE.global.config.jwt.TokenProvider;
+import com.modagbul.BE.global.config.security.util.SecurityUtils;
 import com.modagbul.BE.global.dto.TokenInfoResponse;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
+import org.mockito.MockedStatic;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.security.authentication.TestingAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -21,10 +23,12 @@ import org.springframework.security.oauth2.client.authentication.OAuth2Authentic
 
 import java.util.Optional;
 
+import static com.modagbul.BE.domain.user.constant.UserConstant.UserServiceMessage.DELETE_URL;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.*;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.BDDMockito.then;
+import static org.mockito.Mockito.mockStatic;
 import static org.mockito.Mockito.times;
 
 @ExtendWith(MockitoExtension.class)
@@ -40,7 +44,9 @@ class UserServiceImplTest {
     TokenProvider tokenProvider;
 
     @Mock
-    Kakao kakao;
+    KakaoAPIConnector kakao;
+
+    private static MockedStatic<SecurityUtils> securityUtilsMock;
 
     @BeforeEach
     void setUp() {
@@ -144,11 +150,31 @@ class UserServiceImplTest {
     }
 
     @Test
-    void deleteAccount() {
+    void 회원이_탈퇴한다() {
+        //given
+        UserDto.DeleteAccountRequest deleteAccountRequest=new UserDto.DeleteAccountRequest("token","탈퇴이유");
+        User mockUser = UserFactory.afterSignUpUser();
+        JsonObject mockUserInfo = new JsonObject();
+        securityUtilsMock = mockStatic(SecurityUtils.class);
+        securityUtilsMock.when(SecurityUtils::getLoggedInUser).thenReturn(mockUser);
+
+        given(kakao.connectKakao(anyString(), anyString())).willReturn(mockUserInfo);
+        given(userRepository.findNotDeletedByEmail(anyString())).willReturn(Optional.of(mockUser));
+
+        //when
+        userService.deleteAccount(deleteAccountRequest);
+
+        //then
+        then(userRepository).should(times(1)).save(any(User.class));
+        securityUtilsMock.close();
     }
 
     @Test
-    void checkNickname() {
+    void 닉네임이_중복한다() {
+    }
+
+    @Test
+    void 닉네임이_중복하지_않는다() {
     }
 
     @Test

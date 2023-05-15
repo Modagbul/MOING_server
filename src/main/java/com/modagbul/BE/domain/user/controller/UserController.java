@@ -42,8 +42,8 @@ public class UserController {
 
     @ApiOperation(value = "회원 탈퇴", notes = "회원 탈퇴를 합니다.")
     @DeleteMapping
-    public ResponseEntity<ResponseDto> delete(@Valid @RequestBody LoginRequest loginRequest){
-        this.userService.deleteAccount(loginRequest);
+    public ResponseEntity<ResponseDto> delete(@Valid @RequestBody DeleteAccountRequest deleteAccountRequest){
+        this.userService.deleteAccount(deleteAccountRequest);
         return ResponseEntity.ok(ResponseDto.create(HttpStatus.OK.value(), DELETE_SUCCESS.getMessage()));
     }
 

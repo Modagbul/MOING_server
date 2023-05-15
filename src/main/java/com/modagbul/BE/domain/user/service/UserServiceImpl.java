@@ -41,7 +41,7 @@ public class UserServiceImpl implements UserService {
 
     private final TokenProvider tokenProvider;
     private final UserRepository userRepository;
-    private final Kakao kakao;
+    private final KakaoAPIConnector kakao;
 
 
     @Override
@@ -84,11 +84,11 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public void deleteAccount(UserDto.LoginRequest loginRequest) {
-        String token = loginRequest.getToken();
+    public void deleteAccount(DeleteAccountRequest deleteAccountRequest) {
+        String token = deleteAccountRequest.getToken();
         JsonObject response = kakao.connectKakao(DELETE_URL.getValue(), token);
         User user = validateEmail(SecurityUtils.getLoggedInUser().getEmail());
-        user.setDeleted();
+        user.setDeleted(deleteAccountRequest.getReasonToLeave());
         userRepository.save(user);
     }
 
