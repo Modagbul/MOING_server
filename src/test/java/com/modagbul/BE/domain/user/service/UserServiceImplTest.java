@@ -92,7 +92,7 @@ class UserServiceImplTest {
         given(kakao.getGender(any())).willReturn(mockUser.getGender());
         given(kakao.getPictureUrl(any())).willReturn(mockUser.getImageUrl());
         given(userRepository.findNotDeletedByEmail(anyString())).willReturn(Optional.of(mockUser));
-        given(tokenProvider.createToken(any(OAuth2AuthenticationToken.class), anyBoolean())).willReturn(mockTokenInfoResponse);
+        given(tokenProvider.createToken(any(OAuth2AuthenticationToken.class), anyBoolean(), any())).willReturn(mockTokenInfoResponse);
 
         //when
         LoginResponse result = userService.login(loginRequest);
@@ -117,7 +117,7 @@ class UserServiceImplTest {
         given(kakao.getGender(any())).willReturn(mockUser.getGender());
         given(kakao.getPictureUrl(any())).willReturn(mockUser.getImageUrl());
         given(userRepository.findNotDeletedByEmail(anyString())).willReturn(Optional.of(mockUser));
-        given(tokenProvider.createToken(any(OAuth2AuthenticationToken.class), anyBoolean())).willReturn(mockTokenInfoResponse);
+        given(tokenProvider.createToken(any(OAuth2AuthenticationToken.class), anyBoolean(), any())).willReturn(mockTokenInfoResponse);
 
         //when
         LoginResponse result = userService.login(loginRequest);
@@ -137,7 +137,7 @@ class UserServiceImplTest {
         Authentication mockAuthentication = new TestingAuthenticationToken(mockUser.getEmail(), null);
         given(tokenProvider.getAuthentication(anyString())).willReturn(mockAuthentication);
         given(userRepository.findNotDeletedByEmail(anyString())).willReturn(Optional.of(mockUser));
-        given(tokenProvider.createToken(any(OAuth2AuthenticationToken.class), anyBoolean())).willReturn(mockTokenInfoResponse);
+        given(tokenProvider.createToken(any(OAuth2AuthenticationToken.class), anyBoolean(), any())).willReturn(mockTokenInfoResponse);
 
         //when
         LoginResponse result = userService.signup(additionInfoRequest);

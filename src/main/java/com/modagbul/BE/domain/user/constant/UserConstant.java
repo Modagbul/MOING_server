@@ -15,7 +15,8 @@ public class UserConstant {
         MYPAGE_UPDATE_SUCCESS("마이페이지 수정이 완료되었습니다"),
         MYPAGE_GET_SUCCESS("마이페이지 로딩이 완료되었습니다"),
         ALARM_GET_SUCCESS("알림 설정 로딩이 완료되었습니다"),
-        ALARM_UPDATE_SUCCESS("알림 설정 수정이 완료되었습니다");
+        ALARM_UPDATE_SUCCESS("알림 설정 수정이 완료되었습니다"),
+        TOKEN_REFRESH_SUCCESS("토큰 재발급을 완료하였습니다");
         private final String message;
     }
 

@@ -4,6 +4,7 @@ import com.modagbul.BE.domain.user.entity.User;
 import com.modagbul.BE.domain.user.exception.NotFoundEmailException;
 import com.modagbul.BE.domain.user.repository.UserRepository;
 import com.modagbul.BE.global.config.jwt.exception.*;
+import com.modagbul.BE.global.config.redis.repository.RefreshTokenRepository;
 import com.modagbul.BE.global.config.security.service.CustomUserDetails;
 import com.modagbul.BE.global.dto.TokenInfoResponse;
 import io.jsonwebtoken.*;
@@ -35,6 +36,8 @@ public class TokenProvider implements InitializingBean {
 
     private final UserRepository userRepository;
 
+    private final RefreshTokenRepository refreshTokenRepository;
+
     @Value("${jwt.secret}")
     private String secret;
 
@@ -59,7 +62,7 @@ public class TokenProvider implements InitializingBean {
      * @param authentication
      * @return TokenInfoResponse
      */
-    public TokenInfoResponse createToken(Authentication authentication, boolean isAdditionalInfoProvided) {
+    public TokenInfoResponse createToken(Authentication authentication, boolean isAdditionalInfoProvided, Long userId) {
         String authorities = authentication.getAuthorities().stream()
                 .map(GrantedAuthority::getAuthority)
                 .collect(Collectors.joining(","));
@@ -80,6 +83,8 @@ public class TokenProvider implements InitializingBean {
                 .setExpiration(refreshTokenValidity)
                 .signWith(key, SignatureAlgorithm.HS256)
                 .compact();
+
+        refreshTokenRepository.save(refreshToken, userId);
 
         return TokenInfoResponse.from("Bearer", accessToken, refreshToken, refreshTokenValidityTime);
 

@@ -58,8 +58,8 @@ public class UserServiceImpl implements UserService {
         OAuth2AuthenticationToken auth = configureAuthentication(userDetails, authorities);
 
         //3. JWT 토큰 생성
-        TokenInfoResponse tokenInfoResponse = tokenProvider.createToken(auth, isSignedUp);
-        return LoginResponse.from(tokenInfoResponse, isSignedUp ? LOGIN_SUCCESS.getMessage() : SIGN_UP_ING.getMessage());
+        TokenInfoResponse tokenInfoResponse = tokenProvider.createToken(auth, isSignedUp, user.getUserId());
+        return LoginResponse.from(tokenInfoResponse, isSignedUp ? LOGIN_SUCCESS.getMessage() : SIGN_UP_ING.getMessage(),user.getUserId());
     }
 
     @Override
@@ -79,8 +79,8 @@ public class UserServiceImpl implements UserService {
         OAuth2AuthenticationToken auth = configureAuthentication(userDetails, authorities);
 
         //4. JWT 토큰 생성
-        TokenInfoResponse tokenInfoResponse = tokenProvider.createToken(auth, true);
-        return LoginResponse.from(tokenInfoResponse, LOGIN_SUCCESS.getMessage());
+        TokenInfoResponse tokenInfoResponse = tokenProvider.createToken(auth, true, user.getUserId());
+        return LoginResponse.from(tokenInfoResponse, LOGIN_SUCCESS.getMessage(), user.getUserId());
     }
 
     @Override
@@ -117,8 +117,8 @@ public class UserServiceImpl implements UserService {
         OAuth2User userDetails = createOAuth2UserByUser(authorities, user);
         OAuth2AuthenticationToken auth = configureAuthentication(userDetails, authorities);
 
-        TokenInfoResponse tokenInfoResponse = tokenProvider.createToken(auth, true);
-        return LoginResponse.from(tokenInfoResponse, LOGIN_SUCCESS.getMessage());
+        TokenInfoResponse tokenInfoResponse = tokenProvider.createToken(auth, true, user.getUserId());
+        return LoginResponse.from(tokenInfoResponse, LOGIN_SUCCESS.getMessage(), user.getUserId());
     }
 
 
@@ -194,7 +194,7 @@ public class UserServiceImpl implements UserService {
      * @return OAuth2User
      */
 
-    private OAuth2User createOAuth2UserByUser(List<GrantedAuthority> authorities, User user) {
+    public OAuth2User createOAuth2UserByUser(List<GrantedAuthority> authorities, User user) {
         Map userMap = new HashMap<String, String>();
         userMap.put("email", user.getEmail());
         userMap.put("pictureUrl", user.getImageUrl());
@@ -223,13 +223,13 @@ public class UserServiceImpl implements UserService {
         return userDetails;
     }
 
-    private List<GrantedAuthority> initAuthorities() {
+    public List<GrantedAuthority> initAuthorities() {
         List<GrantedAuthority> authorities = new ArrayList<>();
         authorities.add(new SimpleGrantedAuthority(String.valueOf(ROLE_USER)));
         return authorities;
     }
 
-    private OAuth2AuthenticationToken configureAuthentication(OAuth2User userDetails, List<GrantedAuthority> authorities) {
+    public OAuth2AuthenticationToken configureAuthentication(OAuth2User userDetails, List<GrantedAuthority> authorities) {
         OAuth2AuthenticationToken auth = new OAuth2AuthenticationToken(userDetails, authorities, "email");
         auth.setDetails(userDetails);
         SecurityContextHolder.getContext().setAuthentication(auth);
