@@ -46,11 +46,14 @@ public interface UserMissionRepository extends JpaRepository<UserMission, Long> 
     Optional<UserMission> findUserMissionById(@Param("userId") Long userId, @Param("teamId") Long teamId, @Param("missionId") Long missionId);
 
 
-//    @Query(value = "select count(um.userMissionId) / (select count(m.missionId) from Mission m where m.team.teamId = :teamId) " +
+    //    @Query(value = "select count(um.userMissionId) / (select count(m.missionId) from Mission m where m.team.teamId = :teamId) " +
 //            "from UserMission um " +
 //            "where um.team.teamId = :teamId and um.user.userId = :userId " +
 //            "and um.status = com.modagbul.BE.domain.usermission.constant.Status.COMPLETE", nativeQuery = true)
 //
     @Query(value = "select count(um.user_mission_id) / (select count(m.mission_id) from mission m where m.team_id = :teamId) * 100 from user_mission um where um.team_id = :teamId and um.user_id = :userId and um.status = 'COMPLETE'", nativeQuery = true)
-    Optional<Long> getPersonalRateForGraphById (@Param("userId") Long userId,@Param("teamId") Long teamId);
+    Optional<Long> getPersonalRateForGraphById(@Param("userId") Long userId, @Param("teamId") Long teamId);
+
+    @Query(value = "select um.user from UserMission um where um.mission = :mission and um.status = com.modagbul.BE.domain.usermission.constant.Status.INCOMPLETE")
+    Optional<List<User>> getInCompleteUsersByMission(@Param("mission") Mission mission);
 }
