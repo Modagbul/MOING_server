@@ -96,13 +96,14 @@ class UserServiceImplTest {
     @Test
     void 추가정보입력전_로그인한다() {
         //given
+
         given(kakao.connectKakao(LOGIN_URL.getValue(), loginRequest.getToken())).willReturn(mockUserInfo);
         given(kakao.getAgeRange(mockUserInfo)).willReturn(beforeSignUpUser.getAgeRange());
         given(kakao.getEmail(mockUserInfo)).willReturn(beforeSignUpUser.getEmail());
         given(kakao.getGender(mockUserInfo)).willReturn(beforeSignUpUser.getGender());
         given(kakao.getPictureUrl(mockUserInfo)).willReturn(beforeSignUpUser.getImageUrl());
         given(userRepository.findNotDeletedByEmail(beforeSignUpUser.getEmail())).willReturn(Optional.of(beforeSignUpUser));
-        given(tokenProvider.createToken(any(OAuth2AuthenticationToken.class), anyBoolean())).willReturn(mockTokenInfoResponse);
+        given(tokenProvider.createToken(any(OAuth2AuthenticationToken.class), anyBoolean(),any())).willReturn(mockTokenInfoResponse);
 
         //when
         LoginResponse result = userService.login(loginRequest);
@@ -116,13 +117,14 @@ class UserServiceImplTest {
     @Test
     void 추가정보입력후_로그인한다() {
         //given
+
         given(kakao.connectKakao(LOGIN_URL.getValue(), loginRequest.getToken())).willReturn(mockUserInfo);
         given(kakao.getAgeRange(mockUserInfo)).willReturn(afterSignUpUser.getAgeRange());
         given(kakao.getEmail(mockUserInfo)).willReturn(afterSignUpUser.getEmail());
         given(kakao.getGender(mockUserInfo)).willReturn(afterSignUpUser.getGender());
         given(kakao.getPictureUrl(mockUserInfo)).willReturn(afterSignUpUser.getImageUrl());
         given(userRepository.findNotDeletedByEmail(afterSignUpUser.getEmail())).willReturn(Optional.of(afterSignUpUser));
-        given(tokenProvider.createToken(any(OAuth2AuthenticationToken.class), anyBoolean())).willReturn(mockTokenInfoResponse);
+        given(tokenProvider.createToken(any(OAuth2AuthenticationToken.class), anyBoolean(),any())).willReturn(mockTokenInfoResponse);
 
         //when
         LoginResponse result = userService.login(loginRequest);
@@ -138,7 +140,7 @@ class UserServiceImplTest {
         //given
         given(tokenProvider.getAuthentication(additionInfoRequest.getAccessToken())).willReturn(mockAuthentication);
         given(userRepository.findNotDeletedByEmail(beforeSignUpUser.getEmail())).willReturn(Optional.of(beforeSignUpUser));
-        given(tokenProvider.createToken(any(OAuth2AuthenticationToken.class), anyBoolean())).willReturn(mockTokenInfoResponse);
+        given(tokenProvider.createToken(any(OAuth2AuthenticationToken.class), anyBoolean(),any())).willReturn(mockTokenInfoResponse);
 
         //when
         LoginResponse result = userService.signup(additionInfoRequest);

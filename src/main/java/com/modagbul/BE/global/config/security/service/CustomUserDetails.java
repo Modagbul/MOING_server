@@ -60,4 +60,6 @@ public class CustomUserDetails implements UserDetails {
         return true;
     }
 
+    public Long geUserId(){return this.user.getUserId();}
+
 }

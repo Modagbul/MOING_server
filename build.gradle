@@ -52,6 +52,8 @@ dependencies {
 
     implementation 'org.springframework.security:spring-security-test'
     testImplementation 'org.mockito:mockito-inline:4.6.1'
+
+    implementation 'org.springframework.boot:spring-boot-starter-data-redis'
 }
 
 tasks.named('test') {
