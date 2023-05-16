@@ -19,10 +19,6 @@ public abstract class RefreshTokenDto {
     @ApiModel(description = "토큰 재발급을 위한 요청 객체")
     public static class RefreshTokenRequest {
 
-        @NotBlank(message = "액세스 토큰을 입력해주세요.")
-        @ApiModelProperty(notes = "액세스 토큰을 주세요.")
-        private String accessToken;
-
         @NotBlank(message = "리프레시 토큰을 입력해주세요.")
         @ApiModelProperty(notes = "리프레시 토큰을 주세요.")
         private String refreshToken;
