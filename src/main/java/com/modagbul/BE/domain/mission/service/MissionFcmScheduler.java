@@ -41,7 +41,7 @@ public class MissionFcmScheduler {
         }
 
     }
-    @Scheduled(cron = "0 12 * * *") // 매일 오후 12시에 이 메소드를 실행함.
+    @Scheduled(cron = "0 0 12 * * *") // 매일 오후 12시에 이 메소드를 실행함.
     public void checkDailyDDayBefore() throws FirebaseMessagingException {
         // 지금 시간 기준, 당일 23:59:59 ~ 00:00:01 가 포함된 미션들을 가져옴.
         LocalDateTime now = LocalDateTime.now();
