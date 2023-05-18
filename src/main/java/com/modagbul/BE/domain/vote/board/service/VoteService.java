@@ -7,7 +7,7 @@ import java.util.List;
 
 public interface VoteService {
     CreateVoteResponse createVote(Long teamId, CreateVoteRequest createVoteRequest);
-    void doVote(Long teamId, Long voteId, DoVoteRequest doVoteRequest);
+    GetVoteDetailsResponse doVote(Long teamId, Long voteId, DoVoteRequest doVoteRequest);
     GetVoteDetailsResponse getVoteDetail(Long teamId, Long voteId);
     Vote validateVote(Long teamId, Long voteId);
     void closeVote(Long teamId, Long voteId);

@@ -65,8 +65,8 @@ public class TokenProvider implements InitializingBean {
                 .collect(Collectors.joining(","));
 
         long now = (new Date()).getTime();
-        Date accessTokenValidity = new Date(now + this.accessTokenValidityTime);
-        Date refreshTokenValidity = new Date(now + this.refreshTokenValidityTime);
+        Date accessTokenValidity = new Date(now + 1000*this.accessTokenValidityTime);
+        Date refreshTokenValidity = new Date(now + 1000*this.refreshTokenValidityTime);
 
         String accessToken = Jwts.builder()
                 .setSubject(authentication.getName())

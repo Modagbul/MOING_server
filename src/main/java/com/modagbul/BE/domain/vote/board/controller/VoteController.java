@@ -34,9 +34,8 @@ public class VoteController {
 
     @ApiOperation(value = "투표하기", notes = "투표를 합니다.")
     @PutMapping("/{voteId}")
-    public ResponseEntity<ResponseDto> doVote(@PathVariable Long teamId, @PathVariable Long voteId, @Valid @RequestBody DoVoteRequest doVoteRequest) {
-        voteService.doVote(teamId, voteId,doVoteRequest);
-        return ResponseEntity.ok(ResponseDto.create(HttpStatus.OK.value(), DO_VOTE_SUCCESS.getMessage()));
+    public ResponseEntity<ResponseDto<GetVoteDetailsResponse>> doVote(@PathVariable Long teamId, @PathVariable Long voteId, @Valid @RequestBody DoVoteRequest doVoteRequest) {
+        return ResponseEntity.ok(ResponseDto.create(HttpStatus.OK.value(), DO_VOTE_SUCCESS.getMessage(), voteService.doVote(teamId, voteId,doVoteRequest)));
     }
 
     @ApiOperation(value = "투표결과 조회", notes = "투표 결과를 조회합니다.")

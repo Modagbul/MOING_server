@@ -55,17 +55,23 @@ public class VoteServiceImpl implements VoteService{
 
         //3. 투표-읽음 db 생성
         createVoteRead(teamId, vote);
+
+        //4. 투표 fcm 알림
+        sendNewUploadVoteAlarm(vote, teamId, SecurityUtils.getLoggedInUser().getUserId());
+
         return new CreateVoteResponse(vote.getVoteId());
     }
 
     @Override
-    public void doVote(Long teamId, Long voteId, DoVoteRequest doVoteRequest) {
+    public GetVoteDetailsResponse doVote(Long teamId, Long voteId, DoVoteRequest doVoteRequest) {
         //1. 유효성 체크
         Vote vote=validateVote(teamId, voteId);
         //2. 투표 선택지 업데이트
         updateVoteContent(doVoteRequest, vote);
         //3. 읽음처리 업데이트
         updateVoteRead(vote);
+        //4. 투표 결과 보여주기
+        return voteRepository.getVoteDetailByVoteId(voteId);
     }
 
     @Override
