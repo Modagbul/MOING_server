@@ -321,5 +321,11 @@
 
 ![깃 플로우](https://user-images.githubusercontent.com/53565255/232306917-76f0b6d7-eeb3-413d-b899-f307c7eab765.png)
 <br> 
+## 🚀 배포 워크플로우
+<img width="670" alt="image" src="https://github.com/KUSITMS-MeetUp-2/27th_Meetup_T2_service_back/assets/86006389/842972f8-2488-4e52-b85b-85aa84ea5121">
+
 ## 🚀 시스템 아키텍쳐
-<img width="908" alt="image" src="https://github.com/KUSITMS-MeetUp-2/27th_Meetup_T2_service_back/assets/86006389/53f4095c-13bd-4ff4-9a57-7fa95c209d62">
+<img width="764" alt="image" src="https://github.com/KUSITMS-MeetUp-2/27th_Meetup_T2_service_back/assets/86006389/c83ccfed-22c0-4037-bb04-43c25eab58c3">
+
+
+
