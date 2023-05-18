@@ -77,6 +77,8 @@ public abstract class VoteDto {
         private String title;
         private String memo;
         private LocalDateTime createdDate;
+        private boolean isMultiple;
+        private boolean isAnonymous;
 
         //투표글을 쓴 사람에 대한 정보
         private Long userId;
@@ -85,13 +87,16 @@ public abstract class VoteDto {
 
         @QueryProjection
         public GetVoteDetailsResponse(String title, String memo, LocalDateTime createdDate,
-                                      Long userId, String nickName, String userImageUrl){
+                                      Long userId, String nickName, String userImageUrl,
+                                      boolean isMultiple, boolean isAnonymous){
             this.title=title;
             this.memo=memo;
             this.createdDate=createdDate;
             this.userId=userId;
             this.nickName=nickName;
             this.userImageUrl=userImageUrl;
+            this.isMultiple=isMultiple;
+            this.isAnonymous=isAnonymous;
         }
 
         //안읽은 사람

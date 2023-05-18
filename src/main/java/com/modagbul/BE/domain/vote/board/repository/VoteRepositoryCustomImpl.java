@@ -47,7 +47,9 @@ public class VoteRepositoryCustomImpl implements VoteRepositoryCustom {
                         vote.createdDate,
                         vote.user.userId,
                         vote.user.nickName,
-                        vote.user.imageUrl))
+                        vote.user.imageUrl,
+                        vote.isMultiple,
+                        vote.isAnonymous))
                 .distinct()
                 .from(vote)
                 .where(vote.voteId.eq(voteId))
