@@ -67,13 +67,15 @@ public class VoteServiceImpl implements VoteService {
     }
 
     @Override
-    public void doVote(Long teamId, Long voteId, DoVoteRequest doVoteRequest) {
+    public GetVoteDetailsResponse doVote(Long teamId, Long voteId, DoVoteRequest doVoteRequest) {
         //1. 유효성 체크
         Vote vote = validateVote(teamId, voteId);
         //2. 투표 선택지 업데이트
         updateVoteContent(doVoteRequest, vote);
         //3. 읽음처리 업데이트
         updateVoteRead(vote);
+        //4. 투표 결과 보여주기
+        return voteRepository.getVoteDetailByVoteId(voteId);
     }
 
     @Override
