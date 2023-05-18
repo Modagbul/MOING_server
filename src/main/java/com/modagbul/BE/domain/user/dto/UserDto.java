@@ -23,9 +23,21 @@ public abstract class UserDto {
         @ApiModelProperty(notes = "카카오 accessToken을 주세요.")
         private String token;
 
-        public void setToken(String token) {
-            this.token = token;
-        }
+    }
+
+    @Getter
+    @AllArgsConstructor
+    @Builder
+    @ApiModel(description = "회원 탈퇴를 위한 요청 객체")
+    @NoArgsConstructor
+    public static class DeleteAccountRequest {
+        @NotBlank(message = "카카오 액세스 토큰을 입력해주세요.")
+        @ApiModelProperty(notes = "카카오 accessToken을 주세요.")
+        private String token;
+
+        @NotBlank(message = "탈퇴 이유를 입력해주세요.")
+        @ApiModelProperty(notes = "탈퇴 이유를 입력해주세요.")
+        private String reasonToLeave;
     }
 
     @Getter
@@ -51,16 +63,20 @@ public abstract class UserDto {
     public static class LoginResponse {
         private String accessToken;
         private String refreshToken;
+        private Long userId;
         private String process;
 
-        public static LoginResponse from(TokenInfoResponse tokenInfoResponse, String process) {
+        public static LoginResponse from(TokenInfoResponse tokenInfoResponse, String process, Long userId) {
             return LoginResponse.builder()
                     .accessToken(tokenInfoResponse.getAccessToken())
                     .refreshToken(tokenInfoResponse.getRefreshToken())
                     .process(process)
+                    .userId(userId)
                     .build();
         }
     }
+
+
     @Getter
     @Builder
     @AllArgsConstructor
@@ -78,6 +94,10 @@ public abstract class UserDto {
         @NotBlank(message = "주소를 입력해주세요.")
         @ApiModelProperty(notes = "주소를 입력해주세요.")
         private String address;
+
+        @NotBlank(message = "fcmToken을 입력해주세요.")
+        @ApiModelProperty(notes = "fcmToken을 입력해주세요.")
+        private String fcmToken;
     }
 
     @Getter
@@ -120,6 +140,23 @@ public abstract class UserDto {
         private String profileUrl;
         private String date;
 
+    }
+    @Getter
+    @Builder
+    @AllArgsConstructor
+    @NoArgsConstructor
+    public static class AlarmDto {
+        private Boolean isRemind;
+        private Boolean isNewUpload;
+        private Boolean isFire;
+
+    }
+    @Getter
+    @Builder
+    @AllArgsConstructor
+    @NoArgsConstructor
+    public static class AlarmChangeDto {
+        private Boolean data;
     }
 
 

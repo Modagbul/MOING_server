@@ -13,8 +13,6 @@ import org.springframework.web.bind.annotation.*;
 import javax.validation.Valid;
 
 import static com.modagbul.BE.domain.user.constant.UserConstant.EUserResponseMessage.*;
-import static com.modagbul.BE.domain.user.constant.UserConstant.Process.MYPAGE_GET_SUCCESS;
-import static com.modagbul.BE.domain.user.constant.UserConstant.Process.MYPAGE_UPDATE_SUCCESS;
 
 @RestController
 @AllArgsConstructor
@@ -44,10 +42,13 @@ public class UserController {
 
     @ApiOperation(value = "회원 탈퇴", notes = "회원 탈퇴를 합니다.")
     @DeleteMapping
-    public ResponseEntity<ResponseDto> delete(@Valid @RequestBody LoginRequest loginRequest){
-        this.userService.deleteAccount(loginRequest);
+    public ResponseEntity<ResponseDto> delete(@Valid @RequestBody DeleteAccountRequest deleteAccountRequest){
+        this.userService.deleteAccount(deleteAccountRequest);
         return ResponseEntity.ok(ResponseDto.create(HttpStatus.OK.value(), DELETE_SUCCESS.getMessage()));
     }
+
+
+
 
     //테스트를 위한 API
     @PostMapping("/auth/test")
@@ -65,6 +66,25 @@ public class UserController {
     @PutMapping("/mypage")
     public ResponseEntity<ResponseDto<MyPageEditDto >> editMypage(@Valid @RequestBody MyPageEditDto myPageEditDto){
         return ResponseEntity.ok(ResponseDto.create(HttpStatus.OK.value(),MYPAGE_UPDATE_SUCCESS.getMessage(),this.userService.updateUserInfo(myPageEditDto)));
+    }
+
+    @GetMapping("/alarm-setting")
+    public ResponseEntity<ResponseDto<AlarmDto>> getAlarmSetting(){
+        return ResponseEntity.ok(ResponseDto.create(HttpStatus.OK.value(),ALARM_GET_SUCCESS.getMessage(),this.userService.getAlarmSetting()));
+    }
+
+    @PutMapping("/alarm-setting/new-upload")
+    public ResponseEntity<ResponseDto<AlarmChangeDto>> changeNoticeAlarm(@Valid @RequestBody AlarmChangeDto alarmChangeDto){
+        return ResponseEntity.ok(ResponseDto.create(HttpStatus.OK.value(),ALARM_UPDATE_SUCCESS.getMessage(),this.userService.changeNewUploadAlarm(alarmChangeDto)));
+    }
+
+    @PutMapping("/alarm-setting/remind")
+    public ResponseEntity<ResponseDto<AlarmChangeDto>> changeRemindAlarm(@Valid @RequestBody AlarmChangeDto alarmChangeDto){
+        return ResponseEntity.ok(ResponseDto.create(HttpStatus.OK.value(),ALARM_UPDATE_SUCCESS.getMessage(),this.userService.changeRemindAlarm(alarmChangeDto)));
+    }
+    @PutMapping("/alarm-setting/fire")
+    public ResponseEntity<ResponseDto<AlarmChangeDto>> changeFireAlarm(@Valid @RequestBody AlarmChangeDto alarmChangeDto){
+        return ResponseEntity.ok(ResponseDto.create(HttpStatus.OK.value(),ALARM_UPDATE_SUCCESS.getMessage(),this.userService.changeFireAlarm(alarmChangeDto)));
     }
 
 }
