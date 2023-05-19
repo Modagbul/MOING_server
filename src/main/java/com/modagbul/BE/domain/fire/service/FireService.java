@@ -43,10 +43,10 @@ public class FireService {
 
             List<String> strings = fireMessage(loginUser.getNickName(), userMission.getUser().getNickName(), userMission.getMission().getTitle()).get((int) (Math.random() * 2));
             ToSingleRequest toSingleRequest = new ToSingleRequest(
-                    strings.get(0),strings.get(1),userMission.getUser().getFcmToken()
+                    userMission.getUser().getFcmToken(),strings.get(0),strings.get(1)
             );
             System.out.println(toSingleRequest.getTitle()+toSingleRequest.getBody());
-//            fcmService.sendSingleDevice(toSingleRequest);
+            fcmService.sendSingleDevice(toSingleRequest);
 
         }
         else{
