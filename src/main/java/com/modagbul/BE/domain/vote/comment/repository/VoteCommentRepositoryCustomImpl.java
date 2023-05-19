@@ -32,7 +32,7 @@ public class VoteCommentRepositoryCustomImpl implements VoteCommentRepositoryCus
                 .where(voteComment.vote.voteId.eq(voteId),
                         voteComment.isDeleted.eq(false))
                 .orderBy(
-                        voteComment.createdDate.desc()
+                        voteComment.createdDate.asc()
                 )
                 .fetch();
     }
