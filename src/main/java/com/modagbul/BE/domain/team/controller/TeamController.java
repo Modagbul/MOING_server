@@ -46,7 +46,13 @@ public class TeamController {
         return ResponseEntity.ok(ResponseDto.create(HttpStatus.OK.value(), UPDATE_TEAM_SUCCESS.getMessage()));
     }
 
-    @ApiOperation(value="소모임 정보 조회", notes="홈 화면에서 소모임 정보를 조회합니다")
+    @ApiOperation(value="소모임 초대 코드 조회", notes="소모임 초대코드를 조회합니다")
+    @GetMapping("/{teamId}/invite-code")
+    public ResponseEntity<ResponseDto<GetInviteCodeResponse>> getInviteTeam(@PathVariable Long teamId){
+        return ResponseEntity.ok(ResponseDto.create(HttpStatus.OK.value(), GET_INVITE_CODE_SUCCESS.getMessage(), this.teamService.getInviteCode(teamId)));
+    }
+
+    @ApiOperation(value="소모임 목록 정보 조회", notes="홈 화면에서 소모임 목록을 조회합니다")
     @GetMapping
     public ResponseEntity<ResponseDto<GetTeamResponse>> getTeam(){
         return ResponseEntity.ok(ResponseDto.create(HttpStatus.OK.value(), GET_TEAM_SUCCESS.getMessage(), teamService.getTeam()));

@@ -49,7 +49,7 @@ public class TeamServiceImpl implements TeamService {
         teamRepository.save(team);
 
         this.addTeamMember(team);
-        return new CreateTeamResponse(team.getTeamId(), code);
+        return new CreateTeamResponse(team.getTeamId());
     }
 
     @Override
@@ -98,6 +98,13 @@ public class TeamServiceImpl implements TeamService {
     public GetProfileResponse getTeamProfile(Long teamId) {
         Team team=validateTeam(teamId);
         return new GetProfileResponse(team);
+    }
+
+    @Override
+    public GetInviteCodeResponse getInviteCode(Long teamId) {
+        Team team=validateTeam(teamId);
+        this.checkLeader(team);
+        return new GetInviteCodeResponse(team.getInvitationCode());
     }
 
     private void addTeamMember(Team team) {
