@@ -56,7 +56,7 @@ public class MissionFcmService {
 
             List<String> strings = message.messageInitOneDay(member.getNickName(), mission.getTitle()).get((int) (Math.random() * 3));
             ToSingleRequest toSingleRequest = new ToSingleRequest(
-                    strings.get(0), strings.get(1), member.getFcmToken()
+                    member.getFcmToken(),strings.get(0), strings.get(1)
             );
             System.out.println(strings.get(0) + " " + strings.get(1) + " " + member.getFcmToken());
 //                fcmService.sendSingleDevice(toSingleRequest);
@@ -80,7 +80,7 @@ public class MissionFcmService {
 
             List<String> strings = message.messageInitDDay(member.getNickName(), mission.getTitle()).get((int) (Math.random() * 4));
             ToSingleRequest toSingleRequest = new ToSingleRequest(
-                    strings.get(0), strings.get(1), member.getFcmToken()
+                    member.getFcmToken(),strings.get(0), strings.get(1)
             );
             System.out.println(strings.get(0) + " " + strings.get(1) + " " + member.getFcmToken());
 //                fcmService.sendSingleDevice(toSingleRequest);
