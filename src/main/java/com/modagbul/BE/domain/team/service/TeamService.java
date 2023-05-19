@@ -12,4 +12,5 @@ public interface TeamService {
     GetTeamResponse getTeam();
     CheckTeamNameResponse checkTeamName(String teamName);
     GetProfileResponse getTeamProfile(Long teamId);
+    GetInviteCodeResponse getInviteCode(Long teamId);
 }

@@ -73,6 +73,16 @@ public abstract class TeamDto {
     public static class CreateTeamResponse {
 
         private Long teamId;
+
+    }
+
+    @Getter
+    @Builder
+    @AllArgsConstructor
+    @NoArgsConstructor
+    @ApiModel(description = "소모임 초대코드 조회를 위한 응답 객체")
+    public static class GetInviteCodeResponse {
+
         private String invitationCode;
 
     }
