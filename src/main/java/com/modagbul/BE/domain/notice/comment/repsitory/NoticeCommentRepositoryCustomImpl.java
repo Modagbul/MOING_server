@@ -31,7 +31,7 @@ public class NoticeCommentRepositoryCustomImpl implements NoticeCommentRepositor
                 .where(noticeComment.notice.noticeId.eq(noticeId),
                         noticeComment.isDeleted.eq(false))
                 .orderBy(
-                        noticeComment.createdDate.desc()
+                        noticeComment.createdDate.asc()
                 )
                 .fetch();
     }
