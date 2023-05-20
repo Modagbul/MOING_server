@@ -327,4 +327,7 @@
 ## 🚀 시스템 아키텍쳐
 <img width="780" alt="image" src="https://github.com/KUSITMS-MeetUp-2/27th_Meetup_T2_service_back/assets/86006389/b36a21fd-adc8-4c7b-bff1-7907d7f3b7ca">
 
+## 🚀 Redis에서 Access Token, Refresh Token 재발급 과정
+<img width="688" alt="image" src="https://github.com/KUSITMS-MeetUp-2/27th_Meetup_T2_service_back/assets/86006389/980bf7dd-f493-49e7-8999-faf9fcc4eb76">
+
 
