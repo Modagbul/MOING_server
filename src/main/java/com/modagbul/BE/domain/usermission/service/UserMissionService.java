@@ -26,6 +26,7 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -41,10 +42,6 @@ public class UserMissionService {
 
         Long userId = SecurityUtils.getLoggedInUser().getUserId();
 
-        User user = userRepository.findById(userId).orElseThrow(() -> new IllegalStateException("해당 유저를 찾을 수 없습니다."));
-        Team team = teamRepository.findById(teamId).orElseThrow(NotFoundTeamIdException::new);
-        Mission mission = missionRepository.findById(missionId).orElseThrow(NotFoundMissionException::new);
-
         UserMission userMission = userMissionRepository.findUserMissionById(userId, teamId, missionId).orElseThrow(NotFoundUserMissionsException::new);
 
         userMission.setComplete(submitUrl);
@@ -57,10 +54,6 @@ public class UserMissionService {
     public Status skipUserMission(Long teamId, Long missionId, String skipReason) {
 
         Long userId = SecurityUtils.getLoggedInUser().getUserId();
-
-        User user = userRepository.findById(userId).orElseThrow(() -> new IllegalStateException("해당 유저를 찾을 수 없습니다."));
-        Team team = teamRepository.findById(teamId).orElseThrow(() -> new IllegalStateException("해당 팀을 찾을 수 없습니다."));
-        Mission mission = missionRepository.findById(missionId).orElseThrow(NotFoundMissionException::new);
 
         UserMission userMission = userMissionRepository.findUserMissionById(userId, teamId, missionId).orElseThrow(NotFoundUserMissionsException::new);
 
