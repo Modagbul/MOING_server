@@ -251,7 +251,7 @@
 <img src="https://img.shields.io/badge/AmazonRDS-527FFF?style=flat-square&logo=AmazonRDS&logoColor=white">
 <img src="https://img.shields.io/badge/AmazonS3-569A31?style=flat-square&logo=AmazonS3&logoColor=white">
 <img src="https://img.shields.io/badge/AmazonElastic-005571?style=flat-square&logo=elastic&logoColor=white">
-
+<img src="https://img.shields.io/badge/Redis-DC382D?style=flat-square&logo=Redis&logoColor=white">
 
 🚀 **CI/CD :**
 <img src="https://img.shields.io/badge/GithubActions-2088FF?style=flat-square&logo=GithubActions&logoColor=white">
@@ -325,7 +325,6 @@
 <img width="670" alt="image" src="https://github.com/KUSITMS-MeetUp-2/27th_Meetup_T2_service_back/assets/86006389/842972f8-2488-4e52-b85b-85aa84ea5121">
 
 ## 🚀 시스템 아키텍쳐
-<img width="764" alt="image" src="https://github.com/KUSITMS-MeetUp-2/27th_Meetup_T2_service_back/assets/86006389/c83ccfed-22c0-4037-bb04-43c25eab58c3">
-
+<img width="780" alt="image" src="https://github.com/KUSITMS-MeetUp-2/27th_Meetup_T2_service_back/assets/86006389/b36a21fd-adc8-4c7b-bff1-7907d7f3b7ca">
 
 
