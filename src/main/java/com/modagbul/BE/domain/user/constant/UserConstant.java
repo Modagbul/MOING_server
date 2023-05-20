@@ -12,11 +12,13 @@ public class UserConstant {
         SIGN_UP_SUCCESS("회원 가입을 완료했습니다"),
         CHECK_NICKNAME("닉네임 중복 검사를 하였습니다"),
         DELETE_SUCCESS("회원 탈퇴를 하였습니다"),
+        LOGOUT_SUCCESS("회원 탈퇴를 하였습니다"),
         MYPAGE_UPDATE_SUCCESS("마이페이지 수정이 완료되었습니다"),
         MYPAGE_GET_SUCCESS("마이페이지 로딩이 완료되었습니다"),
         ALARM_GET_SUCCESS("알림 설정 로딩이 완료되었습니다"),
         ALARM_UPDATE_SUCCESS("알림 설정 수정이 완료되었습니다"),
-        TOKEN_REFRESH_SUCCESS("토큰 재발급을 완료하였습니다");
+        TOKEN_REFRESH_SUCCESS("토큰 재발급을 완료하였습니다"),
+        CHECK_ADDITIONALINFO_SUCCESS("추가정보를 입력했습니다");
         private final String message;
     }
 
@@ -50,6 +52,7 @@ public class UserConstant {
     @RequiredArgsConstructor
     public enum UserServiceMessage {
         LOGIN_URL("https://kapi.kakao.com/v2/user/me"),
+        LOGOUT_URL("https://kapi.kakao.com/v1/user/logout"),
         DELETE_URL("https://kapi.kakao.com/v1/user/unlink"),
         KAKAO_ACOUNT("kakao_account"),
         VALID_NICKNAME("가능한 닉네임입니다"),
