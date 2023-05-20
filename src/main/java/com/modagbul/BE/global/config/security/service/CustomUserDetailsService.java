@@ -1,6 +1,6 @@
 package com.modagbul.BE.global.config.security.service;
 
-import com.modagbul.BE.domain.user.service.UserService;
+import com.modagbul.BE.domain.user.service.validate.ValidateService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -11,11 +11,11 @@ import org.springframework.transaction.annotation.Transactional;
 @RequiredArgsConstructor
 @Service
 public class CustomUserDetailsService implements UserDetailsService {
-    private final UserService userService;
+    private final ValidateService validateService;
 
     @Override
     @Transactional(readOnly = true)
     public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
-        return new CustomUserDetails(this.userService.validateEmail(email));
+        return new CustomUserDetails(this.validateService.validateEmail(email));
     }
 }

@@ -10,8 +10,6 @@ import java.util.UUID;
 @RequiredArgsConstructor
 @Component
 public class InvitationCodeGenerator {
-
-    private final PasswordEncoder passwordEncoder;
     private final TeamRepository teamRepository;
 
     public String generateCode() {
