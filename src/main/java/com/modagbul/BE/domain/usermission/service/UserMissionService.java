@@ -91,10 +91,16 @@ public class UserMissionService {
             UserMissionListDto next = iterator.next();
             if (next.getNickname().equals(loginUser.getNickName())) {
                 mine = next;
+                userMissionStatusDto.setMyStatus(next.getStatus());
                 iterator.remove();
             }
         }
-        completeList.add(0, mine);
+        if (mine == null) {
+            userMissionStatusDto.setMyStatus(Status.INCOMPLETE);
+        }
+        else{
+            completeList.add(0, mine);
+        }
 
         // pending list append
         completeList.addAll(userMissionRepository.findCompleteUserMissionListById(teamId, missionId, Status.PENDING).orElseThrow(NotFoundUserMissionsException::new));

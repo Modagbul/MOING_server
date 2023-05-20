@@ -1,5 +1,6 @@
 package com.modagbul.BE.domain.usermission.dto;
 
+import com.modagbul.BE.domain.usermission.constant.Status;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -20,6 +21,8 @@ public class UserMissionStatusDto {
     private List<UserMissionListDto> CompleteList;
     private List<UserMissionListDto> IncompleteList;
     private List<Long> fireUserMissionList;
+
+    private Status myStatus;
 
     public UserMissionStatusDto(String title, List<UserMissionListDto> completeList, List<UserMissionListDto> incompleteList) {
         this.title = title;
@@ -43,5 +46,9 @@ public class UserMissionStatusDto {
         fireUserMissionList.clear();
         fireUserMissionList.addAll(set);
         this.fireUserMissionList = fireUserMissionList;
+    }
+
+    public void setMyStatus(Status myStatus) {
+        this.myStatus = myStatus;
     }
 }
