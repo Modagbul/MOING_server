@@ -12,7 +12,7 @@ public class UserConstant {
         SIGN_UP_SUCCESS("회원 가입을 완료했습니다"),
         CHECK_NICKNAME("닉네임 중복 검사를 하였습니다"),
         DELETE_SUCCESS("회원 탈퇴를 하였습니다"),
-        LOGOUT_SUCCESS("회원 탈퇴를 하였습니다"),
+        LOGOUT_SUCCESS("로그아웃을 하였습니다"),
         MYPAGE_UPDATE_SUCCESS("마이페이지 수정이 완료되었습니다"),
         MYPAGE_GET_SUCCESS("마이페이지 로딩이 완료되었습니다"),
         ALARM_GET_SUCCESS("알림 설정 로딩이 완료되었습니다"),
