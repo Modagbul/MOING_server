@@ -20,4 +20,6 @@ public interface UserService{
     AlarmChangeDto changeNewUploadAlarm(AlarmChangeDto alarmChangeDto);
     AlarmChangeDto changeRemindAlarm(AlarmChangeDto alarmChangeDto);
     AlarmChangeDto changeFireAlarm(AlarmChangeDto alarmChangeDto);
-}
+
+    String changeProfileImg(String string);
+    }
