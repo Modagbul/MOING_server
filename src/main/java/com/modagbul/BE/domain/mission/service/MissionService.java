@@ -1,6 +1,7 @@
 package com.modagbul.BE.domain.mission.service;
 
 import com.google.firebase.messaging.FirebaseMessagingException;
+import com.modagbul.BE.domain.mission.Exception.InvalidDueToDate;
 import com.modagbul.BE.domain.mission.Exception.MissionAuthDeniedException;
 import com.modagbul.BE.domain.mission.Exception.NotFoundMissionException;
 import com.modagbul.BE.domain.mission.constant.MissionFcmMessage;
@@ -43,6 +44,15 @@ public class MissionService {
 
     // 소모임장의 미션 생성
     public MissionRes createMission(Long teamId, MissionReq missionReq) {
+
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm");
+        String formattedDate = dateFormat.format(new Date());
+
+        if(missionReq.getDueTo().compareTo(formattedDate) < 0){
+            throw new InvalidDueToDate();
+        }
+        // 날짜를 원하는 형식으로 포맷팅
+
 
         //  로그인한 사용자의 id
         Long loginId = SecurityUtils.getLoggedInUser().getUserId();
