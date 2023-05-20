@@ -125,6 +125,7 @@ public abstract class UserDto {
     public static class MyPageInfoDto {
         private String nickName;
         private String introduction;
+        private String profileImg;
         private int teamCount;
         private List<TeamList> teamList;
 

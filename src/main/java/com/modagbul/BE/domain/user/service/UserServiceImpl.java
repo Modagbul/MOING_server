@@ -153,7 +153,7 @@ public class UserServiceImpl implements UserService {
 
         teamList.sort((o1, o2) -> o2.getDate().compareTo(o1.getDate()));
 
-        return new MyPageInfoDto(user.getNickName(), user.getIntroduction(), teamList.size(),teamList);
+        return new MyPageInfoDto(user.getNickName(), user.getIntroduction(),user.getImageUrl(), teamList.size(),teamList);
 
     }
     @Override
