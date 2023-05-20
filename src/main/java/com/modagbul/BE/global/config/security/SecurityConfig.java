@@ -4,6 +4,7 @@ import com.modagbul.BE.global.config.jwt.*;
 import com.modagbul.BE.global.config.jwt.constants.JwtConstants;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.builders.WebSecurity;
@@ -52,6 +53,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/webjars/**").permitAll()
                 .antMatchers("/v3/api-docs").permitAll()
                 .antMatchers("/api/v1/users/**").permitAll()
+                .antMatchers(HttpMethod.GET,"/ap1/v1/users/additional-info").authenticated()
                 .antMatchers("/oauth/kakao/**").permitAll()
                 .anyRequest().authenticated()
                 .and()

@@ -40,11 +40,26 @@ public class UserController {
         return ResponseEntity.ok(ResponseDto.create(HttpStatus.OK.value(), SIGN_UP_SUCCESS.getMessage(), this.userService.signup(additionInfoRequest)));
     }
 
+    @ApiOperation(value="추가 정보 입력 검사", notes="추가 정보 입력 여부를 검사합니다.")
+    @GetMapping("/additional-info")
+    public ResponseEntity<ResponseDto> checkAdditionalInfo(){
+        return ResponseEntity.ok(ResponseDto.create(HttpStatus.OK.value(), CHECK_ADDITIONALINFO_SUCCESS.getMessage()));
+    }
+
+
     @ApiOperation(value = "회원 탈퇴", notes = "회원 탈퇴를 합니다.")
     @DeleteMapping
     public ResponseEntity<ResponseDto> delete(@Valid @RequestBody DeleteAccountRequest deleteAccountRequest) {
         this.userService.deleteAccount(deleteAccountRequest);
         return ResponseEntity.ok(ResponseDto.create(HttpStatus.OK.value(), DELETE_SUCCESS.getMessage()));
+    }
+
+
+    @ApiOperation(value = "로그아웃", notes = "로그아웃을 합니다.")
+    @PostMapping("/logout")
+    public ResponseEntity<ResponseDto> logout(@Valid @RequestBody LoginRequest loginRequest){
+        this.userService.logout(loginRequest);
+        return ResponseEntity.ok(ResponseDto.create(HttpStatus.OK.value(),LOGOUT_SUCCESS.getMessage()));
     }
 
 
