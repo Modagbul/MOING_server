@@ -20,7 +20,12 @@ public class RefreshTokenRepository {
     }
 
     public void save(String refreshToken, Long userId) {
+        //동일한 key 값으로 저장하면 value값 updat됨
         redisTemplate.opsForValue().set(String.valueOf(userId), refreshToken, refreshTokenValidityTime, TimeUnit.SECONDS);
+    }
+
+    public void deleteById(Long userId){
+        redisTemplate.delete(String.valueOf(userId));
     }
 
     public Optional<String> findById(final Long userId) {

@@ -39,7 +39,6 @@ public abstract class UserDto {
         @ApiModelProperty(notes = "탈퇴 이유를 입력해주세요.")
         private String reasonToLeave;
     }
-
     @Getter
     @AllArgsConstructor
     @Builder

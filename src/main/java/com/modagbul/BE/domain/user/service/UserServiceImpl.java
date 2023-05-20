@@ -9,6 +9,7 @@ import com.modagbul.BE.domain.user.exception.NotFoundEmailException;
 import com.modagbul.BE.domain.user.exception.NotFoundUserException;
 import com.modagbul.BE.domain.user.repository.UserRepository;
 import com.modagbul.BE.global.config.jwt.TokenProvider;
+import com.modagbul.BE.global.config.redis.repository.RefreshTokenRepository;
 import com.modagbul.BE.global.config.security.util.SecurityUtils;
 import com.modagbul.BE.global.dto.TokenInfoResponse;
 import lombok.RequiredArgsConstructor;
@@ -42,6 +43,7 @@ public class UserServiceImpl implements UserService {
     private final TokenProvider tokenProvider;
     private final UserRepository userRepository;
     private final KakaoAPIConnector kakao;
+    private final RefreshTokenRepository refreshTokenRepository;
 
 
     @Override
@@ -85,11 +87,25 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public void deleteAccount(DeleteAccountRequest deleteAccountRequest) {
+        //1. 카카오 회원탈퇴 처리
         String token = deleteAccountRequest.getToken();
         JsonObject response = kakao.connectKakao(DELETE_URL.getValue(), token);
+        //2. Redis에서 해당 사용자의 Refresh Token을 삭제
         User user = validateEmail(SecurityUtils.getLoggedInUser().getEmail());
+        refreshTokenRepository.deleteById(user.getUserId());
+        //3. DB에서 삭제처리
         user.setDeleted(deleteAccountRequest.getReasonToLeave());
         userRepository.save(user);
+    }
+
+    @Override
+    public void logout(UserDto.LoginRequest loginRequest) {
+        //1. 카카오 로그아웃 처리
+        String token = loginRequest.getToken();
+        JsonObject response = kakao.connectKakao(LOGOUT_URL.getValue(), token);
+        //2. Redis에서 해당 사용자의 Refresh Token을 삭제
+        User user = validateEmail(SecurityUtils.getLoggedInUser().getEmail());
+        refreshTokenRepository.deleteById(user.getUserId());
     }
 
     @Override
