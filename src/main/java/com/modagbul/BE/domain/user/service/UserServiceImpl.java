@@ -185,6 +185,16 @@ public class UserServiceImpl implements UserService {
         user.setFirePush(alarmChangeDto.getData());
         return new AlarmChangeDto(user.isFirePush());
     }
+    @Override
+    public String changeProfileImg(String string) {
+        Long userId = SecurityUtils.getLoggedInUser().getUserId();
+        User user = userRepository.findById(userId).orElseThrow(NotFoundUserException::new);
+
+        user.setImageUrl(string);
+        return user.getImageUrl();
+    }
+
+
 
 
     /**

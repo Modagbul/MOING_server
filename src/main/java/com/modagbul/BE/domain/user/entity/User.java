@@ -131,4 +131,8 @@ public class User {
         this.isFirePush = firePush;
     }
 
+    public void setImageUrl(String string) {
+        this.imageUrl = string;
+    }
+
 }
