@@ -75,9 +75,15 @@ public class UserMissionService {
                 userMissionRepository.findCompleteUserMissionListById(teamId, missionId, Status.COMPLETE).orElseThrow(NotFoundUserMissionsException::new),
                 userMissionRepository.findInCompleteUserMissionListById(teamId, missionId, Status.INCOMPLETE).orElseThrow(NotFoundUserMissionsException::new)
         );
+
+
         // my submit
         List<UserMissionListDto> completeList = userMissionStatusDto.getCompleteList();
         UserMissionListDto mine = null;
+
+
+        // pending list append
+        completeList.addAll(userMissionRepository.findCompleteUserMissionListById(teamId, missionId, Status.PENDING).orElseThrow(NotFoundUserMissionsException::new));
 
         Iterator<UserMissionListDto> iterator = completeList.iterator();
         while (iterator.hasNext()) {
@@ -88,6 +94,7 @@ public class UserMissionService {
                 iterator.remove();
             }
         }
+
         if (mine == null) {
             userMissionStatusDto.setMyStatus(Status.INCOMPLETE);
         }
@@ -95,8 +102,6 @@ public class UserMissionService {
             completeList.add(0, mine);
         }
 
-        // pending list append
-        completeList.addAll(userMissionRepository.findCompleteUserMissionListById(teamId, missionId, Status.PENDING).orElseThrow(NotFoundUserMissionsException::new));
         userMissionStatusDto.setFireUserMissionList(fireRepository.findFireByUserId(userId,missionId).orElseThrow(NotFoundUserMissionsException::new));
 
         // complete/incomplete num
