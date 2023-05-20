@@ -45,10 +45,10 @@ public class MissionService {
     // 소모임장의 미션 생성
     public MissionRes createMission(Long teamId, MissionReq missionReq) {
 
-//        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm");
-//        String formattedDate = dateFormat.format(new Date());
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm");
+        String formattedDate = dateFormat.format(new Date());
 
-        if(missionReq.getDueTo().compareTo(new Date().toString()) < 0){
+        if(missionReq.getDueTo().compareTo(formattedDate) < 0){
             throw new InvalidDueToDate();
         }
         // 날짜를 원하는 형식으로 포맷팅
