@@ -25,7 +25,8 @@ public class MissionBoardService {
 
     public Long getPersonalRateForGraph(Long teamId) {
         Long loginId = SecurityUtils.getLoggedInUser().getUserId();
-        return userMissionRepository.getPersonalRateForGraphById(loginId, teamId).orElseThrow(InvalidCompleteRateException::new);
+//        return userMissionRepository.getPersonalRateForGraphById(loginId, teamId).orElseThrow(InvalidCompleteRateException::new);
+        return userMissionRepository.getPersonalRateForGraphById(loginId, teamId).orElse(0L);
     }
     // 소모임 그래프 - 팀별 : 개인 미션 달성률의 합 / 소모임 인원 수
     public Long getTeamPercentForGraph(Long teamId) {
@@ -36,7 +37,7 @@ public class MissionBoardService {
 
         List<User> users = teamMemberRepository.findUserListByTeamId(teamId).orElseThrow(InvalidCompleteRateException::new);
         for (User user : users) {
-            sum.updateAndGet(v -> v + userMissionRepository.getPersonalRateForGraphById(user.getUserId(), teamId).orElseThrow(InvalidCompleteRateException::new));
+            sum.updateAndGet(v -> v + userMissionRepository.getPersonalRateForGraphById(user.getUserId(), teamId).orElse(0L));
         }
 
         return sum.get()/users.size();
