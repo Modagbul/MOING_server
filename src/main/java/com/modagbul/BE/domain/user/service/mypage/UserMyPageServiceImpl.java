@@ -8,7 +8,6 @@ import com.modagbul.BE.domain.user.repository.UserRepository;
 import com.modagbul.BE.global.config.security.util.SecurityUtils;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
@@ -19,7 +18,7 @@ import java.util.List;
 @Slf4j
 @RequiredArgsConstructor
 @Transactional
-public class MyPageServiceImpl implements MyPageService{
+public class UserMyPageServiceImpl implements UserMyPageService {
     private final UserRepository userRepository;
     @Override
     public UserDto.MyPageInfoDto getUserInfo() {

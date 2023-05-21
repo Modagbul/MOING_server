@@ -5,7 +5,7 @@ import com.modagbul.BE.domain.user.dto.UserDto.AlarmDto;
 import com.modagbul.BE.domain.user.dto.UserDto.MyPageEditDto;
 import com.modagbul.BE.domain.user.dto.UserDto.MyPageInfoDto;
 
-public interface MyPageService {
+public interface UserMyPageService {
     MyPageInfoDto getUserInfo();
     MyPageEditDto updateUserInfo(MyPageEditDto myPageEditDto );
     AlarmDto getAlarmSetting();

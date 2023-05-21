@@ -1,7 +1,7 @@
 package com.modagbul.BE.domain.user.controller.mypage;
 
 import com.modagbul.BE.domain.user.dto.UserDto;
-import com.modagbul.BE.domain.user.service.mypage.MyPageService;
+import com.modagbul.BE.domain.user.service.mypage.UserMyPageService;
 import com.modagbul.BE.global.dto.ResponseDto;
 import io.swagger.annotations.Api;
 import lombok.AllArgsConstructor;
@@ -18,9 +18,9 @@ import static com.modagbul.BE.domain.user.constant.UserConstant.EUserResponseMes
 @AllArgsConstructor
 @RequestMapping("/api/v1/users")
 @Api(tags = "User API")
-public class MyPageController {
+public class UserMyPageController {
 
-    private final MyPageService myPageService;
+    private final UserMyPageService myPageService;
 
     @GetMapping("/mypage")
     public ResponseEntity<ResponseDto<UserDto.MyPageInfoDto>> getMypage() {

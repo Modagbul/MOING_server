@@ -1,7 +1,7 @@
 package com.modagbul.BE.domain.user.controller.auth;
 
 import com.modagbul.BE.domain.user.dto.UserDto;
-import com.modagbul.BE.domain.user.service.auth.AuthenticationService;
+import com.modagbul.BE.domain.user.service.auth.UserAuthenticationService;
 import com.modagbul.BE.global.dto.ResponseDto;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -19,9 +19,9 @@ import static com.modagbul.BE.domain.user.constant.UserConstant.EUserResponseMes
 @AllArgsConstructor
 @RequestMapping("/api/v1/users")
 @Api(tags = "User API")
-public class AuthController {
+public class UserAuthController {
 
-    private final AuthenticationService authenticationService;
+    private final UserAuthenticationService authenticationService;
 
     @ApiOperation(value = "카카오 로그인", notes = "카카오 로그인을 합니다.")
     @PostMapping("/auth/kakao")

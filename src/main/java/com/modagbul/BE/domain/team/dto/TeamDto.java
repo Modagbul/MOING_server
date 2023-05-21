@@ -91,28 +91,6 @@ public abstract class TeamDto {
     @Builder
     @AllArgsConstructor
     @NoArgsConstructor
-    @ApiModel(description = "소모임 참여코드 인증을 위한 요청 객체")
-    public static class JoinTeamRequest {
-        @NotBlank(message = "소모임 초대코드를 입력해 주세요.")
-        @ApiModelProperty(notes = "소모임 초대코드를 입력해 주세요.")
-        private String invitationCode;
-
-    }
-
-    @Getter
-    @Builder
-    @AllArgsConstructor
-    @NoArgsConstructor
-    @ApiModel(description = "소모임 참여코드 인증을 위한 응답 객체")
-    public static class JoinTeamResponse {
-        private Long teamId;
-
-    }
-
-    @Getter
-    @Builder
-    @AllArgsConstructor
-    @NoArgsConstructor
     @ApiModel(description = "소모임 정보 조회를 위한 응답 객체")
     public static class GetTeamInfo {
         private String name;

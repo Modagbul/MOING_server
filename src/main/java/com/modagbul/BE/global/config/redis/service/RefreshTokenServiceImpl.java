@@ -3,7 +3,7 @@ package com.modagbul.BE.global.config.redis.service;
 import com.modagbul.BE.domain.user.entity.User;
 import com.modagbul.BE.domain.user.exception.NotFoundEmailException;
 import com.modagbul.BE.domain.user.repository.UserRepository;
-import com.modagbul.BE.domain.user.service.auth.AuthenticationServiceImpl;
+import com.modagbul.BE.domain.user.service.auth.UserAuthenticationServiceImpl;
 import com.modagbul.BE.global.config.jwt.TokenProvider;
 import com.modagbul.BE.global.config.redis.dto.RefreshTokenDto;
 import com.modagbul.BE.global.config.redis.exception.NotFoundRefreshToken;
@@ -28,7 +28,7 @@ public class RefreshTokenServiceImpl implements RefreshTokenService {
     private final RefreshTokenRepository refreshTokenRepository;
     private final TokenProvider tokenProvider;
     private final UserRepository userRepository;
-    private final AuthenticationServiceImpl authenticationService;
+    private final UserAuthenticationServiceImpl authenticationService;
 
     @Override
     public RefreshTokenDto.RefreshTokenResponse refreshToken(RefreshTokenDto.RefreshTokenRequest refreshTokenRequest) {

@@ -1,7 +1,7 @@
 package com.modagbul.BE.domain.user.controller.validate;
 
 import com.modagbul.BE.domain.user.dto.UserDto;
-import com.modagbul.BE.domain.user.service.validate.ValidateService;
+import com.modagbul.BE.domain.user.service.validate.UserValidationService;
 import com.modagbul.BE.global.dto.ResponseDto;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -20,9 +20,9 @@ import static com.modagbul.BE.domain.user.constant.UserConstant.EUserResponseMes
 @AllArgsConstructor
 @RequestMapping("/api/v1/users")
 @Api(tags = "User API")
-public class ValidateController {
+public class UserValidationController {
 
-    private final ValidateService validateService;
+    private final UserValidationService validateService;
 
     @ApiOperation(value="추가 정보 입력 검사", notes="추가 정보 입력 여부를 검사합니다.")
     @GetMapping("/additional-info")

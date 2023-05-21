@@ -1,7 +1,7 @@
 package com.modagbul.BE.domain.team.service;
 
-import com.modagbul.BE.domain.team.entity.Team;
 import com.modagbul.BE.domain.team.repository.TeamRepository;
+import com.modagbul.BE.domain.team.service.invitecode.TeamInvitationService;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -23,7 +23,7 @@ class InvitationCodeGeneratorTest {
     TeamRepository teamRepository;
 
     @InjectMocks
-    InvitationCodeGenerator invitationCodeGenerator;
+    TeamInvitationService invitationCodeGenerator;
 
     @Test
     void 초대코드를_생성한다() {

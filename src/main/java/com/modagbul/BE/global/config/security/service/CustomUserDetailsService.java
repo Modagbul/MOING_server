@@ -1,6 +1,6 @@
 package com.modagbul.BE.global.config.security.service;
 
-import com.modagbul.BE.domain.user.service.validate.ValidateService;
+import com.modagbul.BE.domain.user.service.validate.UserValidationService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -11,7 +11,7 @@ import org.springframework.transaction.annotation.Transactional;
 @RequiredArgsConstructor
 @Service
 public class CustomUserDetailsService implements UserDetailsService {
-    private final ValidateService validateService;
+    private final UserValidationService validateService;
 
     @Override
     @Transactional(readOnly = true)

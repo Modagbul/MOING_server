@@ -17,7 +17,7 @@ import static com.modagbul.BE.domain.user.constant.UserConstant.UserServiceMessa
 @Slf4j
 @RequiredArgsConstructor
 @Transactional
-public class ValidateServiceImpl implements ValidateService{
+public class UserValidationServiceImpl implements UserValidationService {
 
     private final UserRepository userRepository;
 

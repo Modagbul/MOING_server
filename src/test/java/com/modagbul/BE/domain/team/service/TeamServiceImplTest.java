@@ -3,6 +3,7 @@ package com.modagbul.BE.domain.team.service;
 import com.modagbul.BE.domain.team.dto.TeamDto;
 import com.modagbul.BE.domain.team.dto.TeamMapper;
 import com.modagbul.BE.domain.team.repository.TeamRepository;
+import com.modagbul.BE.domain.team.service.invitecode.TeamInvitationService;
 import com.modagbul.BE.domain.team_member.repository.TeamMemberRepository;
 import com.modagbul.BE.domain.user.repository.UserRepository;
 import org.junit.jupiter.api.BeforeEach;
@@ -15,7 +16,7 @@ public class TeamServiceImplTest {
     @Mock
     TeamMapper teamMapper;
     @Mock
-    InvitationCodeGenerator invitationCodeGenerator;
+    TeamInvitationService invitationCodeGenerator;
     @Mock
     TeamRepository teamRepository;
     @Mock

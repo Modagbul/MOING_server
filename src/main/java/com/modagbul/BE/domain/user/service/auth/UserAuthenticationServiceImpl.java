@@ -4,8 +4,8 @@ import com.google.gson.JsonObject;
 import com.modagbul.BE.domain.user.dto.UserDto;
 import com.modagbul.BE.domain.user.entity.User;
 import com.modagbul.BE.domain.user.repository.UserRepository;
-import com.modagbul.BE.domain.user.service.kakao.KakaoServiceImpl;
-import com.modagbul.BE.domain.user.service.validate.ValidateService;
+import com.modagbul.BE.domain.user.service.kakao.UserKakaoServiceImpl;
+import com.modagbul.BE.domain.user.service.validate.UserValidationService;
 import com.modagbul.BE.global.config.jwt.TokenProvider;
 import com.modagbul.BE.global.config.redis.repository.RefreshTokenRepository;
 import com.modagbul.BE.global.config.security.util.SecurityUtils;
@@ -36,12 +36,12 @@ import static com.modagbul.BE.domain.user.constant.UserConstant.UserServiceMessa
 @Slf4j
 @RequiredArgsConstructor
 @Transactional
-public class AuthenticationServiceImpl implements AuthenticationService {
+public class UserAuthenticationServiceImpl implements UserAuthenticationService {
     private final UserRepository userRepository;
-    private final KakaoServiceImpl kakaoService;
+    private final UserKakaoServiceImpl kakaoService;
     private final RefreshTokenRepository refreshTokenRepository;
     private final TokenProvider tokenProvider;
-    private final ValidateService validateService;
+    private final UserValidationService validateService;
 
     @Override
     public UserDto.LoginResponse login(UserDto.LoginRequest loginRequest) {

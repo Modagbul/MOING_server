@@ -2,7 +2,7 @@ package com.modagbul.BE.domain.vote.board.service;
 
 import com.modagbul.BE.domain.notice.board.exception.NotNoticeWriterException;
 import com.modagbul.BE.domain.team.entity.Team;
-import com.modagbul.BE.domain.team.service.TeamService;
+import com.modagbul.BE.domain.team.service.validate.TeamValidationService;
 import com.modagbul.BE.domain.team_member.entity.TeamMember;
 import com.modagbul.BE.domain.team_member.repository.TeamMemberRepository;
 import com.modagbul.BE.domain.user.entity.User;
@@ -46,7 +46,7 @@ public class VoteServiceImpl implements VoteService {
     private final VoteReadRepository voteReadRepository;
     private final UserRepository userRepository;
     private final VoteContentUserRepository voteContentUserRepository;
-    private final TeamService teamService;
+    private final TeamValidationService teamValidationService;
     private final FcmService fcmService;
 
     @Override
@@ -114,7 +114,7 @@ public class VoteServiceImpl implements VoteService {
 
     @Override
     public Vote validateVote(Long teamId, Long voteId) {
-        Team team = teamService.validateTeam(teamId);
+        Team team = teamValidationService.validateTeam(teamId);
         return this.voteRepository.findNotClosedByVoteId(voteId).orElseThrow(() -> new NotFoundVoteIdException());
     }
 
@@ -205,7 +205,7 @@ public class VoteServiceImpl implements VoteService {
      * @param userId
      */
     public void sendNewUploadVoteAlarm(Vote vote, Long teamId, Long userId) {
-        Team team = teamService.validateTeam(teamId);
+        Team team = teamValidationService.validateTeam(teamId);
         User user = userRepository.findById(userId).orElseThrow(() -> new NotFoundEmailException());
         //신규 업로드 알림이 true인지 확인
         if (user.isNewUploadPush()) {

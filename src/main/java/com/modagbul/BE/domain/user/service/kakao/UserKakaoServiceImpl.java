@@ -2,17 +2,10 @@ package com.modagbul.BE.domain.user.service.kakao;
 
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
-import com.modagbul.BE.domain.user.dto.UserDto;
-import com.modagbul.BE.domain.user.entity.User;
 import com.modagbul.BE.domain.user.exception.ConnException;
 import com.modagbul.BE.domain.user.exception.NotFoundEmailException;
-import com.modagbul.BE.global.dto.TokenInfoResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.oauth2.client.authentication.OAuth2AuthenticationToken;
-import org.springframework.security.oauth2.core.user.OAuth2User;
-import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
@@ -21,18 +14,14 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
-import java.util.List;
 
-import static com.modagbul.BE.domain.user.constant.UserConstant.Process.LOGIN_SUCCESS;
-import static com.modagbul.BE.domain.user.constant.UserConstant.Process.SIGN_UP_ING;
 import static com.modagbul.BE.domain.user.constant.UserConstant.UserServiceMessage.KAKAO_ACOUNT;
-import static com.modagbul.BE.domain.user.constant.UserConstant.UserServiceMessage.LOGIN_URL;
 
 @Service
 @Slf4j
 @RequiredArgsConstructor
 @Transactional
-public class KakaoServiceImpl implements KakaoService {
+public class UserKakaoServiceImpl implements UserKakaoService {
     @Override
     public JsonObject connectKakao(String reqURL, String token) {
         try {
