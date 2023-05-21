@@ -14,7 +14,7 @@ import com.modagbul.BE.domain.notice.board.repository.NoticeRepository;
 import com.modagbul.BE.domain.notice.read.entity.NoticeRead;
 import com.modagbul.BE.domain.notice.read.repository.NoticeReadRepository;
 import com.modagbul.BE.domain.team.entity.Team;
-import com.modagbul.BE.domain.team.service.TeamService;
+import com.modagbul.BE.domain.team.service.validate.TeamValidationService;
 import com.modagbul.BE.domain.team_member.entity.TeamMember;
 import com.modagbul.BE.domain.team_member.repository.TeamMemberRepository;
 import com.modagbul.BE.domain.user.entity.User;
@@ -43,7 +43,7 @@ public class NoticeServiceImpl implements NoticeService{
     private final TeamMemberRepository teamMemberRepository;
     private final NoticeReadRepository noticeReadRepository;
     private final UserRepository userRepository;
-    private final TeamService teamService;
+    private final TeamValidationService teamValidationService;
     private final FcmService fcmService;
 
     @Override
@@ -91,7 +91,7 @@ public class NoticeServiceImpl implements NoticeService{
      */
     @Override
     public Notice validateNotice(Long teamId,Long noticeId){
-        Team team=teamService.validateTeam(teamId);
+        Team team=teamValidationService.validateTeam(teamId);
         return this.noticeRepository.findNotDeletedByNoticeId(noticeId).orElseThrow(()->new NotFoundNoticeIdException());
     }
 
@@ -143,7 +143,7 @@ public class NoticeServiceImpl implements NoticeService{
      * @param userId
      */
     public void sendNewUploadNoticeAlarm(Notice notice, Long teamId, Long userId){
-        Team team=teamService.validateTeam(teamId);
+        Team team=teamValidationService.validateTeam(teamId);
         User user=userRepository.findById(userId).orElseThrow(()->new NotFoundEmailException());
         //신규 업로드 알림이 true인지 확인
         if(user.isNewUploadPush()){

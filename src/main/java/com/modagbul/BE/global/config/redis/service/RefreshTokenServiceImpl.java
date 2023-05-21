@@ -3,7 +3,7 @@ package com.modagbul.BE.global.config.redis.service;
 import com.modagbul.BE.domain.user.entity.User;
 import com.modagbul.BE.domain.user.exception.NotFoundEmailException;
 import com.modagbul.BE.domain.user.repository.UserRepository;
-import com.modagbul.BE.domain.user.service.UserServiceImpl;
+import com.modagbul.BE.domain.user.service.auth.UserAuthenticationServiceImpl;
 import com.modagbul.BE.global.config.jwt.TokenProvider;
 import com.modagbul.BE.global.config.redis.dto.RefreshTokenDto;
 import com.modagbul.BE.global.config.redis.exception.NotFoundRefreshToken;
@@ -28,7 +28,7 @@ public class RefreshTokenServiceImpl implements RefreshTokenService {
     private final RefreshTokenRepository refreshTokenRepository;
     private final TokenProvider tokenProvider;
     private final UserRepository userRepository;
-    private final UserServiceImpl userService;
+    private final UserAuthenticationServiceImpl authenticationService;
 
     @Override
     public RefreshTokenDto.RefreshTokenResponse refreshToken(RefreshTokenDto.RefreshTokenRequest refreshTokenRequest) {
@@ -37,9 +37,9 @@ public class RefreshTokenServiceImpl implements RefreshTokenService {
         //2. 새로운 accessToken 재발급
         //2.1 시큐리티 설정
         User user = userRepository.findById(refreshTokenRequest.getUserId()).orElseThrow(() -> new NotFoundEmailException());
-        List<GrantedAuthority> authorities = userService.initAuthorities();
-        OAuth2User userDetails = userService.createOAuth2UserByUser(authorities, user);
-        OAuth2AuthenticationToken auth = userService.configureAuthentication(userDetails, authorities);
+        List<GrantedAuthority> authorities = authenticationService.initAuthorities();
+        OAuth2User userDetails = authenticationService.createOAuth2UserByUser(authorities, user);
+        OAuth2AuthenticationToken auth = authenticationService.configureAuthentication(userDetails, authorities);
         //2.2 JWT 토큰 생성
         TokenInfoResponse tokenInfoResponse = tokenProvider.createToken(auth, true, user.getUserId());
         return RefreshTokenDto.RefreshTokenResponse.from(tokenInfoResponse);
