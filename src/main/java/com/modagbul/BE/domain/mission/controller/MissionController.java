@@ -56,7 +56,7 @@ public class MissionController {
 
     @ApiOperation(value = "개인별 미션 상세 페이지 조회", notes = "개인별 미션 상세 페이지를 조회합니다.")
     @GetMapping("/{missionId}")
-    public ResponseEntity<ResponseDto<MissionDetailDto>> getMission (@PathVariable Long teamId, @PathVariable Long missionId){
+    public ResponseEntity<ResponseDto<UserMissionDetailDto>> getMission (@PathVariable Long teamId, @PathVariable Long missionId){
         return ResponseEntity.ok(ResponseDto.create(HttpStatus.OK.value(),GET_MISSION_DETAIL_SUCCESS.getMessage(),missionService.getMissionDetail(teamId,missionId)));
     }
     @ApiOperation(value = "개인별 미션 제출", notes = "개인별 미션을 제출합니다.")

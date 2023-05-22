@@ -14,4 +14,5 @@ public class UserMissionDetailDto {
     private String content;
     private String rule;
     private Status status;
+    private String achieve;
 }
