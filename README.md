@@ -260,46 +260,26 @@
 
 <br>
 
-## 💪🏻 Android Studio 선정 이유
+🏠 프레임워크 사용 이유
 
-1️⃣ 안드로이드 앱 개발을 위한 강력한 개발 도구 및 디자인 도구를 포함하고 있어 개발자들이 쉽게 앱을 제작하고 앱의 UI를 디자인할 수 있습니다.
+| **Android** | **Spring Boot** |
+| --- | --- |
+| 안드로이드 앱 개발을 위한 강력한 개발 도구 및 디자인 도구를 포함 하고 있어 개발자들이 쉽게 앱을 제작하고 앱의 UI를 디자인할 수 있음. | Spring Boot는 Tomcat, Jetty, Undertow와 같은 웹서버를 내장하고 있어 웹 서버 설치 없이 애플리케이션을 실행할 수 있음. JAR 파일 형태로 패키징하면서 서버도 함께 패키징해 애플리케이션의 배포와 이동성을 간편하게 만들어 줌. |
 
-2️⃣ 쉬운 애뮬레이터 사용으로 개발자들이 쉽게 앱을 테스트하고 디버깅할 수 있습니다.
+| **Redis** | **Github Actions** |
+| --- | --- |
+| 빠른 성능: 인메모리 기반으로 빠른 응답 속도를 제공함.<br>유연한 데이터 만료 관리: 각 키에 대해 만료 시간을 설정할 수 있어, Refresh Token의 유효 기간 관리가 용이함. | 통합된 환경 : 다른 툴에 비해 리소스적 비용이 적고 GitHub와 완전히 통합되어 있어 이슈, 풀 리퀘스트 등 GitHub의 다른 기능과 원활하게 연동이 가능함.<br>이벤트 기반 워크플로우 : master 브랜치에 푸시했을 때 지정한 액션이 실행되도록 이벤트 기반 워크플로우를 지원. 이를 통해 자동화된 작업을 더욱 정확하게 제어하여 지속적 통합, 지속적 배포를 이룰 수 있음. |
 
-3️⃣ 지속적인 업데이트로 새로운 기능이나 개선된 기능이 추가되어 개발자들이 보다 높은 생산성을 달성할 수 있습니다.
+🐸 **Blue/Green** 방식으로 무중단 배포를 구성한 이유
 
-4️⃣ 안드로이드 스튜디오는 다양한 라이브러리를 제공하기 때문에 쉬운 앱 개발이 가능합니다. 
+Blue/Green 방식은 무중단 배포를 실행할 수 있는 방법 중 하나로, 안정성, 확장성, 롤백 용이성 등의
+이점을 제공함. 이를 통해 사용자에게 끊김 없는 서비스를 제공하고, 안정적인 업데이트 및 롤백
+프로세스를 수행할 수 있음.
 
-
-## 💪🏻 Android Studio - Java 언어를 선택한 이유
-
-1️⃣ 이식성: Java는 JVM(Java Virtual Machine)을 이용해 어떤 운영체제에서도 동작할 수 있으므로, 플랫폼에 종속되지 않습니다. 이식성이 뛰어나기 때문에 코드를 수정하지 않고도 여러 플랫폼에서 실행할 수 있어 개발 시간과 비용을 절약할 수 있습니다.
-
-2️⃣ 안드로이드 앱 개발에서 자바는 성능과 안정성 면에서 뛰어난 성능을 보입니다. 안드로이드 앱 개발에서 자바는 가비지 컬렉션 기능을 통해 메모리 관리를 보다 효율적으로 처리하며, 안드로이드 프레임워크와의 호환성도 뛰어납니다.
-
-3️⃣ 자바는 안드로이드 앱 개발에서 널리 사용되는 디자인 패턴 및 아키텍처를 구현하는 데 적합한 언어입니다. 이는 안드로이드 앱 개발에서 유연하고 확장 가능한 코드를 작성하는 데 큰 장점을 제공합니다.
-
-4️⃣ 자바는 안드로이드 스튜디오에서 지원하는 대부분의 라이브러리와 API를 지원합니다. 즉, 자바를 사용하면 안드로이드 앱을 개발할 때 더 많은 리소스와 도구를 활용할 수 있다는 것을 의미합니다.
-
-
-<br>
-
-## 💪🏻 Server 스택 선정 이유
-
-<img src="https://img.shields.io/badge/SpringBoot-6DB33F?style=flat-square&logo=SpringBoot&logoColor=white"> <img src="https://img.shields.io/badge/SpringDataJpa-6DB33F?style=flat-square&logo=SpringDataJpat&logoColor=white"> <img src="https://img.shields.io/badge/QueryDsl-137CBD?style=flat-square&logo=QueryDsl&logoColor=white"> <img src="https://img.shields.io/badge/Gradle-02303A?style=flat-square&logo=Gradle&logoColor=white"> <img src="https://img.shields.io/badge/Swagger-85EA2D?style=flat-square&logo=Swagger&logoColor=white"> <img src="https://img.shields.io/badge/JWT-black?style=flat-square&logo=JSON%20web%20tokens">
-<br>
-> Spring Boot를 사용하면 애플리케이션 레벨에서의 인프라를 지원해 설정등을 최소화 함으로써 비즈니스 로직을 개발하는데 좀 더 집중할 수 있습니다. <br> 또한 Spring은 POJO(Plain Old Java Object)를 기반으로 구성 되어 있어 순수 Java를 사용하여 만든 객체로 구성 가능하기 때문에 생산성에 유리하고, 코드에 대한 테스트 작업 또한 유연하게 할 수 있습니다. 
- <br> 예상 가능하고 반복되는 쿼리들을 대신 작성해주는 Spring DataJPA와 컴파일 시점에 문법 오류를 확인할 수 있고 동적 쿼리 작성이 편한 Query DSL를 사용해 DB에 접근합니다. 
- <br> Restful 같은 무상태 환경에서 사용자 데이터를 주고받을 수 있는 JWT를 이용해 유저를 인증하고 식별합니다.
-> 
-
-<img src="https://img.shields.io/badge/MySQL-4479A1?style=flat-square&logo=MySQL&logoColor=white"> <img src="https://img.shields.io/badge/Redis-DC382D?style=flat-square&logo=Redis&logoColor=white"> <img src="https://img.shields.io/badge/AmazonEC2-FF9900?style=flat-square&logo=AmazonEC2&logoColor=white"> <img src="https://img.shields.io/badge/AmazonRDS-527FFF?style=flat-square&logo=AmazonRDS&logoColor=white"> <img src="https://img.shields.io/badge/AmazonS3-569A31?style=flat-square&logo=AmazonS3&logoColor=white"> <img src="https://img.shields.io/badge/AmazonElastic-005571?style=flat-square&logo=elastic&logoColor=white">
-<br> 
-> AWS EC2로 인프라를 구축하고 Mysql 로 DB를 구성하여 AWS RDS 로 배포하고 AWS S3를 이용해 이미지를 관리합니다. <br> Refresh Token을 저장하기위해 빠른 엑세스 속도로 로그인시 병목 현상을 방지할 수 있는 Redis를 사용합니다.
->
- <img src="https://img.shields.io/badge/GithubActions-2088FF?style=flat-square&logo=GithubActions&logoColor=white"> <img src="https://img.shields.io/badge/Docker-2496ED?style=flat-square&logo=Docker&logoColor=white"> <img src="https://img.shields.io/badge/NGINX-009639?style=flat-square&logo=NGINX&logoColor=white"><br> 
-> 개발 환경을 이미지화 시키고 해당 이미지를 통해 개발 및 배포환경을 쉽게 컨테이너화 시켜 구축할 수 있는 Docker, 무중단 배포를 위한 Nginx 등을 이용하여 CI/CD를 구축합니다.
->
+| **제로 다운타임** | 기존의 운영 중인 "블루" 환경과 새로운 업데이트된 "그린" 환경을 동시에 운영할 수 있음. 이는 서비스의 제로 다운타임을 달성할 수 있는데, 즉, 사용자에게 중단 없이 서비스를 제공할 수 있음. |
+| --- | --- |
+| **롤백 용이성** | 업데이트된 "그린" 환경이 제대로 동작하지 않을 경우 "블루" 환경으로 롤백할 수 있음. 이는 신속하게 문제를 해결하고 이전 안정적인 버전으로 돌아갈 수 있는 장점을 제공함. |
+| **확장성** | 새로운 업데이트 버전을 별도의 환경에서 운영하므로, 수평적으로 확장 가능하기 때문에 서비스 요구사항이 늘어날 때 유연하게 대응할 수 있음. |
 ## 📎 네이밍 룰
 
 ☑️ 파일 : lowerCamelCase (ex.controller) <br>
