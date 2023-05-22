@@ -1,7 +1,7 @@
 package com.modagbul.BE.domain.notice.comment.dto;
 
 import com.modagbul.BE.domain.notice.board.entity.Notice;
-import com.modagbul.BE.domain.notice.board.service.NoticeService;
+import com.modagbul.BE.domain.notice.board.service.validate.NoticeValidationService;
 import com.modagbul.BE.domain.notice.comment.dto.NoticeCommentDto.GetNoticeCommentResponse;
 import com.modagbul.BE.domain.notice.comment.entity.NoticeComment;
 import com.modagbul.BE.domain.user.exception.NotFoundEmailException;
@@ -13,11 +13,11 @@ import org.springframework.stereotype.Component;
 @Component
 @AllArgsConstructor
 public class NoticeCommentMapper {
-    private final NoticeService noticeService;
+    private final NoticeValidationService noticeValidationService;
 
     private final UserRepository userRepository;
     public NoticeComment toEntity(Long teamId, Long noticeId, NoticeCommentDto.CreateNoticeCommentRequest createNoticeCommentRequest){
-        Notice notice=noticeService.validateNotice(teamId, noticeId);
+        Notice notice=noticeValidationService.validateNotice(teamId, noticeId);
         NoticeComment noticeComment=new NoticeComment();
 
         noticeComment.createNoticeComment(createNoticeCommentRequest.getContent());

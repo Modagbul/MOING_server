@@ -29,13 +29,6 @@ public class TeamInfoServiceImpl implements TeamInfoService{
     }
 
     @Override
-    public void updateTeam(Long teamId, TeamDto.UpdateTeamRequest updateTeamRequest) {
-        Team team=teamValidationService.validateTeam(teamId);
-        teamValidationService.checkLeader(team);
-        team.updateTeam(updateTeamRequest.getName(), LocalDate.parse(updateTeamRequest.getEndDate()), updateTeamRequest.getProfileImg());
-    }
-
-    @Override
     public TeamDto.GetTeamResponse getTeam() {
         return teamRepository.getTeam(SecurityUtils.getLoggedInUser().getUserId());
     }
@@ -46,8 +39,5 @@ public class TeamInfoServiceImpl implements TeamInfoService{
         return new TeamDto.GetProfileResponse(team);
     }
 
-    @Override
-    public void approveTeam(Team team){
-        team.setApprovalStatus();
-    }
+
 }
