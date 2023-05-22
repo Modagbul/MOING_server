@@ -3,6 +3,7 @@ package com.modagbul.BE.domain.team.dto;
 import com.modagbul.BE.domain.team.constant.TeamConstant.Category;
 import com.modagbul.BE.domain.team.entity.Team;
 import com.modagbul.BE.global.annotation.Enum;
+import com.querydsl.core.annotations.QueryProjection;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.AllArgsConstructor;
@@ -122,13 +123,20 @@ public abstract class TeamDto {
     }
 
     @Getter
-    @Builder
-    @AllArgsConstructor
-    @NoArgsConstructor
     @ApiModel(description = "진행 중인 소모임 정보를 위한 응답 객체")
     public static class GetTeamResponse {
+        private String userNickName;
         private Long inProgressNum;
         private List<TeamBlock> teamBlocks=new ArrayList<>();
+
+        public GetTeamResponse(Long inProgressNum, List<TeamBlock> teamBlocks){
+            this.inProgressNum=inProgressNum;
+            this.teamBlocks=teamBlocks;
+        }
+
+        public void setUserNickName(String userNickName) {
+            this.userNickName = userNickName;
+        }
     }
 
     @Getter
