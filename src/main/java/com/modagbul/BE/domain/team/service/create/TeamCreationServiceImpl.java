@@ -4,8 +4,8 @@ import com.modagbul.BE.domain.team.dto.TeamDto;
 import com.modagbul.BE.domain.team.dto.TeamMapper;
 import com.modagbul.BE.domain.team.entity.Team;
 import com.modagbul.BE.domain.team.repository.TeamRepository;
-import com.modagbul.BE.domain.team.service.info.TeamInfoService;
 import com.modagbul.BE.domain.team.service.invitecode.TeamInvitationService;
+import com.modagbul.BE.domain.team.service.manage.TeamManagementServiceImpl;
 import com.modagbul.BE.domain.team_member.service.TeamMemberService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -23,7 +23,7 @@ public class TeamCreationServiceImpl implements TeamCreationService{
     private final TeamRepository teamRepository;
 
     private final TeamMemberService teamMemberService;
-    private final TeamInfoService teamInfoService;
+    private final TeamManagementServiceImpl teamManagementService;
 
     @Override
     public TeamDto.CreateTeamResponse createTeam(TeamDto.CreateTeamRequest createTeamRequest) {
@@ -31,7 +31,7 @@ public class TeamCreationServiceImpl implements TeamCreationService{
         String code=teamInvitationService.generateCode();
         team.setInvitationCode(code);
         //추후에 승인 절차 만들 예정
-        teamInfoService.approveTeam(team);
+        teamManagementService.approveTeam(team);
         teamRepository.save(team);
 
         this.teamMemberService.addTeamMember(team);

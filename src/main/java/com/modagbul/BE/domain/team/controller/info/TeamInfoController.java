@@ -8,9 +8,10 @@ import io.swagger.annotations.ApiOperation;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
-
-import javax.validation.Valid;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 import static com.modagbul.BE.domain.team.constant.TeamConstant.ETeamResponseMessage.*;
 
@@ -26,13 +27,6 @@ public class TeamInfoController {
     @GetMapping("/{teamId}")
     public ResponseEntity<ResponseDto<TeamDto.GetTeamInfo>> getTeamInfo(@PathVariable Long teamId){
         return ResponseEntity.ok(ResponseDto.create(HttpStatus.OK.value(), GET_TEAM_INFO_SUCCESS.getMessage(),this.teamInfoService.getTeamInfo(teamId)));
-    }
-
-    @ApiOperation(value="소모임 정보 수정", notes="소모임 정보를 수정합니다")
-    @PutMapping("/{teamId}")
-    public ResponseEntity<ResponseDto> updateTeam(@Valid @RequestBody TeamDto.UpdateTeamRequest updateTeamRequest, @PathVariable Long teamId){
-        this.teamInfoService.updateTeam(teamId, updateTeamRequest);
-        return ResponseEntity.ok(ResponseDto.create(HttpStatus.OK.value(), UPDATE_TEAM_SUCCESS.getMessage()));
     }
 
     @ApiOperation(value="소모임 목록 정보 조회", notes="홈 화면에서 소모임 목록을 조회합니다")
