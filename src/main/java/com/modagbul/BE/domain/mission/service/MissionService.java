@@ -1,11 +1,8 @@
 package com.modagbul.BE.domain.mission.service;
 
-import com.google.firebase.messaging.FirebaseMessagingException;
 import com.modagbul.BE.domain.mission.Exception.InvalidDueToDate;
 import com.modagbul.BE.domain.mission.Exception.MissionAuthDeniedException;
 import com.modagbul.BE.domain.mission.Exception.NotFoundMissionException;
-import com.modagbul.BE.domain.mission.constant.MissionFcmMessage;
-import com.modagbul.BE.domain.mission.dto.MissionDetailDto;
 import com.modagbul.BE.domain.mission.dto.MissionListDto;
 
 import com.modagbul.BE.domain.mission.entity.Mission;
@@ -13,7 +10,6 @@ import com.modagbul.BE.domain.mission.repository.MissionRepository;
 import com.modagbul.BE.domain.team.entity.Team;
 import com.modagbul.BE.domain.team.repository.TeamRepository;
 import com.modagbul.BE.domain.team_member.repository.TeamMemberRepository;
-import com.modagbul.BE.domain.user.entity.User;
 import com.modagbul.BE.domain.usermission.constant.Status;
 import com.modagbul.BE.domain.usermission.dto.UserMissionDetailDto;
 import com.modagbul.BE.domain.usermission.entity.UserMission;
@@ -155,12 +151,9 @@ public class MissionService {
     }
 
     // 개인별 미션 상세 페이지 조회
-    public MissionDetailDto getMissionDetail(Long teamId, Long missionId) {
+    public UserMissionDetailDto getMissionDetail(Long teamId, Long missionId) {
         Long userId = SecurityUtils.getLoggedInUser().getUserId();
-        MissionDetailDto missionDetailDto = missionRepository.findMissionDetailById(teamId, missionId).orElseThrow(NotFoundMissionException::new);
-        missionDetailDto.setStatus(userMissionRepository.findUserMissionStatusById(userId, teamId, missionId).orElse(Status.INCOMPLETE));
-        missionDetailDto.setDueTo(getRemainPeriod(missionDetailDto.getDueTo()));
-        return missionDetailDto;
+        return userMissionRepository.findUserMissionDetailById(teamId, userId,missionId).orElseThrow(NotFoundMissionException::new);
     }
 
     public boolean getDueToOK(String dueTo) {
