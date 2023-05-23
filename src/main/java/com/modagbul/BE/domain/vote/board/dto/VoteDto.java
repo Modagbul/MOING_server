@@ -33,13 +33,11 @@ public abstract class VoteDto {
 
         @NotNull(message = "복수투표 여부를 입력해 주세요.")
         @ApiModelProperty(notes = "복수투표 여부를 입력해 주세요.")
-        //복수투표 여부
-        private boolean isMultiple;
+        private Boolean isMultiple;
 
         @NotNull(message = "익명투표 여부를 입력해 주세요.")
         @ApiModelProperty(notes = "익명투표 여부를 입력해 주세요.")
-        //익명투표 여부
-        private boolean isAnonymous;
+        private Boolean isAnonymous;
 
         //투표 선택지
         private List<String> choices=new ArrayList<>();
@@ -77,8 +75,8 @@ public abstract class VoteDto {
         private String title;
         private String memo;
         private LocalDateTime createdDate;
-        private boolean isMultiple;
-        private boolean isAnonymous;
+        private Boolean isMultiple;
+        private Boolean isAnonymous;
 
         //투표글을 쓴 사람에 대한 정보
         private Long userId;

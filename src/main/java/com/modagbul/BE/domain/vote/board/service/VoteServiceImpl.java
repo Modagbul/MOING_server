@@ -14,6 +14,7 @@ import com.modagbul.BE.domain.vote.board.entity.Vote;
 import com.modagbul.BE.domain.vote.board.exception.NotFoundVoteContentException;
 import com.modagbul.BE.domain.vote.board.exception.NotFoundVoteIdException;
 import com.modagbul.BE.domain.vote.board.exception.NotFoundVoteUserException;
+import com.modagbul.BE.domain.vote.board.exception.NotVoteWriterException;
 import com.modagbul.BE.domain.vote.board.repository.VoteRepository;
 import com.modagbul.BE.domain.vote.content.entity.VoteContent;
 import com.modagbul.BE.domain.vote.content.repository.VoteContentRepository;
@@ -196,7 +197,7 @@ public class VoteServiceImpl implements VoteService {
 
     private void validateUser(User user, Vote vote) {
         if (vote.getUser().getUserId() != user.getUserId())
-            throw new NotNoticeWriterException();
+            throw new NotVoteWriterException();
     }
 
     /**

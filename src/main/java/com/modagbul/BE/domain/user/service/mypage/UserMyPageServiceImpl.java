@@ -54,7 +54,7 @@ public class UserMyPageServiceImpl implements UserMyPageService {
     public UserDto.AlarmDto getAlarmSetting() {
         Long userId = SecurityUtils.getLoggedInUser().getUserId();
         User user = userRepository.findById(userId).orElseThrow(NotFoundUserException::new);
-        return new UserDto.AlarmDto(user.isNewUploadPush(), user.isRemindPush(), user.isFirePush());
+        return new UserDto.AlarmDto(user.isRemindPush(), user.isNewUploadPush(), user.isFirePush());
     }
 
     @Override

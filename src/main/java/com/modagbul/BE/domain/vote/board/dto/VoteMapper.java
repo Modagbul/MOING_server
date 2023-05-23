@@ -20,7 +20,7 @@ public class VoteMapper {
 
     public Vote toEntity(Long teamId, CreateVoteRequest createVoteRequest){
         Vote vote=new Vote();
-        vote.createVote(createVoteRequest.getTitle(), createVoteRequest.getMemo(), createVoteRequest.isAnonymous(), createVoteRequest.isMultiple());
+        vote.createVote(createVoteRequest.getTitle(), createVoteRequest.getMemo(), createVoteRequest.getIsAnonymous(), createVoteRequest.getIsMultiple());
         Team team = teamValidationService.validateTeam(teamId);
         vote.setTeam(team);
         vote.setUser(userRepository.findById(SecurityUtils.getLoggedInUser().getUserId()).orElseThrow(()->new NotFoundEmailException()));
