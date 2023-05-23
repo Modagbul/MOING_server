@@ -28,8 +28,15 @@ public class FcmServiceImpl implements FcmService {
                 .build();
 
         Message message = Message.builder()
-                .setNotification(notification)
                 .setToken(toSingleRequest.getRegistrationToken())
+                .setAndroidConfig(AndroidConfig.builder()
+                        .setPriority(AndroidConfig.Priority.HIGH)
+                        .setNotification(AndroidNotification.builder()
+                                .setChannelId("FCM Channel")
+                                .setTitle(toSingleRequest.getTitle())
+                                .setBody(toSingleRequest.getBody())
+                                .build())
+                        .build())
                 .build();
 
         try {
@@ -49,8 +56,15 @@ public class FcmServiceImpl implements FcmService {
                 .build();
 
         MulticastMessage message = MulticastMessage.builder()
-                .setNotification(notification)
                 .addAllTokens(toMultiRequest.getRegistrationToken())
+                .setAndroidConfig(AndroidConfig.builder()
+                        .setPriority(AndroidConfig.Priority.HIGH)
+                        .setNotification(AndroidNotification.builder()
+                                .setChannelId("FCM Channel")
+                                .setTitle(toMultiRequest.getTitle())
+                                .setBody(toMultiRequest.getBody())
+                                .build())
+                        .build())
                 .build();
 
         try {
@@ -86,9 +100,18 @@ public class FcmServiceImpl implements FcmService {
 
 
         Message message = Message.builder()
-                .setNotification(notification)
                 .setCondition(createCondition(topicRequest))
+                .setAndroidConfig(AndroidConfig.builder()
+                        .setPriority(AndroidConfig.Priority.HIGH)
+                        .setNotification(AndroidNotification.builder()
+                                .setChannelId("FCM Channel")
+                                .setTitle(topicRequest.getTitle())
+                                .setBody(topicRequest.getBody())
+                                .build())
+                        .build())
                 .build();
+
+
 
         try {
             String response = firebaseMessaging.send(message);
@@ -102,13 +125,19 @@ public class FcmServiceImpl implements FcmService {
     @Override
     public SingleFcmResponse sendByTopicCustom(TopicCustomRequest topicRequest) {
 
+
         Message message = Message.builder()
-                .setNotification(Notification.builder()
-                        .setTitle(topicRequest.getTitle())
-                        .setBody(topicRequest.getBody())
-                        .build())
                 .setCondition(createConditionCustom(topicRequest))
+                .setAndroidConfig(AndroidConfig.builder()
+                        .setPriority(AndroidConfig.Priority.HIGH)
+                        .setNotification(AndroidNotification.builder()
+                                .setChannelId("FCM Channel")
+                                .setTitle(topicRequest.getTitle())
+                                .setBody(topicRequest.getBody())
+                                .build())
+                        .build())
                 .build();
+
 
         try {
             String response = FirebaseMessaging.getInstance().send(message);
