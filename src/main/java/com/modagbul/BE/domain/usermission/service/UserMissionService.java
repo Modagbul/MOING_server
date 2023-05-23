@@ -70,37 +70,45 @@ public class UserMissionService {
         User loginUser = userRepository.findById(userId).orElseThrow(() -> new IllegalStateException("해당 유저를 찾을 수 없습니다."));
         Mission mission = missionRepository.findById(missionId).orElseThrow(NotFoundMissionException::new);
 
-        UserMissionStatusDto userMissionStatusDto = new UserMissionStatusDto(
-                mission.getTitle(),
-                userMissionRepository.findCompleteUserMissionListById(teamId, missionId, Status.COMPLETE).orElseThrow(NotFoundUserMissionsException::new),
-                userMissionRepository.findInCompleteUserMissionListById(teamId, missionId, Status.INCOMPLETE).orElseThrow(NotFoundUserMissionsException::new)
-        );
-
-
+        String title = mission.getTitle();
+        List<UserMissionListDto> completeList = userMissionRepository.findCompleteUserMissionListById(teamId, missionId, Status.COMPLETE).orElseThrow(NotFoundUserMissionsException::new);
+        List<UserMissionListDto> incompleteList = userMissionRepository.findInCompleteUserMissionListById(teamId, missionId, Status.INCOMPLETE).orElseThrow(NotFoundUserMissionsException::new);
+        Status mystatus = null;
         // my submit
-        List<UserMissionListDto> completeList = userMissionStatusDto.getCompleteList();
         UserMissionListDto mine = null;
-
 
         // pending list append
         completeList.addAll(userMissionRepository.findCompleteUserMissionListById(teamId, missionId, Status.PENDING).orElseThrow(NotFoundUserMissionsException::new));
 
-        Iterator<UserMissionListDto> iterator = completeList.iterator();
-        while (iterator.hasNext()) {
-            UserMissionListDto next = iterator.next();
+
+        Iterator<UserMissionListDto> iterator1 = completeList.iterator();
+        while (iterator1.hasNext()) {
+            UserMissionListDto next =iterator1.next();
             if (next.getNickname().equals(loginUser.getNickName())) {
                 mine = next;
-                userMissionStatusDto.setMyStatus(next.getStatus());
-                iterator.remove();
+                iterator1.remove();
             }
         }
 
-        if (mine == null) {
-            userMissionStatusDto.setMyStatus(Status.INCOMPLETE);
+        if (mine != null) {
+            completeList.add(0, mine);
+            mystatus=mine.getStatus();
         }
         else{
-            completeList.add(0, mine);
+            Iterator<UserMissionListDto> iterator2 = incompleteList.iterator();
+            while (iterator2.hasNext()) {
+                UserMissionListDto next = iterator2.next();
+                if (next.getNickname().equals(loginUser.getNickName())) {
+                    mine = next;
+                    iterator2.remove();
+                }
+            }
+            incompleteList.add(0, mine);
+            mystatus=mine.getStatus();
+
         }
+
+        UserMissionStatusDto userMissionStatusDto = new UserMissionStatusDto(title, completeList, incompleteList, mystatus);
 
         userMissionStatusDto.setFireUserMissionList(fireRepository.findFireByUserId(userId,missionId).orElseThrow(NotFoundUserMissionsException::new));
 

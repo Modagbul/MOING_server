@@ -24,10 +24,11 @@ public class UserMissionStatusDto {
 
     private Status myStatus;
 
-    public UserMissionStatusDto(String title, List<UserMissionListDto> completeList, List<UserMissionListDto> incompleteList) {
+    public UserMissionStatusDto(String title, List<UserMissionListDto> completeList, List<UserMissionListDto> incompleteList,Status status) {
         this.title = title;
-        CompleteList = completeList;
-        IncompleteList = incompleteList;
+        this.CompleteList = completeList;
+        this.IncompleteList = incompleteList;
+        this.myStatus = status;
     }
 
     public void setUserNum(int completeUser, int incompleteUser) {
