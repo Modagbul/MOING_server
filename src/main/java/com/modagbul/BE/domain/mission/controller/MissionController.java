@@ -1,9 +1,6 @@
 package com.modagbul.BE.domain.mission.controller;
 
-import com.modagbul.BE.domain.mission.dto.MissionDetailDto;
-import com.modagbul.BE.domain.mission.dto.MissionDto;
-import com.modagbul.BE.domain.mission.dto.MissionListDto;
-import com.modagbul.BE.domain.mission.dto.MissionRateDto;
+import com.modagbul.BE.domain.mission.dto.*;
 import com.modagbul.BE.domain.mission.service.MissionBoardService;
 import com.modagbul.BE.domain.mission.service.MissionService;
 import com.modagbul.BE.domain.user.dto.UserDto;
@@ -82,13 +79,13 @@ public class MissionController {
     @ApiOperation(value = "개인별 미션 인증 비율", notes = "개인별 미션 인증 비율을 조회합니다..")
     @GetMapping("/graph")
     public ResponseEntity<ResponseDto<MissionRateDto>> graph(@PathVariable Long teamId){
-        return ResponseEntity.ok(ResponseDto.create(HttpStatus.OK.value(),STATUS_MISSION_SUCCESS.getMessage(),new MissionRateDto(missionBoardService.getPersonalRateForGraph(teamId),missionBoardService.getTeamPercentForGraph(teamId))));
+        return ResponseEntity.ok(ResponseDto.create(HttpStatus.OK.value(),STATUS_MISSION_SUCCESS.getMessage(),new MissionRateDto(missionBoardService.getPersonalRateForGraph(teamId),missionBoardService.getTeamPercentForGraph(teamId).getPercent())));
     }
 
 
     @ApiOperation(value = "팀별 미션 인증 비율", notes = "팀별 미션 인증 비율을 조회합니다..")
     @GetMapping("/teamRate")
-    public ResponseEntity<ResponseDto<Long>> teamRate(@PathVariable Long teamId){
+    public ResponseEntity<ResponseDto<MissionBoardDto>> teamRate(@PathVariable Long teamId){
         return ResponseEntity.ok(ResponseDto.create(HttpStatus.OK.value(),STATUS_MISSION_SUCCESS.getMessage(),missionBoardService.getTeamPercentForGraph(teamId)));
     }
     @ApiOperation(value = "개인별 미션 인증 비율", notes = "개인별 미션 인증 비율을 조회합니다..")
