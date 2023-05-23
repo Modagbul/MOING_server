@@ -53,7 +53,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/webjars/**").permitAll()
                 .antMatchers("/v3/api-docs").permitAll()
                 .antMatchers(HttpMethod.POST, "/api/v1/users/auth/kakao").permitAll()
-                .antMatchers(HttpMethod.POST,"/ap1/v1/users/additional-info").permitAll()
+                .antMatchers(HttpMethod.POST,"/api/v1/users/additional-info").permitAll()
                 .antMatchers(HttpMethod.GET, "/api/v1/users/nickname/**").permitAll()
                 .antMatchers(HttpMethod.POST, "/api/v1/users/auth/refresh").permitAll()
                 .antMatchers("/oauth/kakao/**").permitAll()
