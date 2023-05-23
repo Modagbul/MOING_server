@@ -39,4 +39,7 @@ public interface MissionRepository extends JpaRepository<Mission, Long> {
     @Query(value="select m from Mission m where  m.dueTo < :end and m.dueTo > :start")
     Optional<List<Mission>> findOneDayBeforeDueTo(@Param("start") String start, @Param("end") String end);
 
+
+    @Query(value="select m from Mission m where m.team.teamId = :teamId")
+    Optional<List<Mission>> findMissionsByTeamId(Long teamId);
 }
