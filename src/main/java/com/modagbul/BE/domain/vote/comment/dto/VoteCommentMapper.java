@@ -3,7 +3,7 @@ package com.modagbul.BE.domain.vote.comment.dto;
 import com.modagbul.BE.domain.user.exception.NotFoundEmailException;
 import com.modagbul.BE.domain.user.repository.UserRepository;
 import com.modagbul.BE.domain.vote.board.entity.Vote;
-import com.modagbul.BE.domain.vote.board.service.VoteService;
+import com.modagbul.BE.domain.vote.board.service.validate.VoteValidationService;
 import com.modagbul.BE.domain.vote.comment.dto.VoteCommentDto.GetVoteCommentResponse;
 import com.modagbul.BE.domain.vote.comment.entity.VoteComment;
 import com.modagbul.BE.global.config.security.util.SecurityUtils;
@@ -13,12 +13,12 @@ import org.springframework.stereotype.Component;
 @Component
 @AllArgsConstructor
 public class VoteCommentMapper {
-    private final VoteService voteService;
+    private final VoteValidationService voteValidationService;
 
     private final UserRepository userRepository;
 
     public VoteComment toEntity(Long teamId, Long voteId, VoteCommentDto.CreateVoteCommentRequest createVoteCommentRequest) {
-        Vote vote = voteService.validateVote(teamId, voteId);
+        Vote vote = voteValidationService.validateVote(teamId, voteId);
         VoteComment voteComment = new VoteComment();
 
         voteComment.createVoteComment(createVoteCommentRequest.getContent());

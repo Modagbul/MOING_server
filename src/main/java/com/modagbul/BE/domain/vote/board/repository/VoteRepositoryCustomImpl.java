@@ -40,7 +40,7 @@ public class VoteRepositoryCustomImpl implements VoteRepositoryCustom {
 
     @Override
     public VoteDto.GetVoteDetailsResponse getVoteDetailByVoteId(Long voteId) {
-        VoteDto.GetVoteDetailsResponse getVoteDetailsResponse=queryFactory
+        VoteDto.GetVoteDetailsResponse getVoteDetailsResponse = queryFactory
                 .select(new QVoteDto_GetVoteDetailsResponse(
                         vote.title,
                         vote.memo,
@@ -68,24 +68,24 @@ public class VoteRepositoryCustomImpl implements VoteRepositoryCustom {
                 .fetch();
     }
 
-    private List<VoteChoice> getVoteChoice(Long voteId){
-        List<VoteChoice> voteChoiceList=new ArrayList<>();
+    private List<VoteChoice> getVoteChoice(Long voteId) {
+        List<VoteChoice> voteChoiceList = new ArrayList<>();
 
-        List<VoteContent> voteContents=queryFactory
+        List<VoteContent> voteContents = queryFactory
                 .selectFrom(voteContent)
                 .where(voteContent.vote.voteId.eq(voteId))
                 .fetch();
 
-        voteContents.stream().forEach(voteContent->{
-            String content=voteContent.getContent();
-            List<String> usersNickName=voteUserNickNameByContent(voteId, content);
-            VoteChoice voteChoice=new VoteChoice(content, usersNickName.size(), usersNickName);
+        voteContents.stream().forEach(voteContent -> {
+            String content = voteContent.getContent();
+            List<String> usersNickName = voteUserNickNameByContent(voteId, content);
+            VoteChoice voteChoice = new VoteChoice(content, usersNickName.size(), usersNickName);
             voteChoiceList.add(voteChoice);
         });
         return voteChoiceList;
     }
 
-    private List<String> voteUserNickNameByContent(Long voteId, String content){
+    private List<String> voteUserNickNameByContent(Long voteId, String content) {
         return queryFactory
                 .select(voteContentUser.nickName)
                 .from(voteContentUser)
@@ -96,7 +96,7 @@ public class VoteRepositoryCustomImpl implements VoteRepositoryCustom {
 
     @Override
     public GetVoteAllResponse getVoteAllByTeamId(Long teamId, Long userId) {
-        List<VoteBlock> voteBlocks=findVoteBlocksByTeamId(teamId, userId);
+        List<VoteBlock> voteBlocks = findVoteBlocksByTeamId(teamId, userId);
 
         Long notReadNum = queryFactory
                 .from(vote)
@@ -113,7 +113,7 @@ public class VoteRepositoryCustomImpl implements VoteRepositoryCustom {
     public List<GetUnReadVoteResponse> getUnReadVoteByTeamId(Long teamId, Long userId) {
         return queryFactory
                 .select(Projections.constructor(GetUnReadVoteResponse.class,
-                        vote.voteId, vote.title,vote.memo))
+                        vote.voteId, vote.title, vote.memo))
                 .from(vote)
                 .join(vote.voteReads, voteRead)
                 .where(vote.team.teamId.eq(teamId),
@@ -137,7 +137,7 @@ public class VoteRepositoryCustomImpl implements VoteRepositoryCustom {
                         voteRead.isRead,
                         vote.createdDate))
                 .distinct()
-                .from(vote,voteRead)
+                .from(vote, voteRead)
                 .join(vote.voteReads, voteRead)
                 .where(vote.team.teamId.eq(teamId),
                         vote.isClosed.eq(false),
