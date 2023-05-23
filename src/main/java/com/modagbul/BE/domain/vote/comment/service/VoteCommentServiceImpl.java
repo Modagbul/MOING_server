@@ -2,7 +2,7 @@ package com.modagbul.BE.domain.vote.comment.service;
 
 import com.modagbul.BE.domain.user.entity.User;
 import com.modagbul.BE.domain.vote.board.entity.Vote;
-import com.modagbul.BE.domain.vote.board.service.VoteService;
+import com.modagbul.BE.domain.vote.board.service.validate.VoteValidationService;
 import com.modagbul.BE.domain.vote.comment.dto.VoteCommentDto;
 import com.modagbul.BE.domain.vote.comment.dto.VoteCommentDto.CreateVoteCommentResponse;
 import com.modagbul.BE.domain.vote.comment.dto.VoteCommentDto.GetVoteCommentResponse;
@@ -31,7 +31,7 @@ public class VoteCommentServiceImpl implements VoteCommentService {
     private final VoteCommentMapper voteCommentMapper;
     private final VoteCommentRepository voteCommentRepository;
 
-    private final VoteService voteService;
+    private final VoteValidationService voteValidationService;
 
 
     @Override
@@ -50,7 +50,7 @@ public class VoteCommentServiceImpl implements VoteCommentService {
 
     @Override
     public List<GetVoteCommentResponse> getAllVoteCommentByVoteId(Long teamId, Long voteId) {
-        Vote vote=voteService.validateVote(teamId, voteId);
+        Vote vote = voteValidationService.validateVote(teamId, voteId);
         List<VoteComment> voteComments = voteCommentRepository.findAllVotesByVoteId(voteId);
         List<GetVoteCommentResponse> result = new ArrayList<>();
         Map<Long, GetVoteCommentResponse> map = new HashMap<>();
@@ -64,12 +64,13 @@ public class VoteCommentServiceImpl implements VoteCommentService {
 
     /**
      * VoteComment 유효성 체크하는 메서드
+     *
      * @param teamId, voteId, voteCommentId
      * @return
      */
     @Override
     public VoteComment validateVoteComment(Long teamId, Long voteId, Long voteCommentId) {
-        Vote vote=voteService.validateVote(teamId, voteId);
+        Vote vote = voteValidationService.validateVote(teamId, voteId);
         return this.voteCommentRepository.findNotDeletedByCommentId(voteCommentId).orElseThrow(() -> new NotFoundVoteCommentIdException());
     }
 
