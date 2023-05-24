@@ -153,7 +153,10 @@ public class MissionService {
     // 개인별 미션 상세 페이지 조회
     public UserMissionDetailDto getMissionDetail(Long teamId, Long missionId) {
         Long userId = SecurityUtils.getLoggedInUser().getUserId();
-        return userMissionRepository.findUserMissionDetailById(teamId, userId,missionId).orElseThrow(NotFoundMissionException::new);
+        UserMissionDetailDto userMissionDetailDto = userMissionRepository.findUserMissionDetailById(teamId, userId, missionId).orElseThrow(NotFoundMissionException::new);
+        String remainPeriod = getRemainPeriod(userMissionDetailDto.getDueTo());
+        userMissionDetailDto.setDueTo(remainPeriod);
+        return userMissionDetailDto;
     }
 
     public boolean getDueToOK(String dueTo) {
