@@ -12,5 +12,6 @@ public interface UserMyPageService {
     AlarmChangeDto changeNewUploadAlarm(AlarmChangeDto alarmChangeDto);
     AlarmChangeDto changeRemindAlarm(AlarmChangeDto alarmChangeDto);
     AlarmChangeDto changeFireAlarm(AlarmChangeDto alarmChangeDto);
+    AlarmDto changeTotalAlarm(AlarmChangeDto alarmChangeDto);
     String changeProfileImg(String string);
 }

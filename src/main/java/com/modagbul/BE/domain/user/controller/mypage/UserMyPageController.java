@@ -51,6 +51,10 @@ public class UserMyPageController {
     public ResponseEntity<ResponseDto<UserDto.AlarmChangeDto>> changeFireAlarm(@Valid @RequestBody UserDto.AlarmChangeDto alarmChangeDto) {
         return ResponseEntity.ok(ResponseDto.create(HttpStatus.OK.value(), ALARM_UPDATE_SUCCESS.getMessage(), this.myPageService.changeFireAlarm(alarmChangeDto)));
     }
+    @PutMapping("/alarm-setting/total")
+    public ResponseEntity<ResponseDto<UserDto.AlarmDto>> changeTotalAlarm(@Valid @RequestBody UserDto.AlarmChangeDto alarmChangeDto) {
+        return ResponseEntity.ok(ResponseDto.create(HttpStatus.OK.value(), ALARM_UPDATE_SUCCESS.getMessage(), this.myPageService.changeTotalAlarm(alarmChangeDto)));
+    }
 
     @PutMapping("/profileImg")
     public ResponseEntity<ResponseDto<String>> changeProfileImg(@Valid @RequestBody String profileImg) {
