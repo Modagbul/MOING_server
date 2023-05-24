@@ -15,4 +15,8 @@ public class UserMissionDetailDto {
     private String rule;
     private Status status;
     private String achieve;
+
+    public void setDueTo(String dueTo) {
+        this.dueTo = dueTo;
+    }
 }
