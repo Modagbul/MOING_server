@@ -1,12 +1,9 @@
 package com.modagbul.BE.domain.team_member.repository;
 
-import com.modagbul.BE.domain.team_member.entity.QTeamMember;
 import com.modagbul.BE.domain.team_member.entity.TeamMember;
-import com.querydsl.jpa.impl.JPAQuery;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 
 import javax.persistence.EntityManager;
-
 import java.util.List;
 
 import static com.modagbul.BE.domain.team_member.entity.QTeamMember.teamMember;
@@ -22,6 +19,15 @@ public class TeamMemberRepositoryCustomImpl implements TeamMemberRepositoryCusto
     public List<TeamMember> findByTeamId(Long teamId) {
         return queryFactory.selectFrom(teamMember)
                 .where(teamMember.team.teamId.eq(teamId))
+                .fetch();
+    }
+
+    @Override
+    public List<String> getFcmTokensByTeamId(Long teamId, Long userId) {
+        return queryFactory.select(teamMember.user.fcmToken)
+                .from(teamMember)
+                .where(teamMember.team.teamId.eq(teamId))
+                .where(teamMember.user.userId.ne(userId))
                 .fetch();
     }
 }

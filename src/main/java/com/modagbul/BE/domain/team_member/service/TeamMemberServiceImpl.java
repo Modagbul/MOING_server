@@ -17,7 +17,6 @@ import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -55,13 +54,6 @@ public class TeamMemberServiceImpl implements TeamMemberService {
 
     @Override
     public List<String> getTeamMemberFcmToken(Long teamId, Long userId) {
-        // 1. 팀원 불러오기
-        List<User> users = teamMemberRepository.findUserListByTeamId(teamId).orElseThrow();
-
-        // 2. 나를 제외한 팀원의 모든 fcmToken 불러오기
-        return users.stream()
-                .filter(user -> !user.getUserId().equals(userId))
-                .map(User::getFcmToken)
-                .collect(Collectors.toList());
+        return teamMemberRepository.getFcmTokensByTeamId(teamId, userId);
     }
 }
