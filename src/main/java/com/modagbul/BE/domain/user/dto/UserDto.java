@@ -114,6 +114,7 @@ public abstract class UserDto {
     @NoArgsConstructor
     @ApiModel(description = "마이페이지를 수정 위한 객체")
     public static class MyPageEditDto {
+        private String profileImg;
         private String nickName;
         private String introduction;
     }
