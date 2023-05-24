@@ -89,6 +89,7 @@ public abstract class NoticeDto {
     @ApiModel(description = "안 읽은 공지 조회를 위한 응답 객체")
     @NoArgsConstructor
     public static class GetUnReadNoticeResponse {
+        private Long noticeId;
         private String title;
         private String content;
     }
