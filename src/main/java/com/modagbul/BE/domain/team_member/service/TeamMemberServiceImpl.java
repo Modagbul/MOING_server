@@ -54,6 +54,6 @@ public class TeamMemberServiceImpl implements TeamMemberService {
 
     @Override
     public List<String> getTeamMemberFcmToken(Long teamId, Long userId) {
-        return teamMemberRepository.getFcmTokensByTeamId(teamId, userId);
+        return teamMemberRepository.getFcmTokensByTeamId(teamId, userId).orElseThrow();
     }
 }
