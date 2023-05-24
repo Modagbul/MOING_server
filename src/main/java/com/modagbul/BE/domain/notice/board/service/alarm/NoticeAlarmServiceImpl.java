@@ -16,6 +16,7 @@ import org.springframework.stereotype.Service;
 import javax.transaction.Transactional;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 import static com.modagbul.BE.fcm.constant.FcmConstant.NewUploadTitle.UPLOAD_NOTICE_NEW_TITLE;
@@ -43,9 +44,11 @@ public class NoticeAlarmServiceImpl implements NoticeAlarmService{
         if(loggedInUser.isNewUploadPush()){
             String title=team.getName()+" "+UPLOAD_NOTICE_NEW_TITLE.getTitle();
             String message=notice.getTitle();
-            List<String> fcmTokens=teamMemberService.getTeamMemberFcmToken(teamId, userId);
-            FcmDto.ToMultiRequest toMultiRequest=new FcmDto.ToMultiRequest(fcmTokens,title,message);
-            fcmService.sendMultipleDevices(toMultiRequest);
+            Optional<List<String>> fcmTokens=teamMemberService.getTeamMemberFcmToken(teamId, userId);
+            if(fcmTokens.isPresent()) {
+                FcmDto.ToMultiRequest toMultiRequest = new FcmDto.ToMultiRequest(fcmTokens.get(), title, message);
+                fcmService.sendMultipleDevices(toMultiRequest);
+            }
         }
     }
 }

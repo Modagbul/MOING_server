@@ -14,6 +14,7 @@ import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
 import java.util.List;
+import java.util.Optional;
 
 import static com.modagbul.BE.fcm.constant.FcmConstant.NewUploadTitle.UPLOAD_VOTE_NEW_TITLE;
 
@@ -35,9 +36,11 @@ public class VoteAlarmServiceImpl implements VoteAlarmService {
         if (loggedInUser.isNewUploadPush()) {
             String title = team.getName() + " " + UPLOAD_VOTE_NEW_TITLE.getTitle();
             String message = vote.getTitle();
-            List<String> fcmTokens = teamMemberService.getTeamMemberFcmToken(teamId, userId);
-            FcmDto.ToMultiRequest toMultiRequest = new FcmDto.ToMultiRequest(fcmTokens, title, message);
-            fcmService.sendMultipleDevices(toMultiRequest);
+            Optional<List<String>> fcmTokens = teamMemberService.getTeamMemberFcmToken(teamId, userId);
+            if(fcmTokens.isPresent()) {
+                FcmDto.ToMultiRequest toMultiRequest = new FcmDto.ToMultiRequest(fcmTokens.get(), title, message);
+                fcmService.sendMultipleDevices(toMultiRequest);
+            }
         }
     }
 }

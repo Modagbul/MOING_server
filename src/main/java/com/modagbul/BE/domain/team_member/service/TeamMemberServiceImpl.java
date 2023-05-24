@@ -17,6 +17,7 @@ import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -53,7 +54,7 @@ public class TeamMemberServiceImpl implements TeamMemberService {
     }
 
     @Override
-    public List<String> getTeamMemberFcmToken(Long teamId, Long userId) {
+    public Optional<List<String>> getTeamMemberFcmToken(Long teamId, Long userId) {
         return teamMemberRepository.getFcmTokensByTeamId(teamId, userId);
     }
 }
