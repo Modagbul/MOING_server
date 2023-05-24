@@ -36,7 +36,7 @@ public class VoteAlarmServiceImpl implements VoteAlarmService {
             String title = team.getName() + " " + UPLOAD_VOTE_NEW_TITLE.getTitle();
             String message = vote.getTitle();
             Optional<List<String>> fcmTokens = teamMemberService.getTeamMemberFcmToken(teamId, userId);
-            if(fcmTokens.isPresent()) {
+            if(fcmTokens.isPresent() && !fcmTokens.get().isEmpty()) {
                 FcmDto.ToMultiRequest toMultiRequest = new FcmDto.ToMultiRequest(fcmTokens.get(), title, message);
                 fcmService.sendMultipleDevices(toMultiRequest);
             }
