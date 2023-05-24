@@ -45,7 +45,7 @@ public class NoticeAlarmServiceImpl implements NoticeAlarmService{
             String title=team.getName()+" "+UPLOAD_NOTICE_NEW_TITLE.getTitle();
             String message=notice.getTitle();
             Optional<List<String>> fcmTokens=teamMemberService.getTeamMemberFcmToken(teamId, userId);
-            if(fcmTokens.isPresent()) {
+            if(fcmTokens.isPresent() && !fcmTokens.get().isEmpty()) {
                 FcmDto.ToMultiRequest toMultiRequest = new FcmDto.ToMultiRequest(fcmTokens.get(), title, message);
                 fcmService.sendMultipleDevices(toMultiRequest);
             }
