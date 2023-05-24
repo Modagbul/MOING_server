@@ -32,7 +32,6 @@ public class VoteAlarmServiceImpl implements VoteAlarmService {
     public void sendNewUploadVoteAlarm(Vote vote, Long teamId, Long userId) {
         Team team = teamValidationService.validateTeam(teamId);
         User loggedInUser = userRepository.findById(userId).orElseThrow(() -> new NotFoundEmailException());
-        //신규 업로드 알림이 true인지 확인
         if (loggedInUser.isNewUploadPush()) {
             String title = team.getName() + " " + UPLOAD_VOTE_NEW_TITLE.getTitle();
             String message = vote.getTitle();
