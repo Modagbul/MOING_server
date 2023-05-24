@@ -26,8 +26,10 @@ public class TeamMemberRepositoryCustomImpl implements TeamMemberRepositoryCusto
     public List<String> getFcmTokensByTeamId(Long teamId, Long userId) {
         return queryFactory.select(teamMember.user.fcmToken)
                 .from(teamMember)
-                .where(teamMember.team.teamId.eq(teamId))
-                .where(teamMember.user.userId.ne(userId))
+                .where(teamMember.team.teamId.eq(teamId)) //해당 소모임에 참여하고 있고
+                .where(teamMember.user.isNewUploadPush.eq(true)) //알림 설정 on해 있고
+                .where(teamMember.user.userId.ne(userId)) //지금 유저가 아닌 경우
                 .fetch();
     }
+
 }
