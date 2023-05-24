@@ -54,7 +54,12 @@ public class UserMyPageServiceImpl implements UserMyPageService {
     public UserDto.AlarmDto getAlarmSetting() {
         Long userId = SecurityUtils.getLoggedInUser().getUserId();
         User user = userRepository.findById(userId).orElseThrow(NotFoundUserException::new);
-        return new UserDto.AlarmDto(user.isRemindPush(), user.isNewUploadPush(), user.isFirePush());
+        if (!user.isRemindPush() && !user.isFirePush() && !user.isNewUploadPush()) {
+            return new UserDto.AlarmDto(false,user.isRemindPush(), user.isNewUploadPush(), user.isFirePush());
+        }else{
+            return new UserDto.AlarmDto(true,user.isRemindPush(), user.isNewUploadPush(), user.isFirePush());
+
+        }
     }
 
     @Override
@@ -82,6 +87,25 @@ public class UserMyPageServiceImpl implements UserMyPageService {
 
         user.setFirePush(alarmChangeDto.getData());
         return new UserDto.AlarmChangeDto(user.isFirePush());
+    }
+    @Override
+    public UserDto.AlarmDto changeTotalAlarm(UserDto.AlarmChangeDto alarmChangeDto) {
+        Long userId = SecurityUtils.getLoggedInUser().getUserId();
+        User user = userRepository.findById(userId).orElseThrow(NotFoundUserException::new);
+        Boolean status;
+        if(alarmChangeDto.getData()) {
+            user.setNewUploadPush(true);
+            user.setRemindPush(true);
+            user.setFirePush(true);
+            status = true;
+        } else {
+            user.setNewUploadPush(false);
+            user.setRemindPush(false);
+            user.setFirePush(false);
+            status = false;
+        }
+        userRepository.save(user);
+        return new UserDto.AlarmDto(status,user.isRemindPush(),user.isNewUploadPush(),user.isFirePush());
     }
     @Override
     public String changeProfileImg(String string) {

@@ -146,6 +146,7 @@ public abstract class UserDto {
     @AllArgsConstructor
     @NoArgsConstructor
     public static class AlarmDto {
+        private Boolean isTotal;
         private Boolean isRemind;
         private Boolean isNewUpload;
         private Boolean isFire;
