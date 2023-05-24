@@ -46,7 +46,9 @@ public class FireService {
                     userMission.getUser().getFcmToken(),strings.get(0),strings.get(1)
             );
             System.out.println(toSingleRequest.getTitle()+toSingleRequest.getBody());
-            fcmService.sendSingleDevice(toSingleRequest);
+            if(userMission.getUser().isFirePush()) {
+                fcmService.sendSingleDevice(toSingleRequest);
+            }
 
         }
         else{
