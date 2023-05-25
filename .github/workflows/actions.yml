@@ -1,5 +1,9 @@
 name: Deploy
 
+concurrency: 
+  group: deploy
+  cancel-in-progress: true
+  
 on:
   push:
     branches: [ master ]       
@@ -50,11 +54,9 @@ jobs:
         
     - name: Grant execute permission for gradlew
       run: chmod +x gradlew
-#      working-directory: ${{ env.working-directory }}
       
     - name: Build with Gradle
       run: ./gradlew clean build
-#      working-directory: ${{ env.working-directory }}
       
     - name: Cleanup Gradle Cache
       if: ${{ always() }}
@@ -66,10 +68,6 @@ jobs:
     - name: 스프링부트 애플리케이션 빌드
       run: ./gradlew clean build
 
-
-#    - name: Login to DockerHub
-#      run:
-#         docker login -u ${{ secrets.DOCKER_USERNAME }} -p ${{ secrets.DOCKER_PASSWORD }}
 
     - name: entry.sh push to ec2
       uses: appleboy/scp-action@master
