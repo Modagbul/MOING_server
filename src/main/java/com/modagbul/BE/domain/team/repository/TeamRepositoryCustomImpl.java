@@ -23,7 +23,7 @@ public class TeamRepositoryCustomImpl implements TeamRepositoryCustom{
     @Override
     public GetTeamResponse getTeam(Long userId) {
         LocalDate now = LocalDate.now(ZoneId.of("Asia/Seoul"));
-        
+
         List<TeamBlock> teamBlocks = getTeamBlock(userId);
         Long inProgressNum = queryFactory.select(team)
                 .from(team)
