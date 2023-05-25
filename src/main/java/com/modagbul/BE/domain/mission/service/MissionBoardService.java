@@ -39,9 +39,10 @@ public class MissionBoardService {
         AtomicReference<Long> sum = new AtomicReference<>(0L);
         Long loginId = SecurityUtils.getLoggedInUser().getUserId();
 
-        if(missionRepository.findMissionsByTeamId(teamId).isEmpty()){
-            return new MissionBoardDto(0L, "불꽃이 생겨나고 있어요!");
+        if(missionRepository.findMissionsByTeamId(teamId).get().size()==0){
+            return new MissionBoardDto(0L, "불꽃이 생겨나고 있어요! 🔥");
         }
+
 
         List<User> users = teamMemberRepository.findUserListByTeamId(teamId).orElseThrow(InvalidCompleteRateException::new);
         for (User user : users) {
