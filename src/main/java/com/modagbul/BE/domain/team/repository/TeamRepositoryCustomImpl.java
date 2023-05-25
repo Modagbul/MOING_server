@@ -49,4 +49,13 @@ public class TeamRepositoryCustomImpl implements TeamRepositoryCustom{
                 .orderBy(team.startDate.asc())
                 .fetch();
     }
+
+    public Long findLeaderIdByTeamId(Long teamId) {
+return queryFactory.select(team.leaderId)
+                .from(team)
+                .where(team.teamId.eq(teamId))
+                .fetchOne();
+
+
+    }
 }

@@ -95,5 +95,12 @@ public class MissionController {
         return ResponseEntity.ok(ResponseDto.create(HttpStatus.OK.value(),STATUS_MISSION_SUCCESS.getMessage(),missionBoardService.getPersonalRateForGraph(teamId)));
     }
 
+    @GetMapping("/isLeader")
+    public ResponseEntity<ResponseDto<Boolean>> isLeader(@PathVariable Long teamId){
+        return ResponseEntity.ok(ResponseDto.create(HttpStatus.OK.value(),STATUS_MISSION_SUCCESS.getMessage(),missionService.isLeader(teamId)));
+    }
+
+
+
 
 }
