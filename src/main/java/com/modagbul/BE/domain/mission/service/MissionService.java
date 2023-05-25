@@ -120,6 +120,7 @@ public class MissionService {
         missionListDtos.addAll(incompleteMissions);
         missionListDtos.addAll(completeMissions);
 
+
         Iterator<MissionListDto> iterator = missionListDtos.iterator();
         while (iterator.hasNext()) {
             MissionListDto next = iterator.next();
@@ -145,6 +146,11 @@ public class MissionService {
         });
 
         missionListDtos.addAll(pastMissions);
+
+        for (MissionListDto missionListDto : missionListDtos) {
+            missionListDto.setDueTo(getRemainPeriod(missionListDto.getDueTo()));
+        }
+
 
         return missionListDtos;
 
