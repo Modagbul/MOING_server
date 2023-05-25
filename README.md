@@ -286,6 +286,18 @@ Blue/Green 방식은 무중단 배포를 실행할 수 있는 방법 중 하나�
 ☑️ 클래스명 : UpperCamelCase (ex.SendMessage)<br>
 ☑️ 함수/변수명 : lowerCamelCase (ex.userCount) <br> 
 
+## API 명세서
+<img width="1447" alt="image" src="https://github.com/KUSITMS-MeetUp-2/27th_Meetup_T2_service_back/assets/86006389/939f23b4-0f3b-434a-8ede-ec025cf08fdd">
+<img width="1461" alt="image" src="https://github.com/KUSITMS-MeetUp-2/27th_Meetup_T2_service_back/assets/86006389/0e9b97e6-093c-47a5-b667-82520ef23fb5">
+<img width="1463" alt="image" src="https://github.com/KUSITMS-MeetUp-2/27th_Meetup_T2_service_back/assets/86006389/437a252b-a918-491d-8f41-c826598f2d16">
+<img width="1469" alt="image" src="https://github.com/KUSITMS-MeetUp-2/27th_Meetup_T2_service_back/assets/86006389/18b39981-5bcc-4b0d-a508-7528ec032164">
+<img width="1453" alt="image" src="https://github.com/KUSITMS-MeetUp-2/27th_Meetup_T2_service_back/assets/86006389/8ee73f69-85a4-458a-8409-cb02fe6f1d33">
+<img width="1473" alt="image" src="https://github.com/KUSITMS-MeetUp-2/27th_Meetup_T2_service_back/assets/86006389/113d4f8d-918e-4725-b3d2-1551cab98cf6">
+<img width="1448" alt="image" src="https://github.com/KUSITMS-MeetUp-2/27th_Meetup_T2_service_back/assets/86006389/54391ab1-d25b-4ed6-9b03-3da09753a1e1">
+<img width="1456" alt="image" src="https://github.com/KUSITMS-MeetUp-2/27th_Meetup_T2_service_back/assets/86006389/f41e9f3c-23d4-43e9-8d15-be26165997b0">
+
+[API 명세 자세히 보기](https://www.notion.so/kusitsm27-meetup2/API-bed3730fd39942fbaac3645dc68bd1fd)
+
 
 ## 📄 커밋 컨벤션 및 깃 플로우
 
