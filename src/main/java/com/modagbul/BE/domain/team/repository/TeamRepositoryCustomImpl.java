@@ -22,14 +22,16 @@ public class TeamRepositoryCustomImpl implements TeamRepositoryCustom{
 
     @Override
     public GetTeamResponse getTeam(Long userId) {
+        LocalDate now = LocalDate.now(ZoneId.of("Asia/Seoul"));
+        
         List<TeamBlock> teamBlocks = getTeamBlock(userId);
         Long inProgressNum = queryFactory.select(team)
                 .from(team)
                 .join(team.teamMembers, teamMember)
                 .where(teamMember.user.userId.eq(userId))
                 .where(team.approvalStatus.eq(true))
-                .where(team.startDate.loe(LocalDate.now()))
-                .where(team.endDate.goe(LocalDate.now()))
+                .where(team.startDate.loe(now))
+                .where(team.endDate.goe(now))
                 .fetchCount();
         return new GetTeamResponse(inProgressNum, teamBlocks);
     }
