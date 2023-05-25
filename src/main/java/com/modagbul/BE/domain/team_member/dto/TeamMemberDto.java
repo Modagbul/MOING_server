@@ -29,6 +29,7 @@ public abstract class TeamMemberDto {
     @ApiModel(description = "소모임 참여코드 인증을 위한 응답 객체")
     public static class JoinTeamResponse {
         private Long teamId;
+        private String profileImg;
 
     }
 }

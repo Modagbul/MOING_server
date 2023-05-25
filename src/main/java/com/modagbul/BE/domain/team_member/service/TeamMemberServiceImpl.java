@@ -33,7 +33,7 @@ public class TeamMemberServiceImpl implements TeamMemberService {
         Team team = teamRepository.findByInvitationCode(joinTeamRequest.getInvitationCode())
                 .orElseThrow(AuthenticationException::new);
         this.addTeamMember(team);
-        return new JoinTeamResponse(team.getTeamId());
+        return new JoinTeamResponse(team.getTeamId(), team.getProfileImg());
     }
 
     @Override
