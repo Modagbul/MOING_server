@@ -7,6 +7,7 @@ import com.querydsl.jpa.impl.JPAQueryFactory;
 
 import javax.persistence.EntityManager;
 import java.time.LocalDate;
+import java.time.ZoneId;
 import java.util.List;
 
 import static com.modagbul.BE.domain.team.entity.QTeam.team;
@@ -34,12 +35,14 @@ public class TeamRepositoryCustomImpl implements TeamRepositoryCustom{
     }
 
     private List<TeamBlock> getTeamBlock(Long userId){
+        LocalDate now = LocalDate.now(ZoneId.of("Asia/Seoul"));
+
         return queryFactory.select(Projections.constructor(TeamBlock.class,
                 team.teamId, team.name, team.personnel, team.startDate, team.endDate, team.profileImg, team.approvalStatus))
                 .from(team)
                 .join(team.teamMembers, teamMember)
-                .where(team.startDate.loe(LocalDate.now()))
-                .where(team.endDate.goe(LocalDate.now()))
+                .where(team.startDate.loe(now))
+                .where(team.endDate.goe(now))
                 .where(teamMember.user.userId.eq(userId))
                 .orderBy(team.startDate.asc())
                 .fetch();
