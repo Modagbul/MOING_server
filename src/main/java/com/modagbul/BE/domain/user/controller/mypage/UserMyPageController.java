@@ -56,8 +56,5 @@ public class UserMyPageController {
         return ResponseEntity.ok(ResponseDto.create(HttpStatus.OK.value(), ALARM_UPDATE_SUCCESS.getMessage(), this.myPageService.changeTotalAlarm(alarmChangeDto)));
     }
 
-    @PutMapping("/profileImg")
-    public ResponseEntity<ResponseDto<String>> changeProfileImg(@Valid @RequestBody String profileImg) {
-        return ResponseEntity.ok(ResponseDto.create(HttpStatus.OK.value(), ALARM_UPDATE_SUCCESS.getMessage(), this.myPageService.changeProfileImg(profileImg)));
-    }
+
 }
