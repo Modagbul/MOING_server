@@ -45,9 +45,8 @@ public class UserMyPageServiceImpl implements UserMyPageService {
 
         User user = userRepository.findById(userId).orElseThrow(NotFoundUserException::new);
         user.setMypage(myPageEditDto.getNickName(), myPageEditDto.getIntroduction());
-        user.setImageUrl(myPageEditDto.getProfileImg());
         userRepository.save(user);
-        return new UserDto.MyPageEditDto(user.getImageUrl(),user.getNickName(),user.getIntroduction());
+        return new UserDto.MyPageEditDto(user.getNickName(),user.getIntroduction());
 
     }
 
