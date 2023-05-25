@@ -12,12 +12,14 @@ public class MissionListDto {
     private Long missionId;
     private String title;
     private String dueTo;
+    private String dueDate;
     private Status status;
 
-    public MissionListDto(Long missionId, String title, String dueTo) {
+    public MissionListDto(Long missionId, String title, String dueTo,String dueDate) {
         this.missionId = missionId;
         this.title = title;
         this.dueTo = dueTo;
+        this.dueDate = dueDate;
     }
 
     public void setStatus(Status status) {
