@@ -1,8 +1,4 @@
 name: Deploy
-
-concurrency: 
-  group: deploy
-  cancel-in-progress: true
   
 on:
   push:
