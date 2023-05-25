@@ -183,7 +183,11 @@ public abstract class TeamDto {
             LocalDate today = LocalDate.now();
             Period period = Period.between(today, endDate);
             long remainingDays = Math.abs(period.getDays());
-            return "D-" + remainingDays;
+            if (remainingDays == 0) {
+                return "D-Day";
+            } else {
+                return "D-" + remainingDays;
+            }
         }
 
         public String getNowTime() {
