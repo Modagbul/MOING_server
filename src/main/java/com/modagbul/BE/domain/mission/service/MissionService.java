@@ -129,7 +129,7 @@ public class MissionService {
                 iterator.remove();
             }
             else{
-                next.setDueTo(getRemainPeriod(next.getDueTo()));
+//                next.setDueTo(getRemainPeriod(next.getDueTo()));
             }
         }
         //pastMission의 dueTo를 이용한 정렬을 통해 종료된 미션 순서 정렬
