@@ -19,6 +19,7 @@ import java.time.LocalDateTime;
 import java.time.Period;
 import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
+import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -181,9 +182,8 @@ public abstract class TeamDto {
         }
 
         public String getRemainingDays(LocalDate endDate) {
-            LocalDate today = LocalDate.now();
-            Period period = Period.between(today, endDate);
-            long remainingDays = Math.abs(period.getDays());
+            LocalDate today = LocalDate.now(ZoneId.of("Asia/Seoul"));
+            long remainingDays = ChronoUnit.DAYS.between(today, endDate);
             if (remainingDays == 0) {
                 return "D-Day";
             } else {
