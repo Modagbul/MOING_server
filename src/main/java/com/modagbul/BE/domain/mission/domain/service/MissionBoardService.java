@@ -6,7 +6,7 @@ import com.modagbul.BE.domain.mission.domain.repository.MissionRepository;
 import com.modagbul.BE.domain.team.repository.TeamRepository;
 import com.modagbul.BE.domain.team_member.repository.TeamMemberRepository;
 import com.modagbul.BE.domain.user.entity.User;
-import com.modagbul.BE.domain.usermission.repository.UserMissionRepository;
+import com.modagbul.BE.domain.usermission.domain.repository.UserMissionRepository;
 import com.modagbul.BE.global.config.security.util.SecurityUtils;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;

@@ -1,4 +1,4 @@
-package com.modagbul.BE.domain.fire.constant;
+package com.modagbul.BE.domain.fire.application.constant;
 
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;

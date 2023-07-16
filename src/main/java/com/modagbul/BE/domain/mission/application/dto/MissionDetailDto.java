@@ -1,6 +1,6 @@
 package com.modagbul.BE.domain.mission.application.dto;
 
-import com.modagbul.BE.domain.usermission.constant.Status;
+import com.modagbul.BE.domain.usermission.application.constant.Status;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;

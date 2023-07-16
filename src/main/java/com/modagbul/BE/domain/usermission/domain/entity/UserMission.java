@@ -1,9 +1,9 @@
-package com.modagbul.BE.domain.usermission.entity;
+package com.modagbul.BE.domain.usermission.domain.entity;
 
 import com.modagbul.BE.domain.mission.domain.entity.Mission;
 import com.modagbul.BE.domain.team.entity.Team;
 import com.modagbul.BE.domain.user.entity.User;
-import com.modagbul.BE.domain.usermission.constant.Status;
+import com.modagbul.BE.domain.usermission.application.constant.Status;
 import com.modagbul.BE.global.entity.BaseTimeEntity;
 import lombok.AllArgsConstructor;
 import lombok.Getter;

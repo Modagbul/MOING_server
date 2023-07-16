@@ -3,7 +3,7 @@ package com.modagbul.BE.domain.mission.domain.repository;
 import com.modagbul.BE.domain.mission.application.dto.MissionDetailDto;
 import com.modagbul.BE.domain.mission.application.dto.MissionListDto;
 import com.modagbul.BE.domain.mission.domain.entity.Mission;
-import com.modagbul.BE.domain.usermission.constant.Status;
+import com.modagbul.BE.domain.usermission.application.constant.Status;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;

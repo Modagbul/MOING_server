@@ -1,7 +1,7 @@
-package com.modagbul.BE.domain.fire.entity;
+package com.modagbul.BE.domain.fire.domain.entity;
 
 import com.modagbul.BE.domain.user.entity.User;
-import com.modagbul.BE.domain.usermission.entity.UserMission;
+import com.modagbul.BE.domain.usermission.domain.entity.UserMission;
 
 import javax.persistence.*;
 

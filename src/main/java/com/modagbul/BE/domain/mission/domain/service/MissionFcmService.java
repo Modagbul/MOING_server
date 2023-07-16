@@ -6,7 +6,7 @@ import com.modagbul.BE.domain.mission.application.constant.MissionFcmMessage;
 import com.modagbul.BE.domain.mission.domain.entity.Mission;
 import com.modagbul.BE.domain.mission.domain.repository.MissionRepository;
 import com.modagbul.BE.domain.user.entity.User;
-import com.modagbul.BE.domain.usermission.repository.UserMissionRepository;
+import com.modagbul.BE.domain.usermission.domain.repository.UserMissionRepository;
 import com.modagbul.BE.fcm.service.FcmService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
