@@ -1,4 +1,4 @@
-package com.modagbul.BE.domain.usermission.domain.service;
+package com.modagbul.BE.domain.usermission.application.service;
 
 import com.modagbul.BE.domain.fire.domain.repository.FireRepository;
 import com.modagbul.BE.domain.mission.exception.NotFoundMissionException;

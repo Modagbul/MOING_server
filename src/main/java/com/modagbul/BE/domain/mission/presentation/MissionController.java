@@ -4,13 +4,14 @@ import com.modagbul.BE.domain.mission.application.dto.MissionBoardDto;
 import com.modagbul.BE.domain.mission.application.dto.MissionDto;
 import com.modagbul.BE.domain.mission.application.dto.MissionListDto;
 import com.modagbul.BE.domain.mission.application.dto.MissionRateDto;
-import com.modagbul.BE.domain.mission.dto.*;
-import com.modagbul.BE.domain.mission.domain.service.MissionBoardService;
-import com.modagbul.BE.domain.mission.domain.service.MissionService;
+import com.modagbul.BE.domain.mission.application.service.MissionSaveService;
+import com.modagbul.BE.domain.mission.application.service.MissionUpdateService;
+import com.modagbul.BE.domain.mission.application.service.MissionBoardService;
+import com.modagbul.BE.domain.mission.application.service.MissionService;
 import com.modagbul.BE.domain.usermission.application.constant.Status;
 import com.modagbul.BE.domain.usermission.application.dto.UserMissionDetailDto;
 import com.modagbul.BE.domain.usermission.application.dto.UserMissionStatusDto;
-import com.modagbul.BE.domain.usermission.domain.service.UserMissionService;
+import com.modagbul.BE.domain.usermission.application.service.UserMissionService;
 import com.modagbul.BE.global.dto.ResponseDto;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -29,20 +30,23 @@ import static com.modagbul.BE.domain.mission.application.constant.MissionConstan
 @RequestMapping("/api/v1/{teamId}/missions")
 public class MissionController {
 
-    private final MissionService missionService;
     private final UserMissionService userMissionService;
     private final MissionBoardService missionBoardService;
+
+    private final MissionSaveService missionSaveService;
+    private final MissionUpdateService missionUpdateService;
+    private final MissionService missionService;
 
     @ApiOperation(value = "미션 생성", notes = "미션을 생성합니다.")
     @PostMapping("")
     public ResponseEntity<ResponseDto<MissionDto.MissionRes>> createMission(@PathVariable Long teamId, @RequestBody MissionDto.MissionReq missionReq){
-        return ResponseEntity.ok(ResponseDto.create(HttpStatus.OK.value(),CREATE_MISSION_SUCCESS.getMessage(),missionService.createMission(teamId,missionReq)));
+        return ResponseEntity.ok(ResponseDto.create(HttpStatus.OK.value(),CREATE_MISSION_SUCCESS.getMessage(),missionSaveService.createMission(teamId,missionReq)));
     }
 
     @ApiOperation(value = "미션 수정", notes = "미션을 수정합니다.")
     @PutMapping("/{missionId}")
     public ResponseEntity<ResponseDto<MissionDto.MissionRes>> updateMission(@PathVariable Long teamId,@PathVariable Long missionId,@RequestBody MissionDto.MissionReq missionReq){
-        return ResponseEntity.ok(ResponseDto.create(HttpStatus.OK.value(),UPDATE_MISSION_SUCCESS.getMessage(),missionService.updateMission(teamId,missionId,missionReq)));
+        return ResponseEntity.ok(ResponseDto.create(HttpStatus.OK.value(),UPDATE_MISSION_SUCCESS.getMessage(),missionUpdateService.updateMission(teamId,missionId,missionReq)));
     }
 
     @ApiOperation(value = "개인별 미션 리스트 조회", notes = "개인별 미션 리스트를 조회합니다.")
