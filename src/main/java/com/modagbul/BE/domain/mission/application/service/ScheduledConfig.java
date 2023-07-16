@@ -1,4 +1,4 @@
-package com.modagbul.BE.domain.mission.config;
+package com.modagbul.BE.domain.mission.application.service;
 
 import org.springframework.context.annotation.Configuration;
 import org.springframework.scheduling.TaskScheduler;

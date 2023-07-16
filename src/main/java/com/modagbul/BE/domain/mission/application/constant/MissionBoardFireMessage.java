@@ -1,20 +1,23 @@
-package com.modagbul.BE.domain.mission.constant;
+package com.modagbul.BE.domain.mission.application.constant;
 
-import com.modagbul.BE.domain.mission.entity.Mission;
+import com.modagbul.BE.domain.mission.domain.entity.Mission;
 import com.modagbul.BE.domain.user.entity.User;
 import lombok.Getter;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 @Getter
-public class MissionFcmMessage {
+public class MissionBoardFireMessage {
 
     private final Mission mission;
     private final List<User> notCompleteMembers = new ArrayList<>();
     private String title;
 
 
-    public MissionFcmMessage(Mission mission) {
+    public MissionBoardFireMessage(Mission mission) {
         this.mission = mission;
     }
 
@@ -27,16 +30,6 @@ public class MissionFcmMessage {
         }
     }
 
-
-    public Map<Integer,List<String>> messageInitOneDay(String nickname,String title) {
-
-        Map<Integer,List<String>> dOneDay = new HashMap<>();
-
-        dOneDay.put(0, List.of(nickname + "님, [" + title + "] 미션 종료까지 D-1 남았어요!", "빠르게 참여하고 인증해봐요 📸"));
-        dOneDay.put(1,List.of(nickname + "님, [" + title + "] 미션을 잊으신 건 아니겠죠?", "마감 D-1! 서둘러 인증해봐요 💨"));
-        dOneDay.put(2,List.of("[D-1] " + this.title, "인증에 참가해 모잉불의 크기를 키워보세요!"));
-        return dOneDay;
-    }
 
 
 

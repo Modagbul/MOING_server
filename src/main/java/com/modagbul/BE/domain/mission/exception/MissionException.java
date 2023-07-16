@@ -1,4 +1,4 @@
-package com.modagbul.BE.domain.mission.Exception;
+package com.modagbul.BE.domain.mission.exception;
 
 import com.modagbul.BE.global.exception.ApplicationException;
 import org.springframework.http.HttpStatus;

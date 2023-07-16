@@ -1,8 +1,13 @@
-package com.modagbul.BE.domain.mission.service;
+package com.modagbul.BE.domain.mission.domain.service;
 
-import com.modagbul.BE.domain.mission.Exception.InvalidCompleteRateException;
-import com.modagbul.BE.domain.mission.dto.MissionBoardDto;
-import com.modagbul.BE.domain.mission.repository.MissionRepository;
+import com.modagbul.BE.domain.mission.exception.InvalidCompleteRateException;
+import com.modagbul.BE.domain.mission.application.dto.MissionBoardDto;
+import com.modagbul.BE.domain.mission.domain.repository.MissionRepository;
+import com.modagbul.BE.domain.team.domain.repository.TeamRepository;
+import com.modagbul.BE.domain.team_member.domain.repository.TeamMemberRepository;
+import com.modagbul.BE.domain.mission.exception.InvalidCompleteRateException;
+import com.modagbul.BE.domain.mission.application.dto.MissionBoardDto;
+import com.modagbul.BE.domain.mission.domain.repository.MissionRepository;
 import com.modagbul.BE.domain.team.domain.repository.TeamRepository;
 import com.modagbul.BE.domain.team_member.domain.repository.TeamMemberRepository;
 import com.modagbul.BE.domain.user.entity.User;

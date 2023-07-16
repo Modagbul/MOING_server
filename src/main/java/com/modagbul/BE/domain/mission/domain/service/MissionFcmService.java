@@ -1,10 +1,10 @@
-package com.modagbul.BE.domain.mission.service;
+package com.modagbul.BE.domain.mission.domain.service;
 
 import com.google.firebase.messaging.FirebaseMessagingException;
-import com.modagbul.BE.domain.mission.Exception.NotFoundMissionException;
-import com.modagbul.BE.domain.mission.constant.MissionFcmMessage;
-import com.modagbul.BE.domain.mission.entity.Mission;
-import com.modagbul.BE.domain.mission.repository.MissionRepository;
+import com.modagbul.BE.domain.mission.exception.NotFoundMissionException;
+import com.modagbul.BE.domain.mission.application.constant.MissionFcmMessage;
+import com.modagbul.BE.domain.mission.domain.entity.Mission;
+import com.modagbul.BE.domain.mission.domain.repository.MissionRepository;
 import com.modagbul.BE.domain.user.entity.User;
 import com.modagbul.BE.domain.usermission.repository.UserMissionRepository;
 import com.modagbul.BE.global.config.fcm.dto.FcmDto.ToSingleRequest;
@@ -13,7 +13,9 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
+
+import java.util.*;
+
 
 @Slf4j
 

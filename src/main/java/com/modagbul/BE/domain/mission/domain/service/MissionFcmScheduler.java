@@ -1,9 +1,8 @@
-package com.modagbul.BE.domain.mission.service;
+package com.modagbul.BE.domain.mission.domain.service;
 
 import com.google.firebase.messaging.FirebaseMessagingException;
-import com.modagbul.BE.domain.mission.constant.MissionFcmMessage;
-import com.modagbul.BE.domain.mission.entity.Mission;
-import com.modagbul.BE.domain.mission.repository.MissionRepository;
+import com.modagbul.BE.domain.mission.domain.entity.Mission;
+import com.modagbul.BE.domain.mission.domain.repository.MissionRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.scheduling.annotation.Scheduled;

@@ -1,4 +1,4 @@
-package com.modagbul.BE.domain.mission.constant;
+package com.modagbul.BE.domain.mission.application.constant;
 
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;

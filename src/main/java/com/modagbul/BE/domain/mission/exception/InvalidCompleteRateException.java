@@ -1,6 +1,6 @@
-package com.modagbul.BE.domain.mission.Exception;
+package com.modagbul.BE.domain.mission.exception;
 
-import com.modagbul.BE.domain.mission.constant.MissionConstant;
+import com.modagbul.BE.domain.mission.application.constant.MissionConstant;
 
 public class InvalidCompleteRateException extends MissionException {
     public InvalidCompleteRateException() {

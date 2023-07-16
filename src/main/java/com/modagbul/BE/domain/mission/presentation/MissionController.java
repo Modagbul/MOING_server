@@ -1,27 +1,27 @@
-package com.modagbul.BE.domain.mission.controller;
+package com.modagbul.BE.domain.mission.presentation;
 
+import com.modagbul.BE.domain.mission.application.dto.MissionBoardDto;
+import com.modagbul.BE.domain.mission.application.dto.MissionDto;
+import com.modagbul.BE.domain.mission.application.dto.MissionListDto;
+import com.modagbul.BE.domain.mission.application.dto.MissionRateDto;
 import com.modagbul.BE.domain.mission.dto.*;
-import com.modagbul.BE.domain.mission.service.MissionBoardService;
-import com.modagbul.BE.domain.mission.service.MissionService;
-import com.modagbul.BE.domain.user.dto.UserDto;
+import com.modagbul.BE.domain.mission.domain.service.MissionBoardService;
+import com.modagbul.BE.domain.mission.domain.service.MissionService;
 import com.modagbul.BE.domain.usermission.constant.Status;
 import com.modagbul.BE.domain.usermission.dto.UserMissionDetailDto;
-import com.modagbul.BE.domain.usermission.dto.UserMissionListDto;
 import com.modagbul.BE.domain.usermission.dto.UserMissionStatusDto;
 import com.modagbul.BE.domain.usermission.service.UserMissionService;
 import com.modagbul.BE.global.dto.ResponseDto;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-import static com.modagbul.BE.domain.mission.constant.MissionConstant.MissionResponseMessage.*;
+import static com.modagbul.BE.domain.mission.application.constant.MissionConstant.MissionResponseMessage.*;
 
 @RestController
 @RequiredArgsConstructor

@@ -1,11 +1,7 @@
 package com.modagbul.BE.domain.fire.constant;
 
-import com.modagbul.BE.domain.mission.entity.Mission;
+import com.modagbul.BE.domain.mission.domain.entity.Mission;
 import lombok.Getter;
-
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 
 @Getter
 public class FireFcmMessage {
