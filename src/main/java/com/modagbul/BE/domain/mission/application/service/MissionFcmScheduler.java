@@ -1,8 +1,9 @@
-package com.modagbul.BE.domain.mission.domain.service;
+package com.modagbul.BE.domain.mission.application.service;
 
 import com.google.firebase.messaging.FirebaseMessagingException;
 import com.modagbul.BE.domain.mission.domain.entity.Mission;
 import com.modagbul.BE.domain.mission.domain.repository.MissionRepository;
+import com.modagbul.BE.domain.mission.domain.service.MissionQueryService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.scheduling.annotation.Scheduled;
@@ -20,6 +21,8 @@ public class MissionFcmScheduler {
     private final MissionFcmService missionFcmService;
     private final MissionRepository missionRepository;
 
+    private final MissionQueryService missionQueryService;
+
 
 //    @Scheduled(cron = "0/30 * * * * *") // test를 위해 30초에 한번씩 실행하도록 함.
     @Scheduled(cron = "0 0 6 * * *") // 매일 오전 6시에 이 메소드를 실행함.
@@ -33,7 +36,8 @@ public class MissionFcmScheduler {
         String criteriaEnd = oneDayEnd.format(formatter);
         String criteriaStart = oneDayStart.format(formatter);
 
-        List<Mission> missions = missionRepository.findOneDayBeforeDueTo(criteriaStart,criteriaEnd).orElseThrow();
+        List<Mission> missions = missionQueryService.getOneDayBeforeDueTo(criteriaStart, criteriaEnd);
+
         for (Mission mission : missions) {
             missionFcmService.setMission(mission);
             missionFcmService.pushBeforeOneDay();
@@ -50,7 +54,7 @@ public class MissionFcmScheduler {
         String criteriaEnd = oneDayEnd.format(formatter);
         String criteriaStart = oneDayStart.format(formatter);
 
-        List<Mission> missions = missionRepository.findOneDayBeforeDueTo(criteriaStart,criteriaEnd).orElseThrow();
+        List<Mission> missions = missionQueryService.getOneDayBeforeDueTo(criteriaStart, criteriaEnd);
         for (Mission mission : missions) {
             missionFcmService.setMission(mission);
             missionFcmService.pushBeforeDDay();

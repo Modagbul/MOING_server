@@ -1,5 +1,6 @@
-package com.modagbul.BE.domain.mission.domain.service;
+package com.modagbul.BE.domain.mission.application.service;
 
+import com.modagbul.BE.domain.mission.domain.service.MissionQueryService;
 import com.modagbul.BE.domain.mission.exception.InvalidCompleteRateException;
 import com.modagbul.BE.domain.mission.application.dto.MissionBoardDto;
 import com.modagbul.BE.domain.mission.domain.repository.MissionRepository;
@@ -12,6 +13,7 @@ import com.modagbul.BE.domain.team.domain.repository.TeamRepository;
 import com.modagbul.BE.domain.team_member.domain.repository.TeamMemberRepository;
 import com.modagbul.BE.domain.user.entity.User;
 import com.modagbul.BE.domain.usermission.domain.repository.UserMissionRepository;
+import com.modagbul.BE.domain.usermission.domain.service.UserMissionQueryService;
 import com.modagbul.BE.global.config.security.util.SecurityUtils;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -30,12 +32,14 @@ public class MissionBoardService {
     private final TeamRepository teamRepository;
     private final TeamMemberRepository teamMemberRepository;
 
+    private final MissionQueryService missionQueryService;
+    private final UserMissionQueryService userMissionQueryService;
+
     // 소모임 그래프 - 개인별 : 개인 달성 미션수 / 전체 미션 수
 
     public Long getPersonalRateForGraph(Long teamId) {
         Long loginId = SecurityUtils.getLoggedInUser().getUserId();
-//        return userMissionRepository.getPersonalRateForGraphById(loginId, teamId).orElseThrow(InvalidCompleteRateException::new);
-        return userMissionRepository.getPersonalRateForGraphById(loginId, teamId).orElse(0L);
+        return userMissionQueryService.getPersonalRateForGraph(teamId, loginId);
     }
     // 소모임 그래프 - 팀별 : 개인 미션 달성률의 합 / 소모임 인원 수
     public MissionBoardDto getTeamPercentForGraph(Long teamId) {
@@ -44,7 +48,7 @@ public class MissionBoardService {
         AtomicReference<Long> sum = new AtomicReference<>(0L);
         Long loginId = SecurityUtils.getLoggedInUser().getUserId();
 
-        if(missionRepository.findMissionsByTeamId(teamId).get().size()==0){
+        if(missionQueryService.getMissionByTeamId(teamId).get().size()==0){
             return new MissionBoardDto(0L, "불꽃이 생겨나고 있어요! 🔥");
         }
 

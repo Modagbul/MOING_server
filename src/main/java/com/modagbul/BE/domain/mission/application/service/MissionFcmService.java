@@ -1,4 +1,4 @@
-package com.modagbul.BE.domain.mission.domain.service;
+package com.modagbul.BE.domain.mission.application.service;
 
 import com.google.firebase.messaging.FirebaseMessagingException;
 import com.modagbul.BE.domain.mission.exception.NotFoundMissionException;
@@ -9,6 +9,7 @@ import com.modagbul.BE.domain.user.entity.User;
 import com.modagbul.BE.global.config.fcm.dto.FcmDto.ToSingleRequest;
 import com.modagbul.BE.global.config.fcm.service.FcmService;
 import com.modagbul.BE.domain.usermission.domain.repository.UserMissionRepository;
+import com.modagbul.BE.domain.usermission.domain.service.UserMissionQueryService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -28,6 +29,8 @@ public class MissionFcmService {
     private final UserMissionRepository userMissionRepository;
     private Mission mission;
 
+    private final UserMissionQueryService userMissionQueryService;
+
     public void setMission(Mission mission) {
         this.mission = mission;
     }
@@ -38,7 +41,7 @@ public class MissionFcmService {
         MissionFcmMessage message = new MissionFcmMessage(mission);
 
         // 하루 전에 완료 하지 않은 인원
-        List<User> users = userMissionRepository.getInCompleteUsersByMission(mission).orElseThrow(NotFoundMissionException::new);
+        List<User> users = userMissionQueryService.getInCompleteUsersByMission(mission);
 
         // 개인별 메시지 생성
         message.init(users);
@@ -62,7 +65,8 @@ public class MissionFcmService {
         MissionFcmMessage message = new MissionFcmMessage(mission);
 
         // 하루 전에 완료 하지 않은 인원
-        List<User> users = userMissionRepository.getInCompleteUsersByMission(mission).orElseThrow(NotFoundMissionException::new);
+
+        List<User> users = userMissionQueryService.getInCompleteUsersByMission(mission);
 
         // 개인별 메시지 생성
         message.init(users);
