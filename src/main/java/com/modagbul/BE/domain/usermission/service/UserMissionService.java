@@ -1,17 +1,13 @@
 package com.modagbul.BE.domain.usermission.service;
 
 import com.modagbul.BE.domain.fire.repository.FireRepository;
-import com.modagbul.BE.domain.mission.Exception.NotFoundMissionException;
-import com.modagbul.BE.domain.mission.dto.MissionListDto;
-import com.modagbul.BE.domain.mission.entity.Mission;
-import com.modagbul.BE.domain.mission.repository.MissionRepository;
-import com.modagbul.BE.domain.team.entity.Team;
-import com.modagbul.BE.domain.team.exception.NotFoundTeamIdException;
+import com.modagbul.BE.domain.mission.exception.NotFoundMissionException;
+import com.modagbul.BE.domain.mission.domain.entity.Mission;
+import com.modagbul.BE.domain.mission.domain.repository.MissionRepository;
 import com.modagbul.BE.domain.team.repository.TeamRepository;
 import com.modagbul.BE.domain.user.entity.User;
 import com.modagbul.BE.domain.user.repository.UserRepository;
 import com.modagbul.BE.domain.usermission.constant.Status;
-import com.modagbul.BE.domain.usermission.dto.UserMissionDetailDto;
 import com.modagbul.BE.domain.usermission.dto.UserMissionListDto;
 import com.modagbul.BE.domain.usermission.dto.UserMissionStatusDto;
 import com.modagbul.BE.domain.usermission.entity.UserMission;
@@ -26,7 +22,6 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
-import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor

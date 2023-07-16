@@ -1,26 +1,18 @@
-package com.modagbul.BE.domain.mission.service;
+package com.modagbul.BE.domain.mission.domain.service;
 
-import com.google.firebase.messaging.FirebaseMessaging;
 import com.google.firebase.messaging.FirebaseMessagingException;
-import com.modagbul.BE.domain.mission.Exception.NotFoundMissionException;
-import com.modagbul.BE.domain.mission.constant.MissionFcmMessage;
-import com.modagbul.BE.domain.mission.entity.Mission;
-import com.modagbul.BE.domain.mission.repository.MissionRepository;
+import com.modagbul.BE.domain.mission.exception.NotFoundMissionException;
+import com.modagbul.BE.domain.mission.application.constant.MissionFcmMessage;
+import com.modagbul.BE.domain.mission.domain.entity.Mission;
+import com.modagbul.BE.domain.mission.domain.repository.MissionRepository;
 import com.modagbul.BE.domain.user.entity.User;
 import com.modagbul.BE.domain.usermission.repository.UserMissionRepository;
-import com.modagbul.BE.fcm.dto.FcmDto;
 import com.modagbul.BE.fcm.service.FcmService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.scheduling.annotation.Scheduled;
-import org.springframework.scheduling.support.CronTrigger;
 import org.springframework.stereotype.Service;
 
-import javax.annotation.PostConstruct;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.*;
-import java.util.concurrent.ScheduledFuture;
 
 import static com.modagbul.BE.fcm.dto.FcmDto.*;
 

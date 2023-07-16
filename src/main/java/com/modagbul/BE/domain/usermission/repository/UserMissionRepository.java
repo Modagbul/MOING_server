@@ -1,6 +1,6 @@
 package com.modagbul.BE.domain.usermission.repository;
 
-import com.modagbul.BE.domain.mission.entity.Mission;
+import com.modagbul.BE.domain.mission.domain.entity.Mission;
 import com.modagbul.BE.domain.user.entity.User;
 import com.modagbul.BE.domain.usermission.constant.Status;
 import com.modagbul.BE.domain.usermission.dto.UserMissionDetailDto;

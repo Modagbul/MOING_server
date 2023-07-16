@@ -1,18 +1,15 @@
 package com.modagbul.BE.domain.fire.controller;
 
 import com.modagbul.BE.domain.fire.service.FireService;
-import com.modagbul.BE.domain.mission.dto.MissionDto;
 import com.modagbul.BE.global.dto.ResponseDto;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 import static com.modagbul.BE.domain.fire.constant.FireResponseMessage.THROW_FIRE_SUCCESS;
-import static com.modagbul.BE.domain.mission.constant.MissionConstant.MissionResponseMessage.CREATE_MISSION_SUCCESS;
 
 @RestController
 @RequiredArgsConstructor

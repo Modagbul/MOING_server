@@ -1,4 +1,4 @@
-package com.modagbul.BE.domain.mission.entity;
+package com.modagbul.BE.domain.mission.domain.entity;
 
 import com.modagbul.BE.domain.team.entity.Team;
 import com.modagbul.BE.global.entity.BaseTimeEntity;

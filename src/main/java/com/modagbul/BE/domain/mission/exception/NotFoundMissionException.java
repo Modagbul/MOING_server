@@ -1,7 +1,6 @@
-package com.modagbul.BE.domain.mission.Exception;
+package com.modagbul.BE.domain.mission.exception;
 
-import com.modagbul.BE.domain.mission.constant.MissionConstant;
-import com.modagbul.BE.domain.mission.constant.MissionConstant.MissionExceptionList;
+import com.modagbul.BE.domain.mission.application.constant.MissionConstant.MissionExceptionList;
 
 public class NotFoundMissionException extends MissionException{
     public NotFoundMissionException() {
