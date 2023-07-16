@@ -1,12 +1,11 @@
-package com.modagbul.BE.domain.usermission.dto;
+package com.modagbul.BE.domain.usermission.application.dto;
 
-import com.modagbul.BE.domain.usermission.constant.Status;
+import com.modagbul.BE.domain.usermission.application.constant.Status;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
-import java.util.Objects;
 
 @AllArgsConstructor
 @NoArgsConstructor

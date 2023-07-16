@@ -1,6 +1,6 @@
-package com.modagbul.BE.domain.fire.repository;
+package com.modagbul.BE.domain.fire.domain.repository;
 
-import com.modagbul.BE.domain.fire.entity.Fire;
+import com.modagbul.BE.domain.fire.domain.entity.Fire;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;

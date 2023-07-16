@@ -1,4 +1,4 @@
-package com.modagbul.BE.domain.usermission.entity;
+package com.modagbul.BE.domain.usermission.domain.entity;
 
 <<<<<<< HEAD
 import com.modagbul.BE.domain.mission.entity.Mission;
@@ -8,7 +8,7 @@ import com.modagbul.BE.domain.mission.domain.entity.Mission;
 import com.modagbul.BE.domain.team.entity.Team;
 >>>>>>> 87cd2da (refactor : package 구조 재배치)
 import com.modagbul.BE.domain.user.entity.User;
-import com.modagbul.BE.domain.usermission.constant.Status;
+import com.modagbul.BE.domain.usermission.application.constant.Status;
 import com.modagbul.BE.global.entity.BaseTimeEntity;
 import lombok.AllArgsConstructor;
 import lombok.Getter;

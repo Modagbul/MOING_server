@@ -1,11 +1,11 @@
-package com.modagbul.BE.domain.usermission.repository;
+package com.modagbul.BE.domain.usermission.domain.repository;
 
 import com.modagbul.BE.domain.mission.domain.entity.Mission;
 import com.modagbul.BE.domain.user.entity.User;
-import com.modagbul.BE.domain.usermission.constant.Status;
-import com.modagbul.BE.domain.usermission.dto.UserMissionDetailDto;
-import com.modagbul.BE.domain.usermission.dto.UserMissionListDto;
-import com.modagbul.BE.domain.usermission.entity.UserMission;
+import com.modagbul.BE.domain.usermission.application.constant.Status;
+import com.modagbul.BE.domain.usermission.application.dto.UserMissionDetailDto;
+import com.modagbul.BE.domain.usermission.application.dto.UserMissionListDto;
+import com.modagbul.BE.domain.usermission.domain.entity.UserMission;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;

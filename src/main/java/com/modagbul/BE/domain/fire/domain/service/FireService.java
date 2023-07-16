@@ -1,16 +1,16 @@
-package com.modagbul.BE.domain.fire.service;
+package com.modagbul.BE.domain.fire.domain.service;
 
 import com.modagbul.BE.global.config.fcm.dto.FcmDto;
-import com.modagbul.BE.domain.fire.entity.Fire;
+import com.modagbul.BE.domain.fire.domain.entity.Fire;
 import com.modagbul.BE.domain.fire.exception.FireAuthDeniedException;
-import com.modagbul.BE.domain.fire.repository.FireRepository;
+import com.modagbul.BE.domain.fire.domain.repository.FireRepository;
 import com.modagbul.BE.domain.user.entity.User;
 import com.modagbul.BE.domain.user.repository.UserRepository;
-import com.modagbul.BE.domain.usermission.constant.Status;
-import com.modagbul.BE.domain.usermission.entity.UserMission;
+import com.modagbul.BE.domain.usermission.application.constant.Status;
+import com.modagbul.BE.domain.usermission.domain.entity.UserMission;
 import com.modagbul.BE.domain.usermission.exception.NotFoundUserMissionsException;
-import com.modagbul.BE.domain.usermission.repository.UserMissionRepository;
 import com.modagbul.BE.global.config.fcm.service.FcmService;
+import com.modagbul.BE.domain.usermission.domain.repository.UserMissionRepository;
 import com.modagbul.BE.global.config.security.util.SecurityUtils;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;

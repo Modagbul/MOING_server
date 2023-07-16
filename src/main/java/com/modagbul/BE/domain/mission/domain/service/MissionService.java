@@ -7,19 +7,15 @@ import com.modagbul.BE.domain.mission.application.dto.MissionListDto;
 
 import com.modagbul.BE.domain.mission.domain.entity.Mission;
 import com.modagbul.BE.domain.mission.domain.repository.MissionRepository;
+
 import com.modagbul.BE.domain.team.domain.entity.Team;
 import com.modagbul.BE.domain.team.domain.repository.TeamRepository;
 import com.modagbul.BE.domain.team_member.domain.repository.TeamMemberRepository;
-import com.modagbul.BE.domain.mission.domain.entity.Mission;
-import com.modagbul.BE.domain.mission.domain.repository.MissionRepository;
-import com.modagbul.BE.domain.team.domain.entity.Team;
-import com.modagbul.BE.domain.team.domain.repository.TeamRepository;
-import com.modagbul.BE.domain.team_member.domain.repository.TeamMemberRepository;
-import com.modagbul.BE.domain.usermission.constant.Status;
-import com.modagbul.BE.domain.usermission.dto.UserMissionDetailDto;
-import com.modagbul.BE.domain.usermission.entity.UserMission;
+import com.modagbul.BE.domain.usermission.application.constant.Status;
+import com.modagbul.BE.domain.usermission.application.dto.UserMissionDetailDto;
+import com.modagbul.BE.domain.usermission.domain.entity.UserMission;
 import com.modagbul.BE.domain.usermission.exception.NotFoundUserMissionsException;
-import com.modagbul.BE.domain.usermission.repository.UserMissionRepository;
+import com.modagbul.BE.domain.usermission.domain.repository.UserMissionRepository;
 import com.modagbul.BE.global.config.security.util.SecurityUtils;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;

@@ -1,6 +1,6 @@
-package com.modagbul.BE.domain.fire.controller;
+package com.modagbul.BE.domain.fire.presentation;
 
-import com.modagbul.BE.domain.fire.service.FireService;
+import com.modagbul.BE.domain.fire.domain.service.FireService;
 import com.modagbul.BE.global.dto.ResponseDto;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -9,7 +9,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import static com.modagbul.BE.domain.fire.constant.FireResponseMessage.THROW_FIRE_SUCCESS;
+import static com.modagbul.BE.domain.fire.application.constant.FireResponseMessage.THROW_FIRE_SUCCESS;
 
 @RestController
 @RequiredArgsConstructor
