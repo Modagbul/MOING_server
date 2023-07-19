@@ -1,9 +1,7 @@
 package com.modagbul.BE.domain.mission.constant;
 
 import com.modagbul.BE.domain.mission.entity.Mission;
-import com.modagbul.BE.domain.team_member.entity.TeamMember;
 import com.modagbul.BE.domain.user.entity.User;
-import com.modagbul.BE.domain.usermission.repository.UserMissionRepository;
 import lombok.Getter;
 
 import java.util.*;

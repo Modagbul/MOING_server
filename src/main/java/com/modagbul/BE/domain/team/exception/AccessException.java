@@ -1,6 +1,7 @@
 package com.modagbul.BE.domain.team.exception;
 
-import static com.modagbul.BE.domain.team.constant.TeamConstant.TeamExceptionList.ACCESS_ERROR;
+
+import static com.modagbul.BE.domain.team.exception.constant.TeamExceptionList.ACCESS_ERROR;
 
 public class AccessException extends TeamException{
     public AccessException(){

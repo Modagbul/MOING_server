@@ -1,14 +1,14 @@
 package com.modagbul.BE.domain.user.entity;
 
-import com.modagbul.BE.domain.notice.board.entity.Notice;
-import com.modagbul.BE.domain.notice.comment.entity.NoticeComment;
-import com.modagbul.BE.domain.notice.read.entity.NoticeRead;
-import com.modagbul.BE.domain.team_member.entity.TeamMember;
+import com.modagbul.BE.domain.notice.board.domain.entity.Notice;
+import com.modagbul.BE.domain.notice.comment.domain.entity.NoticeComment;
+import com.modagbul.BE.domain.notice.read.domain.entity.NoticeRead;
+import com.modagbul.BE.domain.team_member.domain.entity.TeamMember;
 import com.modagbul.BE.domain.user.constant.UserConstant.Role;
-import com.modagbul.BE.domain.vote.board.entity.Vote;
-import com.modagbul.BE.domain.vote.comment.entity.VoteComment;
+import com.modagbul.BE.domain.vote.board.domain.entity.Vote;
+import com.modagbul.BE.domain.vote.comment.domain.entity.VoteComment;
 import com.modagbul.BE.domain.vote.content.user.enttiy.VoteContentUser;
-import com.modagbul.BE.domain.vote.read.entity.VoteRead;
+import com.modagbul.BE.domain.vote.read.domain.entity.VoteRead;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;

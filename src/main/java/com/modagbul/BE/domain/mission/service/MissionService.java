@@ -7,9 +7,9 @@ import com.modagbul.BE.domain.mission.dto.MissionListDto;
 
 import com.modagbul.BE.domain.mission.entity.Mission;
 import com.modagbul.BE.domain.mission.repository.MissionRepository;
-import com.modagbul.BE.domain.team.entity.Team;
-import com.modagbul.BE.domain.team.repository.TeamRepository;
-import com.modagbul.BE.domain.team_member.repository.TeamMemberRepository;
+import com.modagbul.BE.domain.team.domain.entity.Team;
+import com.modagbul.BE.domain.team.domain.repository.TeamRepository;
+import com.modagbul.BE.domain.team_member.domain.repository.TeamMemberRepository;
 import com.modagbul.BE.domain.usermission.constant.Status;
 import com.modagbul.BE.domain.usermission.dto.UserMissionDetailDto;
 import com.modagbul.BE.domain.usermission.entity.UserMission;

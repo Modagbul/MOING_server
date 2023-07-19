@@ -1,6 +1,6 @@
 package com.modagbul.BE.domain.mission.entity;
 
-import com.modagbul.BE.domain.team.entity.Team;
+import com.modagbul.BE.domain.team.domain.entity.Team;
 import com.modagbul.BE.global.entity.BaseTimeEntity;
 import lombok.AllArgsConstructor;
 import lombok.Getter;

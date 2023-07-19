@@ -1,5 +1,6 @@
 package com.modagbul.BE.domain.fire.service;
 
+import com.modagbul.BE.global.config.fcm.dto.FcmDto;
 import com.modagbul.BE.domain.fire.entity.Fire;
 import com.modagbul.BE.domain.fire.exception.FireAuthDeniedException;
 import com.modagbul.BE.domain.fire.repository.FireRepository;
@@ -9,9 +10,7 @@ import com.modagbul.BE.domain.usermission.constant.Status;
 import com.modagbul.BE.domain.usermission.entity.UserMission;
 import com.modagbul.BE.domain.usermission.exception.NotFoundUserMissionsException;
 import com.modagbul.BE.domain.usermission.repository.UserMissionRepository;
-import com.modagbul.BE.domain.usermission.service.UserMissionService;
-import com.modagbul.BE.fcm.dto.FcmDto;
-import com.modagbul.BE.fcm.service.FcmService;
+import com.modagbul.BE.global.config.fcm.service.FcmService;
 import com.modagbul.BE.global.config.security.util.SecurityUtils;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -19,8 +18,6 @@ import org.springframework.stereotype.Service;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
-import static com.modagbul.BE.fcm.dto.FcmDto.*;
 
 @Service
 @RequiredArgsConstructor
@@ -42,7 +39,7 @@ public class FireService {
             fireRepository.save(fire);
 
             List<String> strings = fireMessage(loginUser.getNickName(), userMission.getUser().getNickName(), userMission.getMission().getTitle()).get((int) (Math.random() * 2));
-            ToSingleRequest toSingleRequest = new ToSingleRequest(
+            FcmDto.ToSingleRequest toSingleRequest = new FcmDto.ToSingleRequest(
                     userMission.getUser().getFcmToken(),strings.get(0),strings.get(1)
             );
             System.out.println(toSingleRequest.getTitle()+toSingleRequest.getBody());
