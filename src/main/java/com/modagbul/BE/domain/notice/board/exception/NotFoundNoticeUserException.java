@@ -1,6 +1,7 @@
 package com.modagbul.BE.domain.notice.board.exception;
 
-import static com.modagbul.BE.domain.notice.board.constant.NoticeConstant.NoticeExceptionList.NOT_HAVE_NOTICE_BY_USER_ERROR;
+
+import static com.modagbul.BE.domain.notice.board.exception.constant.NoticeExceptionList.NOT_HAVE_NOTICE_BY_USER_ERROR;
 
 public class NotFoundNoticeUserException extends NoticeException{
     public NotFoundNoticeUserException(){

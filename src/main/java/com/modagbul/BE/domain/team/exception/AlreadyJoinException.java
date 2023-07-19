@@ -1,8 +1,7 @@
 package com.modagbul.BE.domain.team.exception;
 
-import com.modagbul.BE.domain.team.constant.TeamConstant;
+import static com.modagbul.BE.domain.team.exception.constant.TeamExceptionList.ALREADY_ERROR;
 
-import static com.modagbul.BE.domain.team.constant.TeamConstant.TeamExceptionList.ALREADY_ERROR;
 
 public class AlreadyJoinException extends TeamException{
     public AlreadyJoinException(){

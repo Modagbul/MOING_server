@@ -1,6 +1,6 @@
 package com.modagbul.BE.domain.user.service.mypage;
 
-import com.modagbul.BE.domain.team_member.entity.TeamMember;
+import com.modagbul.BE.domain.team_member.domain.entity.TeamMember;
 import com.modagbul.BE.domain.user.dto.UserDto;
 import com.modagbul.BE.domain.user.entity.User;
 import com.modagbul.BE.domain.user.exception.NotFoundUserException;

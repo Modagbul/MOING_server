@@ -1,6 +1,7 @@
 package com.modagbul.BE.domain.vote.comment.exception;
 
-import static com.modagbul.BE.domain.vote.comment.constant.VoteCommentConstant.VoteCommentExceptionList.NOT_VOTE_COMMENT_WRITER_ERROR;
+
+import static com.modagbul.BE.domain.vote.comment.exception.constant.VoteCommentExceptionList.NOT_VOTE_COMMENT_WRITER_ERROR;
 
 public class NotVoteCommentWriterException extends VoteCommentException {
     public NotVoteCommentWriterException() {

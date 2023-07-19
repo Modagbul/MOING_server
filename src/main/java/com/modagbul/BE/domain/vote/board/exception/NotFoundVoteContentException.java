@@ -1,6 +1,7 @@
 package com.modagbul.BE.domain.vote.board.exception;
 
-import static com.modagbul.BE.domain.vote.board.constant.VoteConstant.VoteExceptionList.NOT_HAVE_VOTE_CONTENT_ERROR;
+
+import static com.modagbul.BE.domain.vote.board.exception.constant.VoteExceptionList.NOT_HAVE_VOTE_CONTENT_ERROR;
 
 public class NotFoundVoteContentException extends VoteException{
     public NotFoundVoteContentException(){

@@ -1,6 +1,7 @@
 package com.modagbul.BE.domain.notice.comment.exception;
 
-import static com.modagbul.BE.domain.notice.comment.constant.NoticeCommentConstant.NoticeCommentExceptionList.NOT_FOUND_NOTICE_COMMENT_ID_ERROR;
+
+import static com.modagbul.BE.domain.notice.comment.exception.constant.NoticeCommentExceptionList.NOT_FOUND_NOTICE_COMMENT_ID_ERROR;
 
 public class NotFoundNoticeCommentIdException extends NoticeCommentException {
     public NotFoundNoticeCommentIdException(){

@@ -1,6 +1,7 @@
 package com.modagbul.BE.domain.team.exception;
 
-import static com.modagbul.BE.domain.team.constant.TeamConstant.TeamExceptionList.NOT_HAVE_TEAMID_ERROR;
+
+import static com.modagbul.BE.domain.team.exception.constant.TeamExceptionList.NOT_HAVE_TEAMID_ERROR;
 
 public class NotFoundTeamIdException extends TeamException{
     public NotFoundTeamIdException(){
