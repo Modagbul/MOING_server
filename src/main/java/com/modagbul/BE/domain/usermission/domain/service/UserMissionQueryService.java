@@ -4,7 +4,9 @@ import com.modagbul.BE.domain.mission.domain.entity.Mission;
 import com.modagbul.BE.domain.mission.exception.NotFoundMissionException;
 import com.modagbul.BE.domain.user.entity.User;
 import com.modagbul.BE.domain.usermission.application.dto.UserMissionDetailDto;
+import com.modagbul.BE.domain.usermission.domain.entity.UserMission;
 import com.modagbul.BE.domain.usermission.domain.repository.UserMissionRepository;
+import com.modagbul.BE.domain.usermission.exception.NotFoundUserMissionsException;
 import lombok.RequiredArgsConstructor;
 
 import java.util.List;
@@ -26,6 +28,10 @@ public class UserMissionQueryService {
     public Long getPersonalRateForGraph(Long teamId,Long loginId) {
 //        return userMissionRepository.getPersonalRateForGraphById(loginId, teamId).orElseThrow(InvalidCompleteRateException::new);
         return userMissionRepository.getPersonalRateForGraphById(loginId, teamId).orElse(0L);
+    }
+
+    public UserMission getUserMissionById(Long userMissionId) {
+        return userMissionRepository.findById(userMissionId).orElseThrow(NotFoundUserMissionsException::new);
     }
 
 

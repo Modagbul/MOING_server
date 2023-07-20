@@ -1,6 +1,6 @@
 package com.modagbul.BE.domain.fire.presentation;
 
-import com.modagbul.BE.domain.fire.domain.service.FireService;
+import com.modagbul.BE.domain.fire.application.service.FireService;
 import com.modagbul.BE.global.dto.ResponseDto;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;

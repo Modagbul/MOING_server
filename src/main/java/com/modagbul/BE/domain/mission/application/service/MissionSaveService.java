@@ -1,7 +1,6 @@
 package com.modagbul.BE.domain.mission.application.service;
 
 import com.modagbul.BE.domain.mission.domain.entity.Mission;
-import com.modagbul.BE.domain.mission.domain.repository.MissionRepository;
 import com.modagbul.BE.domain.mission.domain.service.MissionQueryService;
 import com.modagbul.BE.domain.mission.exception.InvalidDueToDate;
 import com.modagbul.BE.domain.mission.exception.MissionAuthDeniedException;
@@ -9,7 +8,6 @@ import com.modagbul.BE.domain.team.entity.Team;
 import com.modagbul.BE.domain.team.repository.TeamRepository;
 import com.modagbul.BE.domain.team_member.repository.TeamMemberRepository;
 import com.modagbul.BE.domain.usermission.application.constant.Status;
-import com.modagbul.BE.domain.usermission.domain.repository.UserMissionRepository;
 import com.modagbul.BE.domain.usermission.domain.service.UserMissionSaveService;
 import com.modagbul.BE.global.config.security.util.SecurityUtils;
 import lombok.RequiredArgsConstructor;
@@ -42,10 +40,7 @@ public class MissionSaveService {
         if(missionReq.getDueTo().compareTo(formattedDate) < 0){
             throw new InvalidDueToDate();
         }
-        // 날짜를 원하는 형식으로 포맷팅
 
-
-        //  로그인한 사용자의 id
         Long loginId = SecurityUtils.getLoggedInUser().getUserId();
 
         // 로그인한 사용자가 소모임장인지 확인 -> 팀 leaderid 확인

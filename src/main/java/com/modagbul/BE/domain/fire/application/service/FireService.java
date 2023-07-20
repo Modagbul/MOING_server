@@ -1,12 +1,14 @@
-package com.modagbul.BE.domain.fire.domain.service;
+package com.modagbul.BE.domain.fire.application.service;
 
 import com.modagbul.BE.domain.fire.domain.entity.Fire;
+import com.modagbul.BE.domain.fire.domain.service.FireSaveService;
 import com.modagbul.BE.domain.fire.exception.FireAuthDeniedException;
 import com.modagbul.BE.domain.fire.domain.repository.FireRepository;
 import com.modagbul.BE.domain.user.entity.User;
 import com.modagbul.BE.domain.user.repository.UserRepository;
 import com.modagbul.BE.domain.usermission.application.constant.Status;
 import com.modagbul.BE.domain.usermission.domain.entity.UserMission;
+import com.modagbul.BE.domain.usermission.domain.service.UserMissionQueryService;
 import com.modagbul.BE.domain.usermission.exception.NotFoundUserMissionsException;
 import com.modagbul.BE.domain.usermission.domain.repository.UserMissionRepository;
 import com.modagbul.BE.fcm.service.FcmService;
@@ -24,20 +26,22 @@ import static com.modagbul.BE.fcm.dto.FcmDto.*;
 @RequiredArgsConstructor
 public class FireService {
 
-    private final UserMissionRepository userMissionRepository;
     private final UserRepository userRepository;
-    private final FireRepository fireRepository;
     private final FcmService fcmService;
+
+    private final UserMissionQueryService userMissionQueryService;
+    private final FireSaveService fireSaveService;
 
     public Long fire(Long userMissionId) {
         Long loginId = SecurityUtils.getLoggedInUser().getUserId();
         User loginUser = userRepository.findById(loginId).orElseThrow(() -> new IllegalStateException("해당 유저를 찾을 수 없습니다."));
 
-        UserMission userMission = userMissionRepository.findById(userMissionId).orElseThrow(NotFoundUserMissionsException::new);
+        UserMission userMission = userMissionQueryService.getUserMissionById(userMissionId);
+
         if(userMission.getStatus().equals(Status.INCOMPLETE)){
             Fire fire = new Fire();
             fire.createFire(userMission,loginUser);
-            fireRepository.save(fire);
+            fireSaveService.saveFire(fire);
 
             List<String> strings = fireMessage(loginUser.getNickName(), userMission.getUser().getNickName(), userMission.getMission().getTitle()).get((int) (Math.random() * 2));
             ToSingleRequest toSingleRequest = new ToSingleRequest(
@@ -52,7 +56,6 @@ public class FireService {
         else{
             throw new FireAuthDeniedException();
         }
-
 
 
         return userMissionId;
