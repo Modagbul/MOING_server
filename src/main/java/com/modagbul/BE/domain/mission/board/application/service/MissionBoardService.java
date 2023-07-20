@@ -22,8 +22,6 @@ import java.util.concurrent.atomic.AtomicReference;
 @Service
 @RequiredArgsConstructor
 public class MissionBoardService {
-    private final MissionRepository missionRepository;
-    private final UserMissionRepository userMissionRepository;
     private final TeamRepository teamRepository;
     private final TeamMemberRepository teamMemberRepository;
 
@@ -50,7 +48,7 @@ public class MissionBoardService {
 
         List<User> users = teamMemberRepository.findUserListByTeamId(teamId).orElseThrow(InvalidCompleteRateException::new);
         for (User user : users) {
-            sum.updateAndGet(v -> v + userMissionRepository.getPersonalRateForGraphById(user.getUserId(), teamId).orElse(0L));
+            sum.updateAndGet(v -> v + userMissionQueryService.getPersonalRateForGraph(teamId,loginId));
         }
 
         return new MissionBoardDto((sum.get() / users.size()), fireMessageByTeamPercent(sum.get() / users.size()));

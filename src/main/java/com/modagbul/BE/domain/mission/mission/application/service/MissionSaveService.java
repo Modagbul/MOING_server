@@ -25,8 +25,6 @@ import static com.modagbul.BE.domain.mission.application.dto.MissionDto.MissionR
 @RequiredArgsConstructor
 public class MissionSaveService {
 
-    private final MissionRepository missionRepository;
-    private final UserMissionRepository userMissionRepository;
     private final TeamRepository teamRepository;
     private final TeamMemberRepository teamMemberRepository;
 
