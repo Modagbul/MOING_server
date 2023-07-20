@@ -2,9 +2,6 @@ package com.modagbul.BE.domain.mission.application.service;
 
 import com.modagbul.BE.domain.mission.domain.service.MissionQueryService;
 import com.modagbul.BE.domain.mission.domain.service.MissionSaveService;
-import com.modagbul.BE.domain.mission.exception.InvalidDueToDate;
-import com.modagbul.BE.domain.mission.exception.MissionAuthDeniedException;
-import com.modagbul.BE.domain.mission.exception.NotFoundMissionException;
 import com.modagbul.BE.domain.mission.application.dto.MissionListDto;
 
 import com.modagbul.BE.domain.mission.domain.entity.Mission;
@@ -12,12 +9,10 @@ import com.modagbul.BE.domain.mission.domain.repository.MissionRepository;
 import com.modagbul.BE.domain.team.domain.repository.TeamRepository;
 import com.modagbul.BE.domain.team_member.domain.repository.TeamMemberRepository;
 import com.modagbul.BE.domain.usermission.application.constant.Status;
+
 import com.modagbul.BE.domain.usermission.application.dto.UserMissionDetailDto;
-import com.modagbul.BE.domain.usermission.domain.entity.UserMission;
 import com.modagbul.BE.domain.usermission.domain.service.UserMissionQueryService;
 import com.modagbul.BE.domain.usermission.domain.service.UserMissionSaveService;
-import com.modagbul.BE.domain.usermission.exception.NotFoundUserMissionsException;
-import com.modagbul.BE.domain.usermission.domain.repository.UserMissionRepository;
 import com.modagbul.BE.global.config.security.util.SecurityUtils;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -28,8 +23,6 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
-
-import static com.modagbul.BE.domain.mission.application.dto.MissionDto.*;
 
 @Service
 @RequiredArgsConstructor

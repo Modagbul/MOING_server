@@ -1,7 +1,6 @@
 package com.modagbul.BE.domain.mission.application.service;
 
 import com.google.firebase.messaging.FirebaseMessagingException;
-import com.modagbul.BE.domain.mission.exception.NotFoundMissionException;
 import com.modagbul.BE.domain.mission.application.constant.MissionFcmMessage;
 import com.modagbul.BE.domain.mission.domain.entity.Mission;
 import com.modagbul.BE.domain.mission.domain.repository.MissionRepository;
