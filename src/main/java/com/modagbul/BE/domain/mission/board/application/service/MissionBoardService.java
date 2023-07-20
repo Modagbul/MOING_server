@@ -4,13 +4,8 @@ import com.modagbul.BE.domain.mission.domain.service.MissionQueryService;
 import com.modagbul.BE.domain.mission.exception.InvalidCompleteRateException;
 import com.modagbul.BE.domain.mission.application.dto.MissionBoardDto;
 import com.modagbul.BE.domain.mission.domain.repository.MissionRepository;
-import com.modagbul.BE.domain.team.domain.repository.TeamRepository;
-import com.modagbul.BE.domain.team_member.domain.repository.TeamMemberRepository;
-import com.modagbul.BE.domain.mission.exception.InvalidCompleteRateException;
-import com.modagbul.BE.domain.mission.application.dto.MissionBoardDto;
-import com.modagbul.BE.domain.mission.domain.repository.MissionRepository;
-import com.modagbul.BE.domain.team.domain.repository.TeamRepository;
-import com.modagbul.BE.domain.team_member.domain.repository.TeamMemberRepository;
+import com.modagbul.BE.domain.team.repository.TeamRepository;
+import com.modagbul.BE.domain.team_member.repository.TeamMemberRepository;
 import com.modagbul.BE.domain.user.entity.User;
 import com.modagbul.BE.domain.usermission.domain.repository.UserMissionRepository;
 import com.modagbul.BE.domain.usermission.domain.service.UserMissionQueryService;
@@ -27,8 +22,6 @@ import java.util.concurrent.atomic.AtomicReference;
 @Service
 @RequiredArgsConstructor
 public class MissionBoardService {
-    private final MissionRepository missionRepository;
-    private final UserMissionRepository userMissionRepository;
     private final TeamRepository teamRepository;
     private final TeamMemberRepository teamMemberRepository;
 
@@ -55,7 +48,7 @@ public class MissionBoardService {
 
         List<User> users = teamMemberRepository.findUserListByTeamId(teamId).orElseThrow(InvalidCompleteRateException::new);
         for (User user : users) {
-            sum.updateAndGet(v -> v + userMissionRepository.getPersonalRateForGraphById(user.getUserId(), teamId).orElse(0L));
+            sum.updateAndGet(v -> v + userMissionQueryService.getPersonalRateForGraph(teamId,loginId));
         }
 
         return new MissionBoardDto((sum.get() / users.size()), fireMessageByTeamPercent(sum.get() / users.size()));
