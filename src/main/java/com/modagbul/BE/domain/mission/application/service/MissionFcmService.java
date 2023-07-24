@@ -12,6 +12,7 @@ import com.modagbul.BE.domain.usermission.domain.service.UserMissionQueryService
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 
 import java.util.*;
@@ -20,11 +21,11 @@ import java.util.*;
 @Slf4j
 
 @Service
+@Transactional
 @RequiredArgsConstructor
 public class MissionFcmService {
 
     private final FcmService fcmService;
-    private final MissionRepository missionRepository;
     private final UserMissionRepository userMissionRepository;
     private Mission mission;
 

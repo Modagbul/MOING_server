@@ -18,7 +18,7 @@ import java.util.Optional;
 public interface UserMissionRepository extends JpaRepository<UserMission, Long> {
 
 
-    @Query(value = " select new com.modagbul.BE.domain.usermission.dto.UserMissionDetailDto(um.mission.title,um.mission.dueTo,um.mission.content,um.mission.rule,um.status,um.achieve)" +
+    @Query(value = " select new com.modagbul.BE.domain.usermission.application.dto.UserMissionDetailDto(um.mission.title,um.mission.dueTo,um.mission.content,um.mission.rule,um.status,um.achieve)" +
             "from UserMission um " +
             "where um.team.teamId = :teamId and um.user.userId = :userId and um.mission.missionId = :missionId")
     Optional<UserMissionDetailDto> findUserMissionDetailById(@Param("teamId") Long teamId, @Param("userId") Long userId, @Param("missionId") Long missionId);
@@ -26,13 +26,13 @@ public interface UserMissionRepository extends JpaRepository<UserMission, Long> 
 
 
 
-    @Query(value = "select new com.modagbul.BE.domain.usermission.dto.UserMissionListDto(" +
+    @Query(value = "select new com.modagbul.BE.domain.usermission.application.dto.UserMissionListDto(" +
             "um.userMissionId,um.user.nickName,um.user.imageUrl,um.status,um.achieve,um.lastModifiedDate) " +
             "from UserMission um " +
             "where um.team.teamId = :teamId and um.mission.missionId = :missionId and um.status = :status order by um.lastModifiedDate")
     Optional<List<UserMissionListDto>> findCompleteUserMissionListById(@Param("teamId") Long teamId, @Param("missionId") Long missionId, @Param("status") Status status);
 
-   @Query(value = "select new com.modagbul.BE.domain.usermission.dto.UserMissionListDto(" +
+   @Query(value = "select new com.modagbul.BE.domain.usermission.application.dto.UserMissionListDto(" +
             "um.userMissionId,um.user.nickName,um.user.imageUrl,um.status,um.achieve,um.lastModifiedDate) " +
             "from UserMission um " +
             "where um.team.teamId = :teamId and um.mission.missionId = :missionId and um.status = :status order by um.user.nickName")
@@ -50,6 +50,6 @@ public interface UserMissionRepository extends JpaRepository<UserMission, Long> 
     @Query(value = "select count(um.user_mission_id) / (select count(m.mission_id) from mission m where m.team_id = :teamId) * 100 from user_mission um where um.team_id = :teamId and um.user_id = :userId and um.status = 'COMPLETE'", nativeQuery = true)
     Optional<Long> getPersonalRateForGraphById(@Param("userId") Long userId, @Param("teamId") Long teamId);
 
-    @Query(value = "select um.user from UserMission um where um.mission = :mission and um.status = com.modagbul.BE.domain.usermission.constant.Status.INCOMPLETE")
+    @Query(value = "select um.user from UserMission um where um.mission = :mission and um.status = com.modagbul.BE.domain.usermission.application.constant.Status.INCOMPLETE")
     Optional<List<User>> getInCompleteUsersByMission(@Param("mission") Mission mission);
 }

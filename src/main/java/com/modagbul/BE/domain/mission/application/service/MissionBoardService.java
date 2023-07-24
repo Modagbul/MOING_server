@@ -17,6 +17,7 @@ import com.modagbul.BE.domain.usermission.domain.service.UserMissionQueryService
 import com.modagbul.BE.global.config.security.util.SecurityUtils;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -25,6 +26,7 @@ import java.util.Map;
 import java.util.concurrent.atomic.AtomicReference;
 
 @Service
+@Transactional
 @RequiredArgsConstructor
 public class MissionBoardService {
     private final TeamRepository teamRepository;

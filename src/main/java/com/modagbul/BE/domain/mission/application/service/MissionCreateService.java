@@ -2,6 +2,7 @@ package com.modagbul.BE.domain.mission.application.service;
 
 import com.modagbul.BE.domain.mission.domain.entity.Mission;
 import com.modagbul.BE.domain.mission.domain.service.MissionQueryService;
+import com.modagbul.BE.domain.mission.domain.service.MissionSaveService;
 import com.modagbul.BE.domain.mission.exception.InvalidDueToDate;
 import com.modagbul.BE.domain.mission.exception.MissionAuthDeniedException;
 import com.modagbul.BE.domain.team.domain.entity.Team;
@@ -12,6 +13,7 @@ import com.modagbul.BE.domain.usermission.domain.service.UserMissionSaveService;
 import com.modagbul.BE.global.config.security.util.SecurityUtils;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -20,14 +22,15 @@ import static com.modagbul.BE.domain.mission.application.dto.MissionDto.MissionR
 import static com.modagbul.BE.domain.mission.application.dto.MissionDto.MissionRes;
 
 @Service
+@Transactional
 @RequiredArgsConstructor
-public class MissionSaveService {
+public class MissionCreateService {
 
     private final TeamRepository teamRepository;
     private final TeamMemberRepository teamMemberRepository;
 
     private final MissionQueryService missionQueryService;
-    private final com.modagbul.BE.domain.mission.domain.service.MissionSaveService missionSaveService;
+    private final MissionSaveService missionSaveService;
     private final UserMissionSaveService userMissionSaveService;
 
 

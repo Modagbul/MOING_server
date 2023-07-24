@@ -16,6 +16,7 @@ import com.modagbul.BE.domain.usermission.domain.service.UserMissionSaveService;
 import com.modagbul.BE.global.config.security.util.SecurityUtils;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -24,6 +25,8 @@ import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
 
+
+@Transactional
 @Service
 @RequiredArgsConstructor
 public class MissionService {
