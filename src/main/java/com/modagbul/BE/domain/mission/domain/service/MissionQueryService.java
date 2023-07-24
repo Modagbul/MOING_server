@@ -7,12 +7,13 @@ import com.modagbul.BE.domain.mission.exception.NotFoundMissionException;
 import com.modagbul.BE.domain.usermission.application.constant.Status;
 import com.modagbul.BE.domain.usermission.exception.NotFoundUserMissionsException;
 import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Optional;
 
-//@DomainService
+@Service
 @Transactional(readOnly = true)
 @RequiredArgsConstructor
 public class MissionQueryService {
@@ -28,6 +29,9 @@ public class MissionQueryService {
     }
 
 
+    public Mission getMissionByTeamIdAndMissionId(Long teamId, Long missionId) {
+        return missionRepository.findByTeamIdAndMissionId(teamId, missionId).orElseThrow(NotFoundMissionException::new);
+    }
 
 
     public Long getLeaderIdByTeamIdAndMissionId(Long teamId, Long missionId) {

@@ -7,10 +7,11 @@ import com.modagbul.BE.domain.usermission.domain.entity.UserMission;
 import com.modagbul.BE.domain.usermission.domain.repository.UserMissionRepository;
 import com.modagbul.BE.domain.usermission.exception.NotFoundUserMissionsException;
 import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
-
+@Service
 @RequiredArgsConstructor
 public class UserMissionSaveService {
 
@@ -26,5 +27,9 @@ public class UserMissionSaveService {
 
         return userMissionRepository.saveAll(userMissionList);
 
+    }
+
+    public UserMission saveUserMission(UserMission userMission) {
+        return userMissionRepository.save(userMission);
     }
 }

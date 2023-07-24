@@ -4,7 +4,7 @@ import com.modagbul.BE.domain.mission.application.dto.MissionBoardDto;
 import com.modagbul.BE.domain.mission.application.dto.MissionDto;
 import com.modagbul.BE.domain.mission.application.dto.MissionListDto;
 import com.modagbul.BE.domain.mission.application.dto.MissionRateDto;
-import com.modagbul.BE.domain.mission.application.service.MissionSaveService;
+import com.modagbul.BE.domain.mission.application.service.MissionCreateService;
 import com.modagbul.BE.domain.mission.application.service.MissionUpdateService;
 import com.modagbul.BE.domain.mission.application.service.MissionBoardService;
 import com.modagbul.BE.domain.mission.application.service.MissionService;
@@ -33,14 +33,14 @@ public class MissionController {
     private final UserMissionService userMissionService;
     private final MissionBoardService missionBoardService;
 
-    private final MissionSaveService missionSaveService;
+    private final MissionCreateService missionCreateService;
     private final MissionUpdateService missionUpdateService;
     private final MissionService missionService;
 
     @ApiOperation(value = "미션 생성", notes = "미션을 생성합니다.")
     @PostMapping("")
     public ResponseEntity<ResponseDto<MissionDto.MissionRes>> createMission(@PathVariable Long teamId, @RequestBody MissionDto.MissionReq missionReq){
-        return ResponseEntity.ok(ResponseDto.create(HttpStatus.OK.value(),CREATE_MISSION_SUCCESS.getMessage(),missionSaveService.createMission(teamId,missionReq)));
+        return ResponseEntity.ok(ResponseDto.create(HttpStatus.OK.value(),CREATE_MISSION_SUCCESS.getMessage(), missionCreateService.createMission(teamId,missionReq)));
     }
 
     @ApiOperation(value = "미션 수정", notes = "미션을 수정합니다.")
