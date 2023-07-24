@@ -1,10 +1,5 @@
 package com.modagbul.BE.domain.mission.application.constant;
-
-<<<<<<< HEAD:src/main/java/com/modagbul/BE/domain/mission/constant/MissionFcmMessage.java
-import com.modagbul.BE.domain.mission.entity.Mission;
-=======
 import com.modagbul.BE.domain.mission.domain.entity.Mission;
->>>>>>> 87cd2da (refactor : package 구조 재배치):src/main/java/com/modagbul/BE/domain/mission/application/constant/MissionFcmMessage.java
 import com.modagbul.BE.domain.user.entity.User;
 import lombok.Getter;
 
