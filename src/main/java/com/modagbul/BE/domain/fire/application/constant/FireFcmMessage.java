@@ -1,6 +1,6 @@
 package com.modagbul.BE.domain.fire.application.constant;
 
-import com.modagbul.BE.domain.mission.domain.entity.Mission;
+import com.modagbul.BE.domain.mission.main.domain.entity.Mission;
 import lombok.Getter;
 
 @Getter

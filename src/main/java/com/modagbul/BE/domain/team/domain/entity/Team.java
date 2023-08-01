@@ -1,5 +1,6 @@
 package com.modagbul.BE.domain.team.domain.entity;
 
+import com.modagbul.BE.domain.mission.main.domain.entity.Mission;
 import com.modagbul.BE.domain.notice.board.domain.entity.Notice;
 import com.modagbul.BE.domain.team.application.dto.constant.Category;
 import com.modagbul.BE.domain.team_member.domain.entity.TeamMember;
@@ -61,6 +62,9 @@ public class Team{
 
     @OneToMany(mappedBy = "team")
     private List<Vote> votes=new ArrayList<>();
+
+    @OneToMany(mappedBy = "team")
+    private List<Mission> missions = new ArrayList<>();
 
     public void createTeam(Category category, String name, Integer personnel, LocalDate startDate, Integer period, String info, String promise, String profileImg, Long leaderId){
         this.category=category;

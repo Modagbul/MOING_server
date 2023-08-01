@@ -1,28 +1,29 @@
-package com.modagbul.BE.domain.usermission.application.dto;
+package com.modagbul.BE.domain.mission.main.application.dto;
 
 import com.modagbul.BE.domain.usermission.application.constant.Status;
 import lombok.AllArgsConstructor;
-import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+@AllArgsConstructor
 @NoArgsConstructor
 @Getter
-public class UserMissionDetailDto {
+public class MissionListDto {
+    private Long missionId;
     private String title;
     private String dueTo;
-    private String content;
-    private String rule;
+    private String dueDate;
     private Status status;
-    private String achieve;
-    @Builder
-    public UserMissionDetailDto(String title, String dueTo, String content, String rule, Status status, String achieve) {
+
+    public MissionListDto(Long missionId, String title, String dueTo,String dueDate) {
+        this.missionId = missionId;
         this.title = title;
         this.dueTo = dueTo;
-        this.content = content;
-        this.rule = rule;
+        this.dueDate = dueDate;
+    }
+
+    public void setStatus(Status status) {
         this.status = status;
-        this.achieve = achieve;
     }
 
     public void setDueTo(String dueTo) {
