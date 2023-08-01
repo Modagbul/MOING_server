@@ -5,6 +5,7 @@ import com.modagbul.BE.domain.mission.main.domain.service.MissionQueryService;
 import com.modagbul.BE.domain.mission.main.domain.entity.Mission;
 import com.modagbul.BE.domain.team.domain.repository.TeamRepository;
 
+import com.modagbul.BE.domain.team.domain.service.TeamQueryService;
 import com.modagbul.BE.domain.user.entity.User;
 import com.modagbul.BE.domain.user.repository.UserRepository;
 import com.modagbul.BE.domain.usermission.application.constant.Status;
@@ -29,7 +30,6 @@ import java.util.List;
 @RequiredArgsConstructor
 public class UserMissionService {
 
-    private final TeamRepository teamRepository;
     private final UserRepository userRepository;
 
     private final UserMissionQueryService userMissionQueryService;
@@ -39,7 +39,6 @@ public class UserMissionService {
 
 
     public Status submitUserMission(Long teamId, Long missionId, String submitUrl) {
-
 
         UserMission userMission = userMissionQueryService.getUserMissionById(teamId, missionId);
         userMission.setComplete(submitUrl);

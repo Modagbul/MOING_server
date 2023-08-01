@@ -23,9 +23,6 @@ import org.springframework.stereotype.Service;
 @RequiredArgsConstructor
 public class MissionUpdateService {
 
-
-    private final TeamRepository teamRepository;
-    private final TeamMemberRepository teamMemberRepository;
     private final TeamQueryService teamQueryService;
 
     private final MissionQueryService missionQueryService;
@@ -43,7 +40,7 @@ public class MissionUpdateService {
 
             Long userId = SecurityUtils.getLoggedInUser().getUserId();
             // 잘못된 missionId,teamId 예외 처리
-            Mission updateMission = missionQueryService.getMissionById(teamId, missionId);
+            Mission updateMission = missionQueryService.getMissionById(missionId);
             UserMissionDetailDto userMissionDetailDto = userMissionQueryService.getUserMissionDetailById(teamId, missionId);
 
             updateMission.updateMission(missionReq.getTitle(), missionReq.getDueTo(), missionReq.getContent(), missionReq.getRule());

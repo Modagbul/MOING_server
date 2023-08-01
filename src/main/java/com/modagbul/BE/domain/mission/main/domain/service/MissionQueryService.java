@@ -6,6 +6,7 @@ import com.modagbul.BE.domain.mission.main.domain.repository.MissionRepository;
 import com.modagbul.BE.domain.mission.main.exception.NotFoundMissionException;
 import com.modagbul.BE.domain.team.domain.entity.Team;
 import com.modagbul.BE.domain.team.domain.repository.TeamRepository;
+import com.modagbul.BE.domain.team.domain.service.TeamQueryService;
 import com.modagbul.BE.domain.usermission.application.constant.Status;
 import com.modagbul.BE.domain.usermission.exception.NotFoundUserMissionsException;
 import com.modagbul.BE.global.config.security.util.SecurityUtils;
@@ -23,28 +24,17 @@ import com.modagbul.BE.domain.team.exception.*;
 public class MissionQueryService {
     // getMissionById
     private final MissionRepository missionRepository;
-    private final TeamRepository teamRepository;
+    private final TeamQueryService teamQueryService;
 
     public Mission getMissionById(Long missionId) {
         return missionRepository.findById(missionId).orElseThrow(NotFoundMissionException::new);
     }
 
     public List<Mission> getMissionsByTeamId(Long teamId){
-        Team team = teamRepository.findById(teamId).orElseThrow(NotFoundTeamIdException::new);
+        Team team = teamQueryService.getTeamById(teamId);
         return team.getMissions();
-
     }
 
-    public Mission getMissionById(Long teamId, Long missionId) {
-        Team team = teamRepository.findById(teamId).orElseThrow(NotFoundTeamIdException::new);
-        List<Mission> missions = team.getMissions();
-        for (Mission mission : missions) {
-            if (mission.getMissionId().equals(missionId)) {
-                return mission;
-            }
-        }
-        throw new NotFoundMissionException();
-    }
 
     public List<MissionListDto> getIncompleteMissionListById(Long teamId) {
         Long userId = SecurityUtils.getLoggedInUser().getUserId();
@@ -62,7 +52,7 @@ public class MissionQueryService {
 
     public boolean isLeader(Long teamId) {
         Long userId = SecurityUtils.getLoggedInUser().getUserId();
-        Long leaderId = teamRepository.findLeaderIdByTeamId(teamId);
+        Long leaderId = teamQueryService.getLeaderIdByTeamId(teamId);
 
         if (userId.equals(leaderId)) {
             return true;

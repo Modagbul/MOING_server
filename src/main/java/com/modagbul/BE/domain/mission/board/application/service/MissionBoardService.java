@@ -4,8 +4,10 @@ import com.modagbul.BE.domain.mission.board.application.dto.MissionBoardDto;
 import com.modagbul.BE.domain.mission.main.domain.service.MissionQueryService;
 import com.modagbul.BE.domain.mission.board.exception.InvalidCompleteRateException;
 import com.modagbul.BE.domain.team.domain.repository.TeamRepository;
+import com.modagbul.BE.domain.team_member.domain.entity.TeamMember;
 import com.modagbul.BE.domain.team_member.domain.repository.TeamMemberRepository;
 
+import com.modagbul.BE.domain.team_member.domain.service.TeamMemberQueryService;
 import com.modagbul.BE.domain.user.entity.User;
 import com.modagbul.BE.domain.usermission.domain.service.UserMissionQueryService;
 import com.modagbul.BE.global.config.security.util.SecurityUtils;
@@ -23,11 +25,10 @@ import java.util.concurrent.atomic.AtomicReference;
 @Transactional
 @RequiredArgsConstructor
 public class MissionBoardService {
-    private final TeamRepository teamRepository;
-    private final TeamMemberRepository teamMemberRepository;
 
     private final MissionQueryService missionQueryService;
     private final UserMissionQueryService userMissionQueryService;
+    private final TeamMemberQueryService teamMemberQueryService;
 
     // 소모임 그래프 - 개인별 : 개인 달성 미션수 / 전체 미션 수
 
@@ -46,9 +47,9 @@ public class MissionBoardService {
             return new MissionBoardDto(0L, "불꽃이 생겨나고 있어요! 🔥");
         }
 
+        List<TeamMember> users = teamMemberQueryService.getTeamMemberByTeamId(teamId);
 
-        List<User> users = teamMemberRepository.findUserListByTeamId(teamId).orElseThrow(InvalidCompleteRateException::new);
-        for (User user : users) {
+        for (TeamMember user : users) {
             sum.updateAndGet(v -> v + userMissionQueryService.getPersonalRateForGraph(teamId,loginId));
         }
 

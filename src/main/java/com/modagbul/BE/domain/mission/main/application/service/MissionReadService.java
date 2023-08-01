@@ -28,8 +28,6 @@ import java.util.List;
 @RequiredArgsConstructor
 public class MissionReadService {
 
-    private final TeamRepository teamRepository;
-    private final TeamMemberRepository teamMemberRepository;
 
     private final MissionQueryService missionQueryService;
     private final MissionSaveService missionSaveService;

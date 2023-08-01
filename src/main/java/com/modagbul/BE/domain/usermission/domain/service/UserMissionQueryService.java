@@ -28,7 +28,7 @@ public class UserMissionQueryService {
 
     public List<UserMission> getUserMissionsById(Long teamId, Long missionId) {
         Long userId = SecurityUtils.getLoggedInUser().getUserId();
-        Mission findMission = missionQueryService.getMissionById(teamId, missionId);
+        Mission findMission = missionQueryService.getMissionById(teamId);
         return findMission.getUserMissions();
 
     }

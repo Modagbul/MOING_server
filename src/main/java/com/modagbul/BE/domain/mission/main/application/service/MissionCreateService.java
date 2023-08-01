@@ -27,9 +27,6 @@ import java.util.Date;
 @RequiredArgsConstructor
 public class MissionCreateService {
 
-    private final TeamRepository teamRepository;
-    private final TeamMemberRepository teamMemberRepository;
-
     private final MissionQueryService missionQueryService;
     private final MissionSaveService missionSaveService;
     private final UserMissionSaveService userMissionSaveService;
