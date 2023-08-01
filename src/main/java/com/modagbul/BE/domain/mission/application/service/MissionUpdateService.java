@@ -58,7 +58,7 @@ public class MissionUpdateService {
             Long userId = SecurityUtils.getLoggedInUser().getUserId();
             // 잘못된 missionId,teamId 예외 처리
             Mission updateMission = missionQueryService.getMissionById(teamId, missionId);
-            UserMissionDetailDto userMissionDetailDto = userMissionQueryService.getUserMissionDetailById(teamId, userId, missionId);
+            UserMissionDetailDto userMissionDetailDto = userMissionQueryService.getUserMissionDetailById(teamId, missionId);
 
             updateMission.updateMission(missionReq.getTitle(), missionReq.getDueTo(), missionReq.getContent(), missionReq.getRule());
             missionSaveService.saveMission(updateMission);

@@ -52,4 +52,7 @@ public interface UserMissionRepository extends JpaRepository<UserMission, Long> 
 
     @Query(value = "select um.user from UserMission um where um.mission = :mission and um.status = com.modagbul.BE.domain.usermission.application.constant.Status.INCOMPLETE")
     Optional<List<User>> getInCompleteUsersByMission(@Param("mission") Mission mission);
+
+    @Query(value = "select um from UserMission um where um.mission.missionId = :missionId")
+    Optional<List<UserMission>> getUserMissionsById(@Param("missionId") Long missionId);
 }

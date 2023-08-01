@@ -1,12 +1,15 @@
 package com.modagbul.BE.domain.mission.domain.entity;
 
 import com.modagbul.BE.domain.team.domain.entity.Team;
+import com.modagbul.BE.domain.usermission.domain.entity.UserMission;
 import com.modagbul.BE.global.entity.BaseTimeEntity;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Getter
@@ -27,6 +30,8 @@ public class Mission extends BaseTimeEntity{
     private String content;
     private String rule;
 
+    @OneToMany(mappedBy = "mission")
+    private List<UserMission> userMissions = new ArrayList<>();
 
 
     public void createMission(Team team, String title, String dueTo, String content, String rule){

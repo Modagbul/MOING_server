@@ -95,7 +95,7 @@ public class MissionService {
     public UserMissionDetailDto getMissionDetail(Long teamId, Long missionId) {
         Long userId = SecurityUtils.getLoggedInUser().getUserId();
 
-        UserMissionDetailDto userMissionDetailDto = userMissionQueryService.getUserMissionDetailById(teamId, userId, missionId);
+        UserMissionDetailDto userMissionDetailDto = userMissionQueryService.getUserMissionDetailById(teamId, missionId);
         String remainPeriod = getRemainPeriod(userMissionDetailDto.getDueTo());
         userMissionDetailDto.setDueTo(remainPeriod);
         return userMissionDetailDto;

@@ -46,9 +46,8 @@ public class UserMissionService {
 
     public Status submitUserMission(Long teamId, Long missionId, String submitUrl) {
 
-        Long userId = SecurityUtils.getLoggedInUser().getUserId();
 
-        UserMission userMission = userMissionQueryService.getUserMissionById(userId, teamId, missionId);
+        UserMission userMission = userMissionQueryService.getUserMissionById(teamId, missionId);
 
         userMission.setComplete(submitUrl);
         userMissionSaveService.saveUserMission(userMission);
@@ -59,9 +58,7 @@ public class UserMissionService {
 
     public Status skipUserMission(Long teamId, Long missionId, String skipReason) {
 
-        Long userId = SecurityUtils.getLoggedInUser().getUserId();
-
-        UserMission userMission = userMissionQueryService.getUserMissionById(userId, teamId, missionId);
+        UserMission userMission = userMissionQueryService.getUserMissionById(teamId, missionId);
 
         userMission.setPending(skipReason);
         userMissionSaveService.saveUserMission(userMission);
