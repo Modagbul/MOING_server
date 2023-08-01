@@ -48,7 +48,7 @@ public class MissionBoardService {
         AtomicReference<Long> sum = new AtomicReference<>(0L);
         Long loginId = SecurityUtils.getLoggedInUser().getUserId();
 
-        if(missionQueryService.getMissionByTeamId(teamId).get().size()==0){
+        if(missionQueryService.getMissionsByTeamId(teamId).size()==0){
             return new MissionBoardDto(0L, "불꽃이 생겨나고 있어요! 🔥");
         }
 

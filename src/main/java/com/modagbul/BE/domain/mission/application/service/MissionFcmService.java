@@ -65,7 +65,6 @@ public class MissionFcmService {
         MissionFcmMessage message = new MissionFcmMessage(mission);
 
         // 하루 전에 완료 하지 않은 인원
-
         List<User> users = userMissionQueryService.getInCompleteUsersByMission(mission);
 
         // 개인별 메시지 생성

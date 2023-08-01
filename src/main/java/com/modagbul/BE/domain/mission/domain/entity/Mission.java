@@ -27,6 +27,8 @@ public class Mission extends BaseTimeEntity{
     private String content;
     private String rule;
 
+
+
     public void createMission(Team team, String title, String dueTo, String content, String rule){
         this.team = team;
         this.title = title;

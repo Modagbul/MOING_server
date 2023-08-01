@@ -7,6 +7,7 @@ import com.modagbul.BE.domain.mission.exception.InvalidDueToDate;
 import com.modagbul.BE.domain.mission.exception.MissionAuthDeniedException;
 import com.modagbul.BE.domain.team.domain.entity.Team;
 import com.modagbul.BE.domain.team.domain.repository.TeamRepository;
+import com.modagbul.BE.domain.team.domain.service.TeamQueryService;
 import com.modagbul.BE.domain.team_member.domain.repository.TeamMemberRepository;
 import com.modagbul.BE.domain.usermission.application.constant.Status;
 import com.modagbul.BE.domain.usermission.domain.service.UserMissionSaveService;
@@ -32,6 +33,7 @@ public class MissionCreateService {
     private final MissionQueryService missionQueryService;
     private final MissionSaveService missionSaveService;
     private final UserMissionSaveService userMissionSaveService;
+    private final TeamQueryService teamQueryService;
 
 
     // 소모임장의 미션 생성
@@ -44,18 +46,18 @@ public class MissionCreateService {
             throw new InvalidDueToDate();
         }
 
-        Long loginId = SecurityUtils.getLoggedInUser().getUserId();
 
-        // 로그인한 사용자가 소모임장인지 확인 -> 팀 leaderid 확인
-        Team findteam = teamRepository.findById(teamId).orElseThrow(() -> new IllegalStateException("해당 팀을 찾을 수 없습니다."));
-
-        if ( findteam.getLeaderId().equals(loginId)){
+        if (missionQueryService.isLeader(teamId)){
             // 소모임장이라면 미션 생성
+            Team findTeam = teamQueryService.getTeamById(teamId);
+
             Mission newMission = new Mission();
-            newMission.createMission(findteam, missionReq.getTitle(), missionReq.getDueTo(), missionReq.getContent(), missionReq.getRule());
+
+            newMission.createMission(findTeam, missionReq.getTitle(), missionReq.getDueTo(), missionReq.getContent(), missionReq.getRule());
+
             Mission savedMission = missionSaveService.saveMission(newMission);
 
-            userMissionSaveService.makeUserMission(teamId, findteam, savedMission);
+            userMissionSaveService.makeUserMission(teamId, findTeam, savedMission);
 
             return new MissionRes(savedMission.getTitle(), savedMission.getDueTo(), savedMission.getContent(), savedMission.getRule(), Status.INCOMPLETE);
 

@@ -8,6 +8,7 @@ import com.modagbul.BE.domain.mission.application.service.MissionCreateService;
 import com.modagbul.BE.domain.mission.application.service.MissionUpdateService;
 import com.modagbul.BE.domain.mission.application.service.MissionBoardService;
 import com.modagbul.BE.domain.mission.application.service.MissionService;
+import com.modagbul.BE.domain.mission.domain.service.MissionQueryService;
 import com.modagbul.BE.domain.usermission.application.constant.Status;
 import com.modagbul.BE.domain.usermission.application.dto.UserMissionDetailDto;
 import com.modagbul.BE.domain.usermission.application.dto.UserMissionStatusDto;
@@ -36,6 +37,7 @@ public class MissionController {
     private final MissionCreateService missionCreateService;
     private final MissionUpdateService missionUpdateService;
     private final MissionService missionService;
+    private final MissionQueryService missionQueryService;
 
     @ApiOperation(value = "미션 생성", notes = "미션을 생성합니다.")
     @PostMapping("")
@@ -101,7 +103,7 @@ public class MissionController {
 
     @GetMapping("/isLeader")
     public ResponseEntity<ResponseDto<Boolean>> isLeader(@PathVariable Long teamId){
-        return ResponseEntity.ok(ResponseDto.create(HttpStatus.OK.value(),STATUS_MISSION_SUCCESS.getMessage(),missionService.isLeader(teamId)));
+        return ResponseEntity.ok(ResponseDto.create(HttpStatus.OK.value(),STATUS_MISSION_SUCCESS.getMessage(),missionQueryService.isLeader(teamId)));
     }
 
 

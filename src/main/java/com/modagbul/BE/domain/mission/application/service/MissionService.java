@@ -142,15 +142,6 @@ public class MissionService {
         return null;
     }
 
-    public boolean isLeader(Long teamId) {
-        Long userId = SecurityUtils.getLoggedInUser().getUserId();
-
-        Long leaderId = teamRepository.findLeaderIdByTeamId(teamId);
-        if (userId.equals(leaderId)) {
-            return true;
-        }
-        return false;
-    }
 
 
 

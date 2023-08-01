@@ -6,6 +6,7 @@ import com.modagbul.BE.domain.mission.domain.repository.MissionRepository;
 
 import com.modagbul.BE.domain.team.domain.entity.Team;
 import com.modagbul.BE.domain.team.domain.repository.TeamRepository;
+import com.modagbul.BE.domain.team.domain.service.TeamQueryService;
 import com.modagbul.BE.domain.team_member.domain.repository.TeamMemberRepository;
 import com.modagbul.BE.domain.mission.domain.service.MissionQueryService;
 import com.modagbul.BE.domain.mission.domain.service.MissionSaveService;
@@ -39,6 +40,7 @@ public class MissionUpdateService {
 
     private final TeamRepository teamRepository;
     private final TeamMemberRepository teamMemberRepository;
+    private final TeamQueryService teamQueryService;
 
     private final MissionQueryService missionQueryService;
     private final MissionSaveService missionSaveService;
@@ -46,18 +48,16 @@ public class MissionUpdateService {
     private final UserMissionQueryService userMissionQueryService;
 
 
+
     // 소모임장의 미션 수정
     public MissionRes updateMission(Long teamId, Long missionId, MissionReq missionReq) {
 
         // 소모임장인지 확인
-        Long userId = SecurityUtils.getLoggedInUser().getUserId();
+        if (missionQueryService.isLeader(teamId)){
 
-        Long findId =  missionQueryService.getLeaderIdByTeamIdAndMissionId(teamId,missionId);
-
-        if (userId.equals(findId)) {
-
+            Long userId = SecurityUtils.getLoggedInUser().getUserId();
             // 잘못된 missionId,teamId 예외 처리
-            Mission updateMission = missionQueryService.getMissionByTeamIdAndMissionId(teamId, missionId);
+            Mission updateMission = missionQueryService.getMissionById(teamId, missionId);
             UserMissionDetailDto userMissionDetailDto = userMissionQueryService.getUserMissionDetailById(teamId, userId, missionId);
 
             updateMission.updateMission(missionReq.getTitle(), missionReq.getDueTo(), missionReq.getContent(), missionReq.getRule());
