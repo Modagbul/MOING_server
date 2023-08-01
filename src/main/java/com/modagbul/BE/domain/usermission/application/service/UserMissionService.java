@@ -1,14 +1,8 @@
 package com.modagbul.BE.domain.usermission.application.service;
 
-import com.modagbul.BE.domain.fire.domain.repository.FireRepository;
 import com.modagbul.BE.domain.fire.domain.service.FireQueryService;
-import com.modagbul.BE.domain.mission.domain.service.MissionQueryService;
-import com.modagbul.BE.domain.mission.domain.entity.Mission;
-import com.modagbul.BE.domain.mission.domain.repository.MissionRepository;
-import com.modagbul.BE.domain.team.domain.repository.TeamRepository;
-import com.modagbul.BE.domain.mission.exception.NotFoundMissionException;
-import com.modagbul.BE.domain.mission.domain.entity.Mission;
-import com.modagbul.BE.domain.mission.domain.repository.MissionRepository;
+import com.modagbul.BE.domain.mission.main.domain.service.MissionQueryService;
+import com.modagbul.BE.domain.mission.main.domain.entity.Mission;
 import com.modagbul.BE.domain.team.domain.repository.TeamRepository;
 
 import com.modagbul.BE.domain.user.entity.User;

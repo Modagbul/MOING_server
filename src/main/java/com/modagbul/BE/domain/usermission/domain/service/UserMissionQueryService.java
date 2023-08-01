@@ -1,8 +1,8 @@
 package com.modagbul.BE.domain.usermission.domain.service;
 
-import com.modagbul.BE.domain.mission.domain.entity.Mission;
-import com.modagbul.BE.domain.mission.domain.service.MissionQueryService;
-import com.modagbul.BE.domain.mission.exception.NotFoundMissionException;
+import com.modagbul.BE.domain.mission.main.domain.entity.Mission;
+import com.modagbul.BE.domain.mission.main.domain.service.MissionQueryService;
+import com.modagbul.BE.domain.mission.main.exception.NotFoundMissionException;
 import com.modagbul.BE.domain.user.entity.User;
 import com.modagbul.BE.domain.usermission.application.constant.Status;
 import com.modagbul.BE.domain.usermission.application.dto.UserMissionDetailDto;
@@ -17,7 +17,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Optional;
 
 @RequiredArgsConstructor
 @Service

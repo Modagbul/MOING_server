@@ -1,6 +1,6 @@
 package com.modagbul.BE.domain.usermission.domain.service;
 
-import com.modagbul.BE.domain.mission.domain.entity.Mission;
+import com.modagbul.BE.domain.mission.main.domain.entity.Mission;
 import com.modagbul.BE.domain.team.domain.entity.Team;
 import com.modagbul.BE.domain.team_member.domain.repository.TeamMemberRepository;
 import com.modagbul.BE.domain.usermission.domain.entity.UserMission;

@@ -1,6 +1,6 @@
 package com.modagbul.BE.domain.team.domain.entity;
 
-import com.modagbul.BE.domain.mission.domain.entity.Mission;
+import com.modagbul.BE.domain.mission.main.domain.entity.Mission;
 import com.modagbul.BE.domain.notice.board.domain.entity.Notice;
 import com.modagbul.BE.domain.team.application.dto.constant.Category;
 import com.modagbul.BE.domain.team_member.domain.entity.TeamMember;

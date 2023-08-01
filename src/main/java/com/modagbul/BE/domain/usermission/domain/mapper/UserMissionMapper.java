@@ -1,6 +1,6 @@
 package com.modagbul.BE.domain.usermission.domain.mapper;
 
-import com.modagbul.BE.domain.mission.domain.entity.Mission;
+import com.modagbul.BE.domain.mission.main.domain.entity.Mission;
 import com.modagbul.BE.domain.usermission.application.dto.UserMissionDetailDto;
 import com.modagbul.BE.domain.usermission.domain.entity.UserMission;
 import org.springframework.stereotype.Component;
