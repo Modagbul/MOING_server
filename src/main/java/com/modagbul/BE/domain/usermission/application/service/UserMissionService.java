@@ -48,22 +48,18 @@ public class UserMissionService {
 
 
         UserMission userMission = userMissionQueryService.getUserMissionById(teamId, missionId);
-
         userMission.setComplete(submitUrl);
-        userMissionSaveService.saveUserMission(userMission);
 
-        return userMission.getStatus();
+        return userMissionSaveService.saveUserMission(userMission).getStatus();
 
     }
 
     public Status skipUserMission(Long teamId, Long missionId, String skipReason) {
 
         UserMission userMission = userMissionQueryService.getUserMissionById(teamId, missionId);
-
         userMission.setPending(skipReason);
-        userMissionSaveService.saveUserMission(userMission);
 
-        return userMission.getStatus();
+        return userMissionSaveService.saveUserMission(userMission).getStatus();
 
     }
 

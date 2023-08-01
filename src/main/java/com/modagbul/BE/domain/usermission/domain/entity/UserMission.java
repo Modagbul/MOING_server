@@ -41,11 +41,6 @@ public class UserMission extends BaseTimeEntity {
 
     private String achieve;
 
-//    public void createUserMission(User user, Team team, Mission mission) {
-//        this.user = user;
-//        this.team = team;
-//        this.mission = mission;
-//    }
     public UserMission createUserMission(User user, Team team, Mission mission) {
         this.user = user;
         this.team = team;
@@ -58,6 +53,7 @@ public class UserMission extends BaseTimeEntity {
         this.achieve = achieve;
         this.status = Status.COMPLETE;
     }
+
     public void setPending(String achieve){
         this.achieve = achieve;
         this.status = Status.PENDING;

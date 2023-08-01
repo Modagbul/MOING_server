@@ -18,15 +18,14 @@ public class UserMissionSaveService {
     private final TeamMemberRepository teamMemberRepository;
     private final UserMissionRepository userMissionRepository;
 
-    public List<UserMission> makeUserMission(Long teamId, Team findTeam, Mission savedMission) {
+    public void makeUserMission(Long teamId, Team findTeam, Mission savedMission) {
         List<UserMission> userMissionList = new ArrayList<>();
 
         teamMemberRepository.findUserListByTeamId(teamId).orElseThrow(NotFoundUserMissionsException::new).forEach(user -> {
             userMissionList.add(new UserMission().createUserMission(user,findTeam,savedMission));
         });
 
-        return userMissionRepository.saveAll(userMissionList);
-
+        userMissionRepository.saveAll(userMissionList);
     }
 
     public UserMission saveUserMission(UserMission userMission) {
